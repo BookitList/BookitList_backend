@@ -34,6 +34,7 @@ jobs:
           spring.datasource.url: ${{ secrets.RDS_ENDPOINT }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          api.aladin.key: ${{ secrets.ALADIN_KEY }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

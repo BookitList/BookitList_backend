@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bookitlist?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: root
+    url: ${RDS_ENDPOINT}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   jpa:
     open-in-view: false
@@ -17,3 +17,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+api:
+  aladin:
+    key: ${ALADIN_KEY}

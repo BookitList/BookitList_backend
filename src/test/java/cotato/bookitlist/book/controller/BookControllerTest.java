@@ -28,7 +28,7 @@ class BookControllerTest {
         String keyword = "aladdin";
 
         //when&then
-        mockMvc.perform(get("/api/books/external")
+        mockMvc.perform(get("/books/external")
                         .param("key-word", keyword)
                         .param("start", "1")
                 )

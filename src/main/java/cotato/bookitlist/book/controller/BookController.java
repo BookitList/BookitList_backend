@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/books")
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/books/external")
+    @GetMapping("/external")
     public BookApiResponse searchExternal(@RequestParam("key-word") String keyWord, @RequestParam int start) {
         return bookService.searchExternal(keyWord, start);
     }

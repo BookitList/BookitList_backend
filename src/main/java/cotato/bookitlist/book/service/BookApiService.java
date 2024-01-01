@@ -1,4 +1,4 @@
-package cotato.bookitlist.book.repository;
+package cotato.bookitlist.book.service;
 
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
@@ -6,24 +6,25 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Service
 @Transactional
 @RequiredArgsConstructor
-public class BookRepositoryImpl implements BookRepository {
+public class BookApiService {
 
     @Value("${api.aladin.key}")
     private String aladinKey;
 
-    private final AladinRepository aladinRepository;
+    private final AladinService aladinService;
+    private final BookApiCacheService bookApiCacheService;
 
     public BookApiResponse findListByKeyWordAndApi(String keyword, int start) {
-        JSONObject json = new JSONObject(aladinRepository.findAllByQuery(aladinKey, keyword, "JS", start));
+        JSONObject json = new JSONObject(aladinService.findAllByQuery(aladinKey, keyword, "JS", start));
 
         int totalResults = json.getInt("totalResults");
         int startIndex = json.getInt("startIndex");
@@ -48,6 +49,8 @@ public class BookRepositoryImpl implements BookRepository {
             );
 
             bookApiDtoList.add(bookApiDto);
+
+            bookApiCacheService.saveBookApiCache(bookApiDto);
         }
 
         return BookApiResponse.of(totalResults, startIndex, itemsPerPage, bookApiDtoList);

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class MarkBook {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_book_id")
     private Long id;
 

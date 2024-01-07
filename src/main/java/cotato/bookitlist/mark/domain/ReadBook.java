@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ReadBook {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "read_book_id")
     private Long id;
 

@@ -1,12 +1,15 @@
 package cotato.bookitlist.book.controller;
 
+import cotato.bookitlist.book.dto.request.BookRegisterRequest;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
 import cotato.bookitlist.book.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/books")
@@ -16,8 +19,31 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/external")
-    public BookApiResponse searchExternal(@RequestParam("key-word") String keyWord, @RequestParam int start) {
-        return bookService.searchExternal(keyWord, start);
+    public ResponseEntity<BookApiResponse> searchExternal(
+            @RequestParam(value = "isbn13", required = false) String isbn13,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(required = false) Integer start) {
+        if (isbn13 != null) {
+            return ResponseEntity.ok(bookService.searchExternal(isbn13).toBookApiResponse());
+        } else {
+            return ResponseEntity.ok(bookService.searchExternal(keyword, start));
+        }
     }
+
+    @PostMapping
+    public ResponseEntity<Void> registerBook(
+            @Valid @RequestBody BookRegisterRequest request
+    ) {
+        Long bookId = bookService.registerBook(request.isbn13());
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(bookId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
 
 }

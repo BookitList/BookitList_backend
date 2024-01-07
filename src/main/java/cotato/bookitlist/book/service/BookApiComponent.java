@@ -6,25 +6,23 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@Transactional
+@Component
 @RequiredArgsConstructor
-public class BookApiService {
+public class BookApiComponent {
 
     @Value("${api.aladin.key}")
     private String aladinKey;
 
-    private final AladinService aladinService;
+    private final AladinComponent aladinComponent;
     private final BookApiCacheService bookApiCacheService;
 
     public BookApiResponse findListByKeyWordAndApi(String keyword, int start) {
-        JSONObject json = new JSONObject(aladinService.findAllByQuery(aladinKey, keyword, "JS", start));
+        JSONObject json = new JSONObject(aladinComponent.findAllByQuery(aladinKey, keyword, "JS", start, 20131101));
 
         int totalResults = json.getInt("totalResults");
         int startIndex = json.getInt("startIndex");
@@ -40,6 +38,7 @@ public class BookApiService {
             BookApiDto bookApiDto = BookApiDto.from(
                     item.optString("title", ""),
                     item.optString("author", ""),
+                    item.optString("publisher", ""),
                     item.optString("pubDate", ""),
                     item.optString("description", ""),
                     item.optString("link", ""),
@@ -54,5 +53,27 @@ public class BookApiService {
         }
 
         return BookApiResponse.of(totalResults, startIndex, itemsPerPage, bookApiDtoList);
+    }
+
+    public BookApiDto findByIsbn13(String isbn13) {
+        JSONObject json = new JSONObject(aladinComponent.findByIsbn13(aladinKey, isbn13, "ISBN13", "JS", 20131101));
+
+        JSONObject item = json.getJSONArray("item").getJSONObject(0);
+
+        BookApiDto bookApiDto = BookApiDto.from(
+                item.optString("title", ""),
+                item.optString("author", ""),
+                item.optString("publisher", ""),
+                item.optString("pubDate", ""),
+                item.optString("description", ""),
+                item.optString("link", ""),
+                item.optString("isbn13", ""),
+                item.optIntegerObject("priceSales", null),
+                item.optString("cover", "")
+        );
+
+        bookApiCacheService.saveBookApiCache(bookApiDto);
+
+        return bookApiDto;
     }
 }

@@ -1,11 +1,16 @@
 package cotato.bookitlist.book.dto;
 
+import cotato.bookitlist.book.domain.entity.Book;
+import cotato.bookitlist.book.dto.response.BookApiResponse;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public record BookApiDto(
         String title,
         String author,
+        String publisher,
         LocalDate pubDate,
         String description,
         String link,
@@ -14,9 +19,18 @@ public record BookApiDto(
         String cover
 ) {
 
+    public Book toEntity() {
+        return Book.of(title, author, publisher, pubDate, description, link, isbn13, price, cover);
+    }
+
+    public BookApiResponse toBookApiResponse() {
+        return new BookApiResponse(1, 1, 1, List.of(this));
+    }
+
     public static BookApiDto from(
             String title,
             String author,
+            String publisher,
             String pubDateString,
             String description,
             String link,
@@ -32,7 +46,7 @@ public record BookApiDto(
             pubDate = LocalDate.parse(pubDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
 
-        return new BookApiDto(title, author, pubDate, description, link, isbn13, price, cover);
+        return new BookApiDto(title, author, publisher, pubDate, description, link, isbn13, price, cover);
     }
 
 

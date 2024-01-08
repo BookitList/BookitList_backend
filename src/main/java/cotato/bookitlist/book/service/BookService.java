@@ -9,8 +9,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,8 +31,7 @@ public class BookService {
             throw new DuplicateKeyException("이미 등록된 isbn13입니다.");
         });
 
-        Optional<BookApiCache> bookApiCache = bookApiCacheService.findBookApiCache(isbn13);
-        return bookRepository.save(bookApiCache.map(BookApiCache::getBookApiDto)
+        return bookRepository.save(bookApiCacheService.findBookApiCacheByIsbn13(isbn13).map(BookApiCache::getBookApiDto)
                 .orElseGet(() -> bookApiComponent.findByIsbn13(isbn13)).toEntity()
         ).getId();
     }

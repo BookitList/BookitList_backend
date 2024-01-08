@@ -25,8 +25,10 @@ public class BookController {
             @RequestParam(required = false) Integer start) {
         if (isbn13 != null) {
             return ResponseEntity.ok(bookService.searchExternal(isbn13).toBookApiResponse());
-        } else {
+        } else if (keyword != null && start != null) {
             return ResponseEntity.ok(bookService.searchExternal(keyword, start));
+        } else {
+            throw new IllegalArgumentException("isbn13 또는 keyword와 start를 함께 입력하세요.");
         }
     }
 

@@ -47,6 +47,69 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("isbn13이 주어지면 응답을 준다.")
+    void givenIsbn13_whenExternalSearching_thenReturnBookApiResponse() throws Exception {
+        //given
+        String isbn13 = "9791197045318";
+
+        //when&then
+        mockMvc.perform(get("/books/external")
+                        .param("isbn13", isbn13)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(1))
+                .andExpect(jsonPath("$.startIndex").value(1))
+                .andExpect(jsonPath("$.itemsPerPage").value(1))
+                .andExpect(jsonPath("$.bookApiDto").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("isbn13과 keyword가 주어지면 응답을 준다.")
+    void givenIsbn13AndKeyword_whenExternalSearching_thenReturnBookApiResponse() throws Exception {
+        //given
+        String isbn13 = "9791197045318";
+        String keyword = "aladdin";
+
+        //when&then
+        mockMvc.perform(get("/books/external")
+                        .param("isbn13", isbn13)
+                        .param("keyword", keyword)
+                        .param("start", "1")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(1))
+                .andExpect(jsonPath("$.startIndex").value(1))
+                .andExpect(jsonPath("$.itemsPerPage").value(1))
+                .andExpect(jsonPath("$.bookApiDto").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("아무것도 주어지지 않으면 에러를 반환한다.")
+    void givenNothing_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when&then
+        mockMvc.perform(get("/books/external")
+                        .param("start", "1")
+                )
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
+    @DisplayName("start만 주어지면 에러를 반환한다.")
+    void givenStart_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when&then
+        mockMvc.perform(get("/books/external"))
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
     @DisplayName("isbn13을 통해 책을 등록한다.")
     void givenIsbn13_whenRegisteringBook_thenReturnBookResponse() throws Exception {
         //given

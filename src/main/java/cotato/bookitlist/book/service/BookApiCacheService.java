@@ -20,7 +20,7 @@ public class BookApiCacheService {
         repository.save(new BookApiCache(bookApiDto.isbn13(), bookApiDto));
     }
 
-    public Optional<BookApiCache> findBookApiCache(String isbn13){
+    public Optional<BookApiCache> findBookApiCacheByIsbn13(String isbn13){
         return repository.findById(isbn13);
     }
 

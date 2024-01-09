@@ -27,7 +27,7 @@ public record BookApiDto(
         return new BookApiResponse(1, 1, 1, List.of(this));
     }
 
-    public static BookApiDto from(
+    public static BookApiDto of(
             String title,
             String author,
             String publisher,

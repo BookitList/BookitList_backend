@@ -35,7 +35,7 @@ public class BookApiComponent {
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = items.getJSONObject(i);
 
-            BookApiDto bookApiDto = BookApiDto.from(
+            BookApiDto bookApiDto = BookApiDto.of(
                     item.optString("title", ""),
                     item.optString("author", ""),
                     item.optString("publisher", ""),
@@ -60,7 +60,7 @@ public class BookApiComponent {
 
         JSONObject item = json.getJSONArray("item").getJSONObject(0);
 
-        BookApiDto bookApiDto = BookApiDto.from(
+        BookApiDto bookApiDto = BookApiDto.of(
                 item.optString("title", ""),
                 item.optString("author", ""),
                 item.optString("publisher", ""),

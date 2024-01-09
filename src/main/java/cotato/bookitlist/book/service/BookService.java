@@ -18,8 +18,8 @@ public class BookService {
     private final BookApiCacheService bookApiCacheService;
     private final BookRepository bookRepository;
 
-    public BookApiResponse searchExternal(String keyWord, int start) {
-        return bookApiComponent.findListByKeyWordAndApi(keyWord, start);
+    public BookApiResponse searchExternal(String keyword, int start) {
+        return bookApiComponent.findListByKeyWordAndApi(keyword, start);
     }
 
     public BookApiDto searchExternal(String isbn13) {

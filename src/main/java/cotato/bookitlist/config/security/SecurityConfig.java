@@ -1,5 +1,6 @@
 package cotato.bookitlist.config.security;
 
+import cotato.bookitlist.config.security.jwt.JwtAuthenticationFilter;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
 import cotato.bookitlist.config.security.oauth.service.CustomOAuth2UserService;
 import cotato.bookitlist.config.security.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -21,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final JwtTokenProvider jwtTokenProvider;
     private final String[] WHITE_LIST = {
             "/health_check",
             "/swagger-ui/**",
@@ -41,6 +44,8 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint((userInfo) -> userInfo.userService(this.customOAuth2UserService))
                         .successHandler(this.oAuth2AuthenticationSuccessHandler))
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint((request, response, authException) ->
                                 response.sendError(HttpServletResponse.SC_FORBIDDEN)));

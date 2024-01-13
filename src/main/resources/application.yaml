@@ -19,6 +19,15 @@ spring:
       host: localhost
       port: 6379
 
+  profiles:
+    include: oauth
+
 api:
   aladin:
     key: ${ALADIN_KEY}
+
+auth:
+  jwt:
+    secretKey: ${JWT_SECRET}
+    accessExp: 3600
+    refreshExp: 86400

@@ -62,14 +62,14 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(Long id, String role) {
         Date issuedAt = new Date();
-        Date accessTokenExpiresIn = new Date(issuedAt.getTime() + jwtProperties.getAccessExp() * 1000);
+        Date accessTokenExpiresIn = new Date(issuedAt.getTime() + getAccessTokenTTlSecond() * 1000);
 
         return buildAccessToken(id, issuedAt, accessTokenExpiresIn, role);
     }
 
     public String generateRefreshToken(Long id) {
         Date issuedAt = new Date();
-        Date refreshTokenExpiresIn = new Date(issuedAt.getTime() + jwtProperties.getRefreshExp() * 1000);
+        Date refreshTokenExpiresIn = new Date(issuedAt.getTime() + getRefreshTokenTTlSecond() * 1000);
 
         return buildRefreshToken(id, issuedAt, refreshTokenExpiresIn);
     }
@@ -85,10 +85,10 @@ public class JwtTokenProvider {
     public AccessTokenInfo parseAccessToken(String token) {
         if (isAccessToken(token)) {
             Claims claims = getJws(token).getBody();
-            return AccessTokenInfo.builder()
-                    .userId(Long.parseLong(claims.getSubject()))
-                    .role((String) claims.get("role"))
-                    .build();
+            return AccessTokenInfo.of(
+                    Long.parseLong(claims.getSubject()),
+                    (String) claims.get("role")
+            );
         } else {
             throw new RuntimeException();
         }

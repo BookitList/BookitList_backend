@@ -34,4 +34,23 @@ public class Member extends BaseEntity {
     private int followCount = 0;
 
     private boolean deleted = false;
+
+    public Member(String email, String name, String oauth2Id, AuthProvider authProvider) {
+        this.email = email;
+        this.name = name;
+        this.oauth2Id = oauth2Id;
+        this.authProvider = authProvider;
+    }
+
+    public static Member of(AuthProvider authProvider, OAuth2UserInfo oAuth2UserInfo) {
+        return new Member(oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(), oAuth2UserInfo.getOAuth2Id(),
+                authProvider);
+    }
+
+    public Member update(OAuth2UserInfo oAuth2UserInfo) {
+        this.name = oAuth2UserInfo.getName();
+        this.oauth2Id = oAuth2UserInfo.getOAuth2Id();
+
+        return this;
+    }
 }

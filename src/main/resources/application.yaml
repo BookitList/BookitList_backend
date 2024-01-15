@@ -30,4 +30,4 @@ auth:
   jwt:
     secretKey: ${JWT_SECRET}
     accessExp: 3600
-    refreshExp: 86400
+    refreshExp: 604800

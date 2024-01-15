@@ -30,7 +30,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
         AuthProvider authProvider = AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User.getAttributes());
-        Member member = memberRepository.findByEmail(oAuth2UserInfo.getEmail());
+        Member member = memberRepository.findByOauth2IdAndAuthProvider(oAuth2UserInfo.getOAuth2Id(), authProvider);
         if (member != null) {
             member = updateMember(member, oAuth2UserInfo);
         } else {

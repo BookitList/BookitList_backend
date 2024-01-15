@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -111,6 +112,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("isbn13을 통해 책을 등록한다.")
     void givenIsbn13_whenRegisteringBook_thenReturnBookResponse() throws Exception {
         //given
@@ -127,6 +129,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("이미 등록된 책을 등록하면 에러를 반환한다.")
     void givenRegisteredIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given
@@ -143,6 +146,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("잘못된 형식의 isbn13으로 등록하면 에러를 반환한다.")
     void givenInvalidIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given

@@ -33,20 +33,26 @@ jobs:
           distribution: 'zulu'
 
         # [1]
-      - name: Set yaml file
+      - name: Set yaml file for application.yaml
         uses: microsoft/variable-substitution@v1
         with:
-          files: ${{ env.RESOURCE_PATH1 }}, ${{ env.RESOURCE_PATH2 }}
+          files: ${{ env.RESOURCE_PATH1 }}
         env:
           spring.datasource.url: ${{ secrets.RDS_ENDPOINT }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          auth.jwt.secretKey: ${{ secrets.JWT_SECRET }}
+          api.aladin.key: ${{ secrets.ALADIN_KEY }}
+
+      - name: Set yaml file for application-oauth.yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH2 }}
+        env:
           spring.security.oauth2.client.registration.naver.client_id: ${{ secrets.NAVER_CLIENT_ID }}
           spring.security.oauth2.client.registration.naver.client_secret: ${{ secrets.NAVER_CLIENT_SECRET }}
           spring.security.oauth2.client.registration.kakao.client_id: ${{ secrets.KAKAO_CLIENT_ID }}
           spring.security.oauth2.client.registration.kakao.client_secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
-          auth.jwt.secretKey: ${{ secrets.JWT_SECRET }}
-          api.aladin.key: ${{ secrets.ALADIN_KEY }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

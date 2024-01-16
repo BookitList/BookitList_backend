@@ -41,10 +41,12 @@ jobs:
           spring.datasource.url: ${{ secrets.RDS_ENDPOINT }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
-          spring.security.oauth2.client.registration.naver.client_id: ${{ secrets.NAVER_CLIENT_ID }}
-          spring.security.oauth2.client.registration.naver.client_secret: ${{ secrets.NAVER_CLIENT_SECRET }}
-          spring.security.oauth2.client.registration.kakao.client_id: ${{ secrets.KAKAO_CLIENT_ID }}
-          spring.security.oauth2.client.registration.kakao.client_secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          spring.security.oauth2.client.registration.naver.redirect-uri: ${{ secrets.NAVER_REDIRECT_URI }}
+          spring.security.oauth2.client.registration.naver.client-id: ${{ secrets.NAVER_CLIENT_ID }}
+          spring.security.oauth2.client.registration.naver.client-secret: ${{ secrets.NAVER_CLIENT_SECRET }}
+          spring.security.oauth2.client.registration.kakao.redirect-uri: ${{ secrets.KAKAO_REDIRECT_URI }}
+          spring.security.oauth2.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
+          spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
           auth.jwt.secretKey: ${{ secrets.JWT_SECRET }}
           api.aladin.key: ${{ secrets.ALADIN_KEY }}
 

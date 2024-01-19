@@ -28,7 +28,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentExceptionException(IllegalArgumentException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
         log.error("IllegalArgumentException occurred: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
@@ -41,7 +41,7 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> entityNotfoundExceptionException(EntityNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> entityNotfoundException(EntityNotFoundException ex, HttpServletRequest request) {
         log.error("EntityNotFoundException occurred: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),

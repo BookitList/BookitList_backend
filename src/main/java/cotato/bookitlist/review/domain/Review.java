@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE review_id = ?")
-@Where(clause = "deleted = false")
+@SQLRestriction("deleted = false")
 public class Review extends BaseEntity {
 
     @Id

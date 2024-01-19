@@ -1,6 +1,7 @@
 package cotato.bookitlist.book.dto.request;
 
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Size;
 
@@ -9,6 +10,7 @@ public record BookRegisterRequest(
         String isbn13
 ) {
 
+    @Hidden
     @AssertTrue(message = "잘못된 형식의 isbn13입니다.")
     public boolean isValidIsbn() {
         if (isbn13 == null || isbn13.length() != 13) {

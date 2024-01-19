@@ -4,9 +4,12 @@ import cotato.bookitlist.book.dto.request.BookRegisterRequest;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
 import cotato.bookitlist.book.dto.response.BookResponse;
 import cotato.bookitlist.book.service.BookService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,7 +41,7 @@ public class BookController {
     public ResponseEntity<BookResponse> search(
             @RequestParam(value = "isbn13", required = false) String isbn13,
             @RequestParam(value = "keyword", required = false) String keyword,
-            Pageable pageable
+            @Parameter(hidden = true) @PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         if (isbn13 != null) {
             return ResponseEntity.ok(bookService.search(isbn13).toBookResponse());
@@ -53,7 +56,6 @@ public class BookController {
     public ResponseEntity<Void> registerBook(
             @Valid @RequestBody BookRegisterRequest request
     ) {
-
         Long bookId = bookService.registerBook(request.isbn13());
 
         URI location = ServletUriComponentsBuilder

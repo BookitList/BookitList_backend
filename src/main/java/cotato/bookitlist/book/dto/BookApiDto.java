@@ -39,7 +39,7 @@ public record BookApiDto(
             String coverString
     ) {
 
-        String cover = coverString.replace("cover", "cover500");
+        String cover = coverString.replace("coversum", "cover500");
 
         LocalDate pubDate = null;
         if (!pubDateString.isEmpty()) {

@@ -44,7 +44,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.totalResults").exists())
                 .andExpect(jsonPath("$.startIndex").exists())
                 .andExpect(jsonPath("$.itemsPerPage").exists())
-                .andExpect(jsonPath("$.bookApiDtoList").exists())
+                .andExpect(jsonPath("$.bookApiList").exists())
         ;
     }
 
@@ -62,7 +62,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.totalResults").value(1))
                 .andExpect(jsonPath("$.startIndex").value(1))
                 .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookApiDtoList").exists())
+                .andExpect(jsonPath("$.bookApiList").exists())
         ;
     }
 
@@ -83,7 +83,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.totalResults").value(1))
                 .andExpect(jsonPath("$.startIndex").value(1))
                 .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookApiDtoList").exists())
+                .andExpect(jsonPath("$.bookApiList").exists())
         ;
     }
 
@@ -175,7 +175,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.totalResults").value(1))
                 .andExpect(jsonPath("$.startIndex").value(0))
                 .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookDtoList").exists())
+                .andExpect(jsonPath("$.bookList").exists())
         ;
     }
 
@@ -208,7 +208,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.totalResults").value(3))
                 .andExpect(jsonPath("$.startIndex").value(0))
                 .andExpect(jsonPath("$.itemsPerPage").value(3))
-                .andExpect(jsonPath("$.bookDtoList").exists())
+                .andExpect(jsonPath("$.bookList").exists())
                 .andDo(print())
         ;
     }

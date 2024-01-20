@@ -8,7 +8,7 @@ public record BookApiResponse(
         int totalResults,
         int startIndex,
         int itemsPerPage,
-        List<BookApiDto> bookApiDtoList
+        List<BookApiDto> bookApiList
 ) {
 
     public static BookApiResponse of(int totalResults, int startIndex, int itemsPerPage, List<BookApiDto> bookApiDto) {

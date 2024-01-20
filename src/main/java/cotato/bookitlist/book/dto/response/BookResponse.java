@@ -10,7 +10,7 @@ public record BookResponse(
         int totalResults,
         int startIndex,
         int itemsPerPage,
-        List<BookDto> bookDtoList
+        List<BookDto> bookList
 ) {
 
     public static BookResponse of(int totalResults, int startIndex, int itemsPerPage, List<BookDto> bookDtoList) {

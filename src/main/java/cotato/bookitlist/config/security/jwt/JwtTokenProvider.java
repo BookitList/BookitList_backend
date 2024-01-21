@@ -2,10 +2,7 @@ package cotato.bookitlist.config.security.jwt;
 
 import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
 import cotato.bookitlist.config.security.jwt.properties.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.nio.charset.StandardCharsets;
@@ -22,17 +19,16 @@ public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
 
     private Jws<Claims> getJws(String token) {
-        try {
-            return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token);
-        } catch (ExpiredJwtException ex) {
-            throw new RuntimeException();
-        } catch (Exception ex) {
-            throw new RuntimeException();
-        }
+        return Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
+                .parseClaimsJws(token);
     }
 
     private Key getSecretKey() {
-        return Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(jwtProperties
+                .getSecretKey()
+                .getBytes(StandardCharsets.UTF_8));
     }
 
     private String buildAccessToken(Long id, Date issuedAt, Date accessTokenExpiresIn, String role) {
@@ -62,14 +58,14 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(Long id, String role) {
         Date issuedAt = new Date();
-        Date accessTokenExpiresIn = new Date(issuedAt.getTime() + getAccessTokenTTlSecond() * 1000);
+        Date accessTokenExpiresIn = new Date(issuedAt.getTime() + getAccessTokenTtlMilliSecond());
 
         return buildAccessToken(id, issuedAt, accessTokenExpiresIn, role);
     }
 
     public String generateRefreshToken(Long id) {
         Date issuedAt = new Date();
-        Date refreshTokenExpiresIn = new Date(issuedAt.getTime() + getRefreshTokenTTlSecond() * 1000);
+        Date refreshTokenExpiresIn = new Date(issuedAt.getTime() + getRefreshTokenTtlMilliSecond());
 
         return buildRefreshToken(id, issuedAt, refreshTokenExpiresIn);
     }
@@ -107,12 +103,12 @@ public class JwtTokenProvider {
         throw new RuntimeException();
     }
 
-    public Long getRefreshTokenTTlSecond() {
-        return jwtProperties.getRefreshExp();
+    public Long getAccessTokenTtlMilliSecond() {
+        return jwtProperties.getAccessExp();
     }
 
-    public Long getAccessTokenTTlSecond() {
-        return jwtProperties.getAccessExp();
+    public Long getRefreshTokenTtlMilliSecond() {
+        return jwtProperties.getRefreshExp();
     }
 
 }

@@ -4,7 +4,6 @@ import cotato.bookitlist.config.security.jwt.JwtAuthenticationFilter;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
 import cotato.bookitlist.config.security.oauth.service.CustomOAuth2UserService;
 import cotato.bookitlist.config.security.oauth.handler.OAuth2AuthenticationSuccessHandler;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +23,12 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final String[] WHITE_LIST = {
             "/health_check",
             "/swagger-ui/**",
-            "/h2-console/**"
+            "/auth/**"
     };
 
     @Bean
@@ -42,13 +43,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint((userInfo) -> userInfo.userService(this.customOAuth2UserService))
-                        .successHandler(this.oAuth2AuthenticationSuccessHandler))
+                        .userInfoEndpoint((userInfo) -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(oAuth2AuthenticationSuccessHandler))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 
-                .exceptionHandling(exception ->
-                        exception.authenticationEntryPoint((request, response, authException) ->
-                                response.sendError(HttpServletResponse.SC_FORBIDDEN)));
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler));
         return http.build();
     }
 

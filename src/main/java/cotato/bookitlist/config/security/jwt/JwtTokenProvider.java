@@ -31,6 +31,11 @@ public class JwtTokenProvider {
                 .getBytes(StandardCharsets.UTF_8));
     }
 
+    public Long getExpiration(String token) {
+        Date expiration = getJws(token).getBody().getExpiration();
+        return expiration.getTime() - new Date().getTime();
+    }
+
     private String buildAccessToken(Long id, Date issuedAt, Date accessTokenExpiresIn, String role) {
         final Key encodedKey = getSecretKey();
         return Jwts.builder()

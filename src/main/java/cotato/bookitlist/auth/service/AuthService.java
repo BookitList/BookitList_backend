@@ -1,6 +1,7 @@
 package cotato.bookitlist.auth.service;
 
 import cotato.bookitlist.auth.domain.RefreshTokenEntity;
+import cotato.bookitlist.auth.dto.ReissueRequest;
 import cotato.bookitlist.auth.dto.ReissueResponse;
 import cotato.bookitlist.auth.repository.RefreshTokenRepository;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
@@ -20,9 +21,9 @@ public class AuthService {
     private Long refreshExp;
 
     @Transactional(readOnly = true)
-    public ReissueResponse tokenReissue(String refreshToken) {
+    public ReissueResponse tokenReissue(ReissueRequest reissueRequest) {
         RefreshTokenEntity savedRefreshTokenEntity =
-                refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow();
+                refreshTokenRepository.findByRefreshToken(reissueRequest.refreshToken()).orElseThrow();
         Long refreshMemberId = jwtTokenProvider.parseRefreshToken(savedRefreshTokenEntity.getRefreshToken());
         String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
         return ReissueResponse.of(newAccessToken);

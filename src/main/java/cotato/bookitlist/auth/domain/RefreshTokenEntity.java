@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.index.Indexed;
 import java.util.concurrent.TimeUnit;
 
 @Getter
+@Builder
 @RedisHash(value = "refreshToken")
 public class RefreshTokenEntity {
 
@@ -22,14 +23,4 @@ public class RefreshTokenEntity {
     @TimeToLive(unit = TimeUnit.MILLISECONDS) // TTL
     private Long ttl;
 
-    @Builder
-    public RefreshTokenEntity(Long id, String refreshToken, Long ttl) {
-        this.id = id;
-        this.refreshToken = refreshToken;
-        this.ttl = ttl;
-    }
-
-    public void updateTTL(Long ttl) {
-        this.ttl += ttl;
-    }
 }

@@ -5,10 +5,6 @@ import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
 import cotato.bookitlist.config.security.oauth.UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +13,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -34,7 +33,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else {
             UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
             Long id = userDetails.getId();
-            String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+            String authorities = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(","));
             String accessToken = jwtTokenProvider.generateAccessToken(id, authorities);
             String refreshToken = authService.saveRefreshToken(id).getRefreshToken();
             String uri = UriComponentsBuilder.fromUriString(redirectUri)

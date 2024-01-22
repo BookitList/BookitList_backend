@@ -1,6 +1,6 @@
 package cotato.bookitlist.auth.controller;
 
-import cotato.bookitlist.auth.dto.AccessTokenResponse;
+import cotato.bookitlist.auth.dto.ReissueResponse;
 import cotato.bookitlist.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/token/reissue")
-    public ResponseEntity<AccessTokenResponse> tokenRefresh(@RequestParam String refreshToken) {
+    public ResponseEntity<ReissueResponse> tokenRefresh(@RequestParam String refreshToken) {
         return ResponseEntity.ok(authService.tokenReissue(refreshToken));
     }
 

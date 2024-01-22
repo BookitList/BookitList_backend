@@ -1,7 +1,7 @@
 package cotato.bookitlist.auth.service;
 
 import cotato.bookitlist.auth.domain.RefreshTokenEntity;
-import cotato.bookitlist.auth.dto.AccessTokenResponse;
+import cotato.bookitlist.auth.dto.ReissueResponse;
 import cotato.bookitlist.auth.repository.RefreshTokenRepository;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class AuthService {
     private Long refreshExp;
 
     @Transactional(readOnly = true)
-    public AccessTokenResponse tokenReissue(String refreshToken) {
+    public ReissueResponse tokenReissue(String refreshToken) {
         RefreshTokenEntity savedRefreshTokenEntity =
                 refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow();
         Long refreshMemberId = jwtTokenProvider.parseRefreshToken(savedRefreshTokenEntity.getRefreshToken());
         String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
-        return AccessTokenResponse.of(newAccessToken);
+        return ReissueResponse.of(newAccessToken);
     }
 
     @Transactional

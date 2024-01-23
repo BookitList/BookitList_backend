@@ -166,7 +166,7 @@ class BookControllerTest {
                         .content(objectMapper.writeValueAsBytes(request))
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("이미 등록된 isbn13입니다."))
+                .andExpect(jsonPath("$.message").value("잘못된 형식의 isbn13입니다."))
         ;
     }
 
@@ -181,10 +181,16 @@ class BookControllerTest {
                         .param("isbn13", isbn13)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(1))
-                .andExpect(jsonPath("$.startIndex").value(0))
-                .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookList").exists())
+                .andExpect(jsonPath("$.bookId").exists())
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.author").exists())
+                .andExpect(jsonPath("$.publisher").exists())
+                .andExpect(jsonPath("$.pubDate").exists())
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.link").exists())
+                .andExpect(jsonPath("$.isbn13").exists())
+                .andExpect(jsonPath("$.price").exists())
+                .andExpect(jsonPath("$.cover").exists())
         ;
     }
 
@@ -198,7 +204,7 @@ class BookControllerTest {
         mockMvc.perform(get("/books")
                         .param("isbn13", isbn13)
                 )
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("등록되지 않은 isbn13입니다."))
         ;
     }
@@ -210,7 +216,7 @@ class BookControllerTest {
         String keyword = "aladdin";
 
         //when&then
-        mockMvc.perform(get("/books")
+        mockMvc.perform(get("/books/search")
                         .param("keyword", keyword)
                 )
                 .andExpect(status().isOk())
@@ -222,4 +228,29 @@ class BookControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("[DB] id를 이용해 책을 찾는다.")
+    void givenBookId_whenGettingBook_thenReturnBookResponse() throws Exception {
+        //given
+        long bookId = 1L;
+
+        //when&then
+        mockMvc.perform(get("/books/" + bookId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookId").value(1L))
+        ;
+    }
+
+    @Test
+    @DisplayName("[DB] 존재하지 않는 id를 이용해 책을 찾으면 에러를 반환한다.")
+    void givenNonExistedId_whenGettingBook_thenReturnErrorResponse() throws Exception {
+        //given
+        long bookId = 100L;
+
+        //when&then
+        mockMvc.perform(get("/books/" + bookId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("책을 찾을 수 없습니다."))
+        ;
+    }
 }

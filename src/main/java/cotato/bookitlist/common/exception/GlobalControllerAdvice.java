@@ -41,7 +41,7 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> entityNotfoundException(EntityNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
         log.error("EntityNotFoundException occurred: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
@@ -49,7 +49,7 @@ public class GlobalControllerAdvice {
                 ex.getMessage(),
                 request.getRequestURI()
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 }

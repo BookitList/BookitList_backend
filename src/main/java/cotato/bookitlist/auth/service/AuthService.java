@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -35,7 +36,6 @@ public class AuthService {
         return ReissueResponse.of(newAccessToken);
     }
 
-    @Transactional
     public RefreshTokenEntity saveRefreshToken(Long memberId) {
 
         String refreshToken = jwtTokenProvider.generateRefreshToken(memberId);
@@ -47,7 +47,6 @@ public class AuthService {
                 .build());
     }
 
-    @Transactional
     public void logout(LogoutRequest logoutRequest) {
         setBlackList(logoutRequest.accessToken());
         deleteRefreshToken(logoutRequest.refreshToken());

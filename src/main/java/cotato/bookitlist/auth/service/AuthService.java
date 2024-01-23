@@ -25,13 +25,14 @@ public class AuthService {
     @Value("${auth.jwt.refreshExp}")
     private Long refreshExp;
 
-    @Transactional(readOnly = true)
     public ReissueResponse tokenReissue(ReissueRequest reissueRequest) {
         RefreshTokenEntity savedRefreshTokenEntity =
                 refreshTokenRepository.findByRefreshToken(reissueRequest.refreshToken()).orElseThrow();
         Long refreshMemberId = jwtTokenProvider.parseRefreshToken(savedRefreshTokenEntity.getRefreshToken());
         String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
-        return ReissueResponse.of(newAccessToken);
+        refreshTokenRepository.delete(savedRefreshTokenEntity);
+        RefreshTokenEntity refreshTokenEntity = saveRefreshToken(refreshMemberId);
+        return ReissueResponse.from(newAccessToken, refreshTokenEntity.getRefreshToken());
     }
 
     public RefreshTokenEntity saveRefreshToken(Long memberId) {

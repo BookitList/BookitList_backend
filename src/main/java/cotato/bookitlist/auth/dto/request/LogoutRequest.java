@@ -1,4 +1,4 @@
-package cotato.bookitlist.auth.dto;
+package cotato.bookitlist.auth.dto.request;
 
 public record LogoutRequest(
         String accessToken,

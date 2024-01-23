@@ -1,4 +1,4 @@
-package cotato.bookitlist.auth.dto;
+package cotato.bookitlist.auth.dto.response;
 
 public record ReissueResponse(
         String accessToken

@@ -2,9 +2,9 @@ package cotato.bookitlist.auth.service;
 
 import cotato.bookitlist.auth.domain.BlackList;
 import cotato.bookitlist.auth.domain.RefreshTokenEntity;
-import cotato.bookitlist.auth.dto.LogoutRequest;
-import cotato.bookitlist.auth.dto.ReissueRequest;
-import cotato.bookitlist.auth.dto.ReissueResponse;
+import cotato.bookitlist.auth.dto.request.LogoutRequest;
+import cotato.bookitlist.auth.dto.request.ReissueRequest;
+import cotato.bookitlist.auth.dto.response.ReissueResponse;
 import cotato.bookitlist.auth.repository.BlackListRepository;
 import cotato.bookitlist.auth.repository.RefreshTokenRepository;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;

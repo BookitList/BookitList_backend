@@ -1,8 +1,8 @@
 package cotato.bookitlist.auth.controller;
 
-import cotato.bookitlist.auth.dto.LogoutRequest;
-import cotato.bookitlist.auth.dto.ReissueRequest;
-import cotato.bookitlist.auth.dto.ReissueResponse;
+import cotato.bookitlist.auth.dto.request.LogoutRequest;
+import cotato.bookitlist.auth.dto.request.ReissueRequest;
+import cotato.bookitlist.auth.dto.response.ReissueResponse;
 import cotato.bookitlist.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,11 +1,9 @@
 package cotato.bookitlist.book.dto;
 
 import cotato.bookitlist.book.domain.entity.Book;
-import cotato.bookitlist.book.dto.response.BookApiResponse;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public record BookApiDto(
         String title,
@@ -21,10 +19,6 @@ public record BookApiDto(
 
     public Book toEntity() {
         return Book.of(title, author, publisher, pubDate, description, link, isbn13, price, cover);
-    }
-
-    public BookApiResponse toBookApiResponse() {
-        return new BookApiResponse(1, 1, 1, List.of(this));
     }
 
     public static BookApiDto of(

@@ -6,19 +6,19 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public record BookResponse(
+public record BookListResponse(
         int totalResults,
         int startIndex,
         int itemsPerPage,
         List<BookDto> bookList
 ) {
 
-    public static BookResponse of(int totalResults, int startIndex, int itemsPerPage, List<BookDto> bookDtoList) {
-        return new BookResponse(totalResults, startIndex, itemsPerPage, bookDtoList);
+    public static BookListResponse of(int totalResults, int startIndex, int itemsPerPage, List<BookDto> bookDtoList) {
+        return new BookListResponse(totalResults, startIndex, itemsPerPage, bookDtoList);
     }
 
-    public static BookResponse from(Page<Book> bookPage) {
-        return new BookResponse(
+    public static BookListResponse from(Page<Book> bookPage) {
+        return new BookListResponse(
                 (int) bookPage.getTotalElements(),
                 bookPage.getNumber(),
                 bookPage.getNumberOfElements(),

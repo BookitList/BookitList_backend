@@ -36,7 +36,7 @@ class BookControllerTest {
         String keyword = "aladdin";
 
         //when&then
-        mockMvc.perform(get("/books/external")
+        mockMvc.perform(get("/books/external/search")
                         .param("keyword", keyword)
                         .param("start", "1")
                 )
@@ -45,6 +45,30 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.startIndex").exists())
                 .andExpect(jsonPath("$.itemsPerPage").exists())
                 .andExpect(jsonPath("$.bookApiList").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("[Api] start만 주어지면 에러를 반환한다.")
+    void givenStart_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when&then
+        mockMvc.perform(get("/books/external/search")
+                        .param("start", "1"))
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
+    @DisplayName("[Api] 아무것도 주어지지 않으면 에러를 반환한다.")
+    void givenNothing_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when&then
+        mockMvc.perform(get("/books/external/search")
+                )
+                .andExpect(status().isBadRequest())
         ;
     }
 
@@ -58,51 +82,21 @@ class BookControllerTest {
         mockMvc.perform(get("/books/external")
                         .param("isbn13", isbn13)
                 )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(1))
-                .andExpect(jsonPath("$.startIndex").value(1))
-                .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookApiList").exists())
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.author").exists())
+                .andExpect(jsonPath("$.publisher").exists())
+                .andExpect(jsonPath("$.pubDate").exists())
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.link").exists())
+                .andExpect(jsonPath("$.isbn13").exists())
+                .andExpect(jsonPath("$.price").exists())
+                .andExpect(jsonPath("$.cover").exists())
         ;
     }
 
     @Test
-    @DisplayName("[Api] isbn13과 keyword가 주어지면 응답을 준다.")
-    void givenIsbn13AndKeyword_whenExternalSearching_thenReturnBookApiResponse() throws Exception {
-        //given
-        String isbn13 = "9791197045318";
-        String keyword = "aladdin";
-
-        //when&then
-        mockMvc.perform(get("/books/external")
-                        .param("isbn13", isbn13)
-                        .param("keyword", keyword)
-                        .param("start", "1")
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(1))
-                .andExpect(jsonPath("$.startIndex").value(1))
-                .andExpect(jsonPath("$.itemsPerPage").value(1))
-                .andExpect(jsonPath("$.bookApiList").exists())
-        ;
-    }
-
-    @Test
-    @DisplayName("아무것도 주어지지 않으면 에러를 반환한다.")
-    void givenNothing_whenExternalSearching_thenReturnErrorResponse() throws Exception {
-        //given
-
-        //when&then
-        mockMvc.perform(get("/books/external")
-                        .param("start", "1")
-                )
-                .andExpect(status().isBadRequest())
-        ;
-    }
-
-    @Test
-    @DisplayName("start만 주어지면 에러를 반환한다.")
-    void givenStart_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+    @DisplayName("[Api] 아무것도 주어지지 않으면 에러를 반환한다.")
+    void givenNothing_whenExternalFinding_thenReturnErrorResponse() throws Exception {
         //given
 
         //when&then
@@ -112,8 +106,22 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("[Api] 잘못된 isbn13을 주면 에러를 반환한다.")
+    void givenInvalidIsbn13_whenExternalFinding_thenReturnErrorResponse() throws Exception {
+        //given
+        String isbn13 = "9791197045319";
+
+        //when&then
+        mockMvc.perform(get("/books/external")
+                        .param("isbn13", isbn13))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+        ;
+    }
+
+    @Test
     @WithMockUser
-    @DisplayName("isbn13을 통해 책을 등록한다.")
+    @DisplayName("[DB] isbn13을 통해 책을 등록한다.")
     void givenIsbn13_whenRegisteringBook_thenReturnBookResponse() throws Exception {
         //given
         BookRegisterRequest request = new BookRegisterRequest("9791197045318");
@@ -130,7 +138,7 @@ class BookControllerTest {
 
     @Test
     @WithMockUser
-    @DisplayName("이미 등록된 책을 등록하면 에러를 반환한다.")
+    @DisplayName("[DB] 이미 등록된 책을 등록하면 에러를 반환한다.")
     void givenRegisteredIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given
         BookRegisterRequest request = new BookRegisterRequest("9788931514803");
@@ -147,7 +155,7 @@ class BookControllerTest {
 
     @Test
     @WithMockUser
-    @DisplayName("잘못된 형식의 isbn13으로 등록하면 에러를 반환한다.")
+    @DisplayName("[DB] 잘못된 형식의 isbn13으로 등록하면 에러를 반환한다.")
     void givenInvalidIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given
         BookRegisterRequest request = new BookRegisterRequest("9788931514invalid");
@@ -158,6 +166,7 @@ class BookControllerTest {
                         .content(objectMapper.writeValueAsBytes(request))
                 )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("이미 등록된 isbn13입니다."))
         ;
     }
 

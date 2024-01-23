@@ -1,8 +1,9 @@
 package cotato.bookitlist.book.controller;
 
 import cotato.bookitlist.book.dto.request.BookRegisterRequest;
+import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
-import cotato.bookitlist.book.dto.response.BookResponse;
+import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.service.BookService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -23,22 +24,22 @@ public class BookController {
 
     private final BookService bookService;
 
+    @GetMapping("/external/search")
+    public ResponseEntity<BookApiListResponse> searchExternal(
+            @RequestParam("keyword") String keyword,
+            @RequestParam Integer start) {
+        return ResponseEntity.ok(bookService.searchExternal(keyword, start));
+    }
+
     @GetMapping("/external")
-    public ResponseEntity<BookApiResponse> searchExternal(
-            @RequestParam(value = "isbn13", required = false) String isbn13,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(required = false) Integer start) {
-        if (isbn13 != null) {
-            return ResponseEntity.ok(bookService.searchExternal(isbn13).toBookApiResponse());
-        } else if (keyword != null && start != null) {
-            return ResponseEntity.ok(bookService.searchExternal(keyword, start));
-        } else {
-            throw new IllegalArgumentException("isbn13 또는 keyword와 start를 함께 입력하세요.");
-        }
+    public ResponseEntity<BookApiResponse> findExternal(
+            @IsValidIsbn @RequestParam("isbn13") String isbn13
+    ) {
+        return ResponseEntity.ok(BookApiResponse.fromBookApiDto(bookService.findExternal(isbn13)));
     }
 
     @GetMapping
-    public ResponseEntity<BookResponse> search(
+    public ResponseEntity<BookListResponse> search(
             @RequestParam(value = "isbn13", required = false) String isbn13,
             @RequestParam(value = "keyword", required = false) String keyword,
             @Parameter(hidden = true) @PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable
@@ -46,7 +47,7 @@ public class BookController {
         if (isbn13 != null) {
             return ResponseEntity.ok(bookService.search(isbn13).toBookResponse());
         } else if (keyword != null) {
-            return ResponseEntity.ok(BookResponse.from(bookService.search(keyword, pageable)));
+            return ResponseEntity.ok(BookListResponse.from(bookService.search(keyword, pageable)));
         } else {
             throw new IllegalArgumentException("isbn13 또는 keyword를 입력하세요.");
         }

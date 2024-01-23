@@ -1,7 +1,7 @@
 package cotato.bookitlist.book.service;
 
 import cotato.bookitlist.book.dto.BookApiDto;
-import cotato.bookitlist.book.dto.response.BookApiResponse;
+import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ public class BookApiComponent {
     private final AladinComponent aladinComponent;
     private final BookApiCacheService bookApiCacheService;
 
-    public BookApiResponse findListByKeyWordAndApi(String keyword, int start) {
+    public BookApiListResponse findListByKeyWordAndApi(String keyword, int start) {
         JSONObject json = new JSONObject(aladinComponent.findAllByQuery(aladinKey, keyword, "JS", start, 20131101));
 
         int totalResults = json.getInt("totalResults");
@@ -52,7 +52,7 @@ public class BookApiComponent {
             bookApiCacheService.saveBookApiCache(bookApiDto);
         }
 
-        return BookApiResponse.of(totalResults, startIndex, itemsPerPage, bookApiDtoList);
+        return BookApiListResponse.of(totalResults, startIndex, itemsPerPage, bookApiDtoList);
     }
 
     public BookApiDto findByIsbn13(String isbn13) {

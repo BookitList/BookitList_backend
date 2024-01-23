@@ -4,7 +4,7 @@ import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.domain.redis.BookApiCache;
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.BookDto;
-import cotato.bookitlist.book.dto.response.BookApiResponse;
+import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,11 @@ public class BookService {
     private final BookApiCacheService bookApiCacheService;
     private final BookRepository bookRepository;
 
-    public BookApiResponse searchExternal(String keyword, int start) {
+    public BookApiListResponse searchExternal(String keyword, int start) {
         return bookApiComponent.findListByKeyWordAndApi(keyword, start);
     }
 
-    public BookApiDto searchExternal(String isbn13) {
+    public BookApiDto findExternal(String isbn13) {
         return bookApiComponent.findByIsbn13(isbn13);
     }
 
@@ -41,7 +41,6 @@ public class BookService {
     public Page<Book> search(String keyword, Pageable pageable) {
         return bookRepository.findAllByKeyword(keyword, pageable);
     }
-
 
     public Long registerBook(String isbn13) {
         bookRepository.findByIsbn13(isbn13).ifPresent(book -> {

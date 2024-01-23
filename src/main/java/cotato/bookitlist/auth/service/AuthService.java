@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -66,7 +64,6 @@ public class AuthService {
     }
 
     public boolean isBlocked(String accessToken) {
-        Optional<BlackList> blackList = blackListRepository.findById(accessToken);
-        return blackList.isPresent();
+        return blackListRepository.findById(accessToken).isPresent();
     }
 }

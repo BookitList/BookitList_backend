@@ -26,18 +26,26 @@ public class AuthService {
     private Long refreshExp;
 
     public ReissueResponse tokenReissue(ReissueRequest reissueRequest) {
-        RefreshTokenEntity savedRefreshTokenEntity =
-                refreshTokenRepository.findByRefreshToken(reissueRequest.refreshToken()).orElseThrow();
-        Long refreshMemberId = jwtTokenProvider.parseRefreshToken(savedRefreshTokenEntity.getRefreshToken());
+
+        Long refreshMemberId = jwtTokenProvider.parseRefreshToken(reissueRequest.refreshToken());
+
+        if (refreshTokenRepository.findByRefreshToken(reissueRequest.refreshToken()).isEmpty()) {
+            // Refresh Token 탈취 가능성 존재
+            deleteRefreshTokenOfMember(refreshMemberId);
+            throw new IllegalArgumentException("잘못된 Refresh Token 입니다.");
+        }
+
         String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
         String newRefreshToken = jwtTokenProvider.generateRefreshToken(refreshMemberId);
-        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+
+        RefreshTokenEntity newRefreshTokenEntity = RefreshTokenEntity.builder()
                 .id(refreshMemberId)
                 .refreshToken(newRefreshToken)
                 .ttl(refreshExp)
                 .build();
-        saveRefreshToken(refreshTokenEntity);
-        return ReissueResponse.from(newAccessToken, refreshTokenEntity.getRefreshToken());
+
+        saveRefreshToken(newRefreshTokenEntity);
+        return ReissueResponse.from(newAccessToken, newRefreshTokenEntity.getRefreshToken());
     }
 
     public RefreshTokenEntity saveRefreshToken(Long id, String refreshToken) {
@@ -70,6 +78,10 @@ public class AuthService {
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow();
         refreshTokenRepository.delete(refreshTokenEntity);
+    }
+
+    private void deleteRefreshTokenOfMember(Long memberId) {
+        refreshTokenRepository.findById(memberId).ifPresent(refreshTokenRepository::delete);
     }
 
     public boolean isBlocked(String accessToken) {

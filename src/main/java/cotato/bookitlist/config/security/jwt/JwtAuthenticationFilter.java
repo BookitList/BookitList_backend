@@ -1,5 +1,6 @@
 package cotato.bookitlist.config.security.jwt;
 
+import cotato.bookitlist.auth.service.AuthService;
 import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,16 +19,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = this.resolveToken(request);
-        if (token != null) {
-            Authentication authentication = this.getAuthentication(token);
+        String token = resolveToken(request);
+        if (token != null && !authService.isBlocked(token)) {
+            Authentication authentication = getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -46,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public Authentication getAuthentication(String token) {
-        AccessTokenInfo accessTokenInfo = this.jwtTokenProvider.parseAccessToken(token);
+        AccessTokenInfo accessTokenInfo = jwtTokenProvider.parseAccessToken(token);
         UserDetails userDetails = new AuthDetails(accessTokenInfo.userId().toString(), accessTokenInfo.role());
         return new UsernamePasswordAuthenticationToken(userDetails, "user", userDetails.getAuthorities());
     }

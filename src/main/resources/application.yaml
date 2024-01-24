@@ -29,5 +29,5 @@ api:
 auth:
   jwt:
     secretKey: ${JWT_SECRET}
-    accessExp: 3600
-    refreshExp: 604800
+    accessExp: 3600000
+    refreshExp: 604800000

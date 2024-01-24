@@ -4,6 +4,7 @@ import cotato.bookitlist.book.dto.request.BookRegisterRequest;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
+import cotato.bookitlist.book.dto.response.BookResponse;
 import cotato.bookitlist.book.service.BookService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -26,31 +27,38 @@ public class BookController {
 
     @GetMapping("/external/search")
     public ResponseEntity<BookApiListResponse> searchExternal(
-            @RequestParam("keyword") String keyword,
+            @RequestParam String keyword,
             @RequestParam Integer start) {
         return ResponseEntity.ok(bookService.searchExternal(keyword, start));
     }
 
     @GetMapping("/external")
-    public ResponseEntity<BookApiResponse> findExternal(
-            @IsValidIsbn @RequestParam("isbn13") String isbn13
+    public ResponseEntity<BookApiResponse> getExternal(
+            @IsValidIsbn @RequestParam String isbn13
     ) {
-        return ResponseEntity.ok(BookApiResponse.fromBookApiDto(bookService.findExternal(isbn13)));
+        return ResponseEntity.ok(BookApiResponse.fromBookApiDto(bookService.getExternal(isbn13)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<BookListResponse> search(
+            @RequestParam String keyword,
+            @Parameter(hidden = true) @PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(BookListResponse.from(bookService.search(keyword, pageable)));
     }
 
     @GetMapping
-    public ResponseEntity<BookListResponse> search(
-            @RequestParam(value = "isbn13", required = false) String isbn13,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @Parameter(hidden = true) @PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable
+    public ResponseEntity<BookResponse> getBookByIsbn13(
+            @IsValidIsbn @RequestParam String isbn13
     ) {
-        if (isbn13 != null) {
-            return ResponseEntity.ok(bookService.search(isbn13).toBookResponse());
-        } else if (keyword != null) {
-            return ResponseEntity.ok(BookListResponse.from(bookService.search(keyword, pageable)));
-        } else {
-            throw new IllegalArgumentException("isbn13 또는 keyword를 입력하세요.");
-        }
+        return ResponseEntity.ok(BookResponse.fromBookDto(bookService.getBookByIsbn13(isbn13)));
+    }
+
+    @GetMapping("{book-id}")
+    public ResponseEntity<BookResponse> getBook(
+            @PathVariable("book-id") Long bookId
+    ) {
+        return ResponseEntity.ok(BookResponse.fromBookDto(bookService.getBook(bookId)));
     }
 
     @PostMapping

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookService {
 
@@ -27,21 +27,25 @@ public class BookService {
         return bookApiComponent.findListByKeyWordAndApi(keyword, start);
     }
 
-    public BookApiDto findExternal(String isbn13) {
+    public BookApiDto getExternal(String isbn13) {
         return bookApiComponent.findByIsbn13(isbn13);
     }
 
-    @Transactional(readOnly = true)
-    public BookDto search(String isbn13) {
+    public BookDto getBookByIsbn13(String isbn13) {
         return bookRepository.findByIsbn13(isbn13).map(BookDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("등록되지 않은 isbn13입니다."));
     }
 
-    @Transactional(readOnly = true)
     public Page<Book> search(String keyword, Pageable pageable) {
         return bookRepository.findAllByKeyword(keyword, pageable);
     }
 
+    public BookDto getBook(Long bookId) {
+        return BookDto.from(bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("책을 찾을 수 없습니다.")));
+    }
+
+    @Transactional
     public Long registerBook(String isbn13) {
         bookRepository.findByIsbn13(isbn13).ifPresent(book -> {
             throw new DuplicateKeyException("이미 등록된 isbn13입니다.");

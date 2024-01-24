@@ -37,7 +37,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(","));
             String accessToken = jwtTokenProvider.generateAccessToken(id, authorities);
-            String refreshToken = authService.saveRefreshToken(id).getRefreshToken();
+            String refreshToken = jwtTokenProvider.generateRefreshToken(id);
+            authService.saveRefreshToken(id, refreshToken);
             String uri = UriComponentsBuilder.fromUriString(redirectUri)
                     .queryParam("accessToken", accessToken)
                     .queryParam("refreshToken", refreshToken)

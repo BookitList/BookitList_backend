@@ -30,20 +30,28 @@ public class AuthService {
                 refreshTokenRepository.findByRefreshToken(reissueRequest.refreshToken()).orElseThrow();
         Long refreshMemberId = jwtTokenProvider.parseRefreshToken(savedRefreshTokenEntity.getRefreshToken());
         String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
-        refreshTokenRepository.delete(savedRefreshTokenEntity);
-        RefreshTokenEntity refreshTokenEntity = saveRefreshToken(refreshMemberId);
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(refreshMemberId);
+        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+                .id(refreshMemberId)
+                .refreshToken(newRefreshToken)
+                .ttl(refreshExp)
+                .build();
+        saveRefreshToken(refreshTokenEntity);
         return ReissueResponse.from(newAccessToken, refreshTokenEntity.getRefreshToken());
     }
 
-    public RefreshTokenEntity saveRefreshToken(Long memberId) {
-
-        String refreshToken = jwtTokenProvider.generateRefreshToken(memberId);
+    public RefreshTokenEntity saveRefreshToken(Long id, String refreshToken) {
 
         return refreshTokenRepository.save(RefreshTokenEntity.builder()
-                .id(memberId)
+                .id(id)
                 .refreshToken(refreshToken)
                 .ttl(refreshExp)
                 .build());
+    }
+
+    public RefreshTokenEntity saveRefreshToken(RefreshTokenEntity refreshTokenEntity) {
+
+        return refreshTokenRepository.save(refreshTokenEntity);
     }
 
     public void logout(LogoutRequest logoutRequest) {

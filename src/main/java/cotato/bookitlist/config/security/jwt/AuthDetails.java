@@ -1,13 +1,13 @@
 package cotato.bookitlist.config.security.jwt;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @AllArgsConstructor
 @Getter
@@ -50,5 +50,9 @@ public class AuthDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getUserId() {
+        return Long.parseLong(userId);
     }
 }

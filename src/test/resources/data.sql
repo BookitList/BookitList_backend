@@ -19,4 +19,10 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
         '9791187824824', 14400, 'https://image.aladin.co.kr/product/20946/86/cover500sum/k822636271_1.jpg', 0, false);
 
 INSERT INTO member (email, name, oauth2Id, auth_provider, follow_count, deleted, created_at, modified_at)
-VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO post (member_id, book_id, title, content, like_count, view_count, deleted)
+VALUES (1, 1, 'postTitle', 'postContent', 0, 0, false),
+       (2, 1, 'postTitle', 'postContent', 0, 0, false);
+

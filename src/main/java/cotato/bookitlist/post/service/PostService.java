@@ -6,6 +6,7 @@ import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
 import cotato.bookitlist.post.dto.PostRegisterRequest;
+import cotato.bookitlist.post.dto.PostUpdateRequest;
 import cotato.bookitlist.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,14 @@ public class PostService {
         return postRepository.save(
                 Post.of(member, book, request.title(), request.content())
         ).getId();
+    }
+
+    public void updatePost(Long postId, PostUpdateRequest request, Long memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        post.updatePost(member, request.title(), request.content());
     }
 }

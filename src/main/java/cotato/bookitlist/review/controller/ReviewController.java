@@ -23,8 +23,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<Void> registerReview(@Valid @RequestBody ReviewRegisterRequest reviewRegisterRequest,
-                                               @AuthenticationPrincipal AuthDetails details) {
+    public ResponseEntity<Void> registerReview(
+            @Valid @RequestBody ReviewRegisterRequest reviewRegisterRequest,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
         Long reviewId = reviewService.registerReview(reviewRegisterRequest, details.getId());
 
         URI location = ServletUriComponentsBuilder

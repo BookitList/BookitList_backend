@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memer_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne

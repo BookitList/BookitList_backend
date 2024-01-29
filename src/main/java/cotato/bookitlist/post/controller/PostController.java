@@ -2,6 +2,7 @@ package cotato.bookitlist.post.controller;
 
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.post.dto.PostRegisterRequest;
+import cotato.bookitlist.post.dto.PostUpdateRequest;
 import cotato.bookitlist.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class PostController {
             @Valid @RequestBody PostRegisterRequest request,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        Long postId = postService.registerPost(request,details.getId());
+        Long postId = postService.registerPost(request, details.getId());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -33,6 +34,17 @@ public class PostController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("/{post-id}")
+    public ResponseEntity<Void> updatePost(
+            @PathVariable("post-id") Long postId,
+            @Valid @RequestBody PostUpdateRequest request,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        postService.updatePost(postId, request, details.getId());
+
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.access.AccessDeniedException;
 
 @Getter
 @Entity
@@ -50,5 +51,14 @@ public class Post extends BaseEntity {
 
     public static Post of(Member member, Book book, String title, String content) {
         return new Post(member, book, title, content);
+    }
+
+    public void updatePost(Member member, String title, String content) {
+        if (!this.member.getId().equals(member.getId())) {
+            throw new AccessDeniedException("권한이 없는 유저입니다.");
+        }
+
+        this.title = title;
+        this.content = content;
     }
 }

@@ -3,6 +3,7 @@ package cotato.bookitlist.post.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
 import cotato.bookitlist.post.dto.PostRegisterRequest;
+import cotato.bookitlist.post.dto.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,14 +14,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @DisplayName("게시글 컨트롤러 테스트")
@@ -91,5 +96,66 @@ class PostControllerTest {
                 new PostRegisterRequest(1L, tooLongTitle, "content")
         );
     }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("게시글을 수정한다.")
+    void givenPostUpdateRequest_whenUpdatingPost_thenUpdatePost() throws Exception {
+        //given
+        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent");
+
+        //when & then
+        mockMvc.perform(put("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isOk())
+                .andDo(print())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("권한이 없는 게시글을 수정하면 에러를 반환한다.")
+    void givenInvalidMemberId_whenUpdatingPost_thenReturnErrorResponse() throws Exception {
+        //given
+        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent");
+
+        //when & then
+        mockMvc.perform(put("/posts/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isForbidden())
+                .andDo(print())
+        ;
+    }
+
+    @ParameterizedTest
+    @WithCustomMockUser
+    @MethodSource("provideInvalidPostUpdateRequest")
+    @DisplayName("게시글 수정시 title과 content의 값 예외 검사")
+    void givenInvalidTitleOrContent_whenUpdatingPost_thenReturnErrorResponse(PostUpdateRequest request) throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(put("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+        ;
+    }
+
+    private static List<PostUpdateRequest> provideInvalidPostUpdateRequest() {
+        String tooLongTitle = "TooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLongTitle";
+
+        return List.of(
+                new PostUpdateRequest("", "content"),
+                new PostUpdateRequest("title", ""),
+                new PostUpdateRequest("", ""),
+                new PostUpdateRequest(tooLongTitle, ""),
+                new PostUpdateRequest(tooLongTitle, "content")
+        );
+    }
+
 }
 

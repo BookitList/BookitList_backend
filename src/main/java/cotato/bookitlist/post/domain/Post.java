@@ -5,10 +5,12 @@ import cotato.bookitlist.common.domain.BaseEntity;
 import cotato.bookitlist.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id = ?")
@@ -30,9 +32,23 @@ public class Post extends BaseEntity {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private int likeCount = 0;
 
+    private int viewCount = 0;
+
     private boolean deleted = false;
+
+    private Post(Member member, Book book, String title, String content) {
+        this.member = member;
+        this.book = book;
+        this.title = title;
+        this.content = content;
+    }
+
+    public static Post of(Member member, Book book, String title, String content) {
+        return new Post(member, book, title, content);
+    }
 }

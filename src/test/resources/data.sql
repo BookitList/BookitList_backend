@@ -17,3 +17,6 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
         '2019년 최고의 화제작 영화 〈알라딘〉의 세계관을 관통하는 디즈니 오리지널 소설. 아그라바를 떠나 시공간을 넘나드는 마법이 공존하는 세계에서 신비하고 긴장감 넘치는 모험담이 펼쳐진다.',
         'http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=209468603&amp;partner=openAPI&amp;start=api',
         '9791187824824', 14400, 'https://image.aladin.co.kr/product/20946/86/cover500sum/k822636271_1.jpg', 0, false);
+
+INSERT INTO member (email, name, oauth2Id, auth_provider, follow_count, deleted, created_at, modified_at)
+VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)

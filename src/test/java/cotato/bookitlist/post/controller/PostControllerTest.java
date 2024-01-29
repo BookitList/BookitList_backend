@@ -57,7 +57,7 @@ class PostControllerTest {
         PostRegisterRequest request = new PostRegisterRequest(100L, "title", "content");
 
         //when & then
-        mockMvc.perform(post("/books/100/posts")
+        mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(request)))
                 .andExpect(status().isNotFound())

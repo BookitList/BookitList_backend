@@ -26,3 +26,6 @@ INSERT INTO post (member_id, book_id, title, content, like_count, view_count, de
 VALUES (1, 1, 'postTitle', 'postContent', 0, 0, false),
        (2, 1, 'postTitle', 'postContent', 0, 0, false);
 
+INSERT INTO review (member_id, book_id, content, like_count, view_count, deleted)
+VALUES (1, 1, 'reviewContent', 0, 0, false),
+       (2, 1, 'reviewContent', 0, 0, false);

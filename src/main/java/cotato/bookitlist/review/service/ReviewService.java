@@ -6,11 +6,16 @@ import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.Review;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
+import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -30,5 +35,31 @@ public class ReviewService {
         Review review = Review.of(member, book, request.content());
 
         return reviewRepository.save(review).getId();
+    }
+
+    public void updateReview(Long reviewId, @Valid ReviewUpdateRequest reviewUpdateRequest, Long memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
+
+        review.updateReview(member, reviewUpdateRequest.content());
+    }
+
+    public ReviewResponse getReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 한줄요약입니다."));
+
+        return ReviewResponse.from(review);
+    }
+
+    public List<ReviewResponse> getReviews(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 책입니다."));
+        List<Review> reviewList = reviewRepository.findAllByBook(book);
+
+        return reviewList.stream()
+                .map(ReviewResponse::from)
+                .toList();
     }
 }

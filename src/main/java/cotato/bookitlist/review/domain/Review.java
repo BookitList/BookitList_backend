@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE review_id = ?")
 @SQLRestriction("deleted = false")
@@ -23,7 +23,7 @@ public class Review extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memer_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne

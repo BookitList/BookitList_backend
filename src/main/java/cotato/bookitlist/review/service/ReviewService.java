@@ -9,7 +9,6 @@ import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,7 @@ public class ReviewService {
         return reviewRepository.save(review).getId();
     }
 
-    public void updateReview(Long reviewId, @Valid ReviewUpdateRequest reviewUpdateRequest, Long memberId) {
+    public void updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
         Review review = reviewRepository.findById(reviewId)

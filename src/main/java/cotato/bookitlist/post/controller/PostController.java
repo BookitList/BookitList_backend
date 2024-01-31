@@ -1,8 +1,9 @@
 package cotato.bookitlist.post.controller;
 
 import cotato.bookitlist.config.security.jwt.AuthDetails;
-import cotato.bookitlist.post.dto.PostRegisterRequest;
-import cotato.bookitlist.post.dto.PostUpdateRequest;
+import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
+import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
+import cotato.bookitlist.post.dto.response.PostResponse;
 import cotato.bookitlist.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,13 @@ public class PostController {
         postService.updatePost(postId, request, details.getId());
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{post-id}")
+    public ResponseEntity<PostResponse> getPost(
+            @PathVariable("post-id") Long postId
+    ) {
+        return ResponseEntity.ok(PostResponse.from(postService.getPost(postId)));
     }
 
 }

@@ -2,8 +2,8 @@ package cotato.bookitlist.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
-import cotato.bookitlist.post.dto.PostRegisterRequest;
-import cotato.bookitlist.post.dto.PostUpdateRequest;
+import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
+import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -157,5 +156,28 @@ class PostControllerTest {
         );
     }
 
+    @Test
+    @DisplayName("게시글을 조회한다.")
+    void givenPostId_whenGettingPost_thenPostResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @DisplayName("없는 게시글 id로 조회하면 에러를 반환한다.")
+    void givenNonExistedPostId_whenGettingPost_thenErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+        ;
+    }
 }
 

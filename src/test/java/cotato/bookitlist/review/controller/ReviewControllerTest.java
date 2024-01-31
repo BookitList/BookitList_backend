@@ -3,6 +3,7 @@ package cotato.bookitlist.review.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
+import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -91,4 +93,60 @@ class ReviewControllerTest {
         );
     }
 
+    @Test
+    @WithCustomMockUser
+    @DisplayName("한줄요약을 수정한다.")
+    void givenReviewUpdateRequest_whenUpdatingReview_thenUpdateReview() throws Exception {
+        //given
+        ReviewUpdateRequest request = new ReviewUpdateRequest("updateContent");
+
+        //when & then
+        mockMvc.perform(put("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isOk())
+                .andDo(print())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("권한이 없는 한줄요약를 수정하면 에러를 반환한다.")
+    void givenInvalidMemberId_whenUpdatingReview_thenReturnErrorResponse() throws Exception {
+        //given
+        ReviewUpdateRequest request = new ReviewUpdateRequest( "updateContent");
+
+        //when & then
+        mockMvc.perform(put("/reviews/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isForbidden())
+                .andDo(print())
+        ;
+    }
+
+    @ParameterizedTest
+    @WithCustomMockUser
+    @MethodSource("provideInvalidReviewUpdateRequest")
+    @DisplayName("한줄요약 수정시 content 값 예외 검사")
+    void givenInvalidContent_whenUpdatingReview_thenReturnErrorResponse(ReviewUpdateRequest request) throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(put("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+        ;
+    }
+
+    private static List<ReviewUpdateRequest> provideInvalidReviewUpdateRequest() {
+        String tooLongContent = "TooooooooooooooooooooooooooooooooooooooooooooooLong"; // 51글자
+
+        return List.of(
+                new ReviewUpdateRequest(""),
+                new ReviewUpdateRequest(tooLongContent)
+        );
+    }
 }

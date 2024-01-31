@@ -37,4 +37,14 @@ public class ReviewController {
 
         return ResponseEntity.created(location).build();
     }
+
+    @PutMapping("/{review-id}")
+    public ResponseEntity<Void> updateReview
+            (@PathVariable(value = "review-id") Long reviewId,
+             @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
+             @AuthenticationPrincipal AuthDetails details) {
+        reviewService.updateReview(reviewId, reviewUpdateRequest, details.getId());
+
+        return ResponseEntity.ok().build();
+    }
 }

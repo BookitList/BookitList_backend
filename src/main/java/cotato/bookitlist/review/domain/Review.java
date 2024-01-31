@@ -9,9 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.access.AccessDeniedException;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE review_id = ?")
 @SQLRestriction("deleted = false")
@@ -23,7 +24,7 @@ public class Review extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memer_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
@@ -47,5 +48,13 @@ public class Review extends BaseEntity {
 
     public static Review of(Member member, Book book, String content) {
         return new Review(member, book, content);
+    }
+
+    public void updateReview(Member member, String content) {
+        if (!this.member.getId().equals(member.getId())) {
+            throw new AccessDeniedException("권한이 없는 유저입니다.");
+        }
+
+        this.content = content;
     }
 }

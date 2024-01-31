@@ -5,6 +5,7 @@ import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.Review;
+import cotato.bookitlist.review.dto.ReviewDto;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.repository.ReviewRepository;
@@ -40,5 +41,12 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
 
         review.updateReview(member, reviewUpdateRequest.content());
+    }
+
+    public ReviewDto getReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
+
+        return ReviewDto.from(review);
     }
 }

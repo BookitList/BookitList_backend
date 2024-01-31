@@ -3,6 +3,7 @@ package cotato.bookitlist.review.controller;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,12 @@ public class ReviewController {
         reviewService.updateReview(reviewId, reviewUpdateRequest, details.getId());
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{review-id}")
+    public ResponseEntity<ReviewResponse> getReview(
+            @PathVariable("review-id") Long reviewId
+    ) {
+        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId)));
     }
 }

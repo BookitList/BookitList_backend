@@ -33,7 +33,7 @@ public class BookService {
 
     public BookDto getBookByIsbn13(String isbn13) {
         return bookRepository.findByIsbn13(isbn13).map(BookDto::from)
-                .orElseThrow(() -> new EntityNotFoundException("등록되지 않은 isbn13입니다."));
+                .orElse(BookDto.from(getExternal(isbn13)));
     }
 
     public Page<Book> search(String keyword, Pageable pageable) {

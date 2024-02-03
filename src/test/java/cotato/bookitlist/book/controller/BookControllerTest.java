@@ -195,7 +195,7 @@ class BookControllerTest {
     }
 
     @Test
-    @DisplayName("[DB] 등록되지 않은 isbn13이 주어지면 에러를 응답한다.")
+    @DisplayName("[API] 등록되지 않은 올바른 형식의 isbn13이 주어지면 API 통신을 통해 응답한다.")
     void givenUnRegisteredIsbn13_whenSearchingBook_thenReturnErrorResponse() throws Exception {
         //given
         String isbn13 = "9788966262281";
@@ -204,8 +204,15 @@ class BookControllerTest {
         mockMvc.perform(get("/books")
                         .param("isbn13", isbn13)
                 )
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("등록되지 않은 isbn13입니다."))
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.author").exists())
+                .andExpect(jsonPath("$.publisher").exists())
+                .andExpect(jsonPath("$.pubDate").exists())
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.link").exists())
+                .andExpect(jsonPath("$.isbn13").exists())
+                .andExpect(jsonPath("$.price").exists())
+                .andExpect(jsonPath("$.cover").exists())
         ;
     }
 

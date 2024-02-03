@@ -58,6 +58,10 @@ public class BookApiComponent {
     public BookApiDto findByIsbn13(String isbn13) {
         JSONObject json = new JSONObject(aladinComponent.findByIsbn13(aladinKey, isbn13, "ISBN13", "JS", 20131101));
 
+        if (json.has("errorMessage")) {
+            throw new IllegalArgumentException("존재하지 않는 isbn13 입니다.");
+        }
+
         JSONObject item = json.getJSONArray("item").getJSONObject(0);
 
         BookApiDto bookApiDto = BookApiDto.of(

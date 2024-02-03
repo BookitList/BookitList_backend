@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -148,5 +147,29 @@ class ReviewControllerTest {
                 new ReviewUpdateRequest(""),
                 new ReviewUpdateRequest(tooLongContent)
         );
+    }
+
+    @Test
+    @DisplayName("한줄요약을 조회한다.")
+    void givenReviewId_whenGettingReview_thenReturnReviewResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @DisplayName("없는 한줄요약 id로 조회하면 에러를 반환한다.")
+    void givenNonExistedReviewId_whenGettingReview_thenErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+        ;
     }
 }

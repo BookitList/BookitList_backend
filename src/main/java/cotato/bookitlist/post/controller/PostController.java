@@ -1,12 +1,17 @@
 package cotato.bookitlist.post.controller;
 
+import cotato.bookitlist.book.controller.IsValidIsbn;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
+import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.dto.response.PostResponse;
 import cotato.bookitlist.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -55,4 +60,18 @@ public class PostController {
         return ResponseEntity.ok(PostResponse.from(postService.getPost(postId)));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<PostListResponse> getAllPost(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(postService.getAllPost(pageable));
+    }
+
+    @GetMapping
+    public ResponseEntity<PostListResponse> searchPost(
+            @IsValidIsbn @RequestParam String isbn13,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(postService.searchPost(isbn13, pageable));
+    }
 }

@@ -6,11 +6,13 @@ import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
 import cotato.bookitlist.post.dto.PostDto;
+import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
 import cotato.bookitlist.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +45,19 @@ public class PostService {
         post.updatePost(member, request.title(), request.content());
     }
 
+    @Transactional(readOnly = true)
     public PostDto getPost(Long postId) {
         return PostDto.from(postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")));
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse getAllPost(Pageable pageable) {
+        return PostListResponse.from(postRepository.findAll(pageable));
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse searchPost(String isbn13, Pageable pageable) {
+        return PostListResponse.from(postRepository.findByBook_Isbn13(isbn13, pageable));
     }
 }

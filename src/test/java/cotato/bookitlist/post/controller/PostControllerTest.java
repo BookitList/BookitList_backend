@@ -20,8 +20,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @Transactional
@@ -177,6 +176,33 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    @DisplayName("isbn13을 이용해 게시글을 조회한다.")
+    void givenIsbn13_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+
+        //when & then
+        mockMvc.perform(get("/posts")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(4))
+        ;
+    }
+
+    @Test
+    @DisplayName("전체 게시글을 조회한다.")
+    void givenNothing_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+        //given
+        //when & then
+        mockMvc.perform(get("/posts/all")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(6))
         ;
     }
 }

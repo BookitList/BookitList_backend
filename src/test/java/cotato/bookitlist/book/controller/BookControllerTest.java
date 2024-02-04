@@ -196,7 +196,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("[API] 등록되지 않은 올바른 형식의 isbn13이 주어지면 API 통신을 통해 응답한다.")
-    void givenUnRegisteredIsbn13_whenSearchingBook_thenReturnErrorResponse() throws Exception {
+    void givenUnRegisteredIsbn13_whenSearchingBook_thenReturnBookResponseFromApi() throws Exception {
         //given
         String isbn13 = "9788966262281";
 

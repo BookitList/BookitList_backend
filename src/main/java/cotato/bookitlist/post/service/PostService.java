@@ -6,6 +6,7 @@ import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
 import cotato.bookitlist.post.dto.PostDto;
+import cotato.bookitlist.post.dto.response.PostCountResponse;
 import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
@@ -59,5 +60,10 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostListResponse searchPost(String isbn13, Pageable pageable) {
         return PostListResponse.from(postRepository.findByBook_Isbn13(isbn13, pageable));
+    }
+
+    @Transactional(readOnly = true)
+    public PostCountResponse getPostCount(String isbn13) {
+        return PostCountResponse.of(postRepository.countByBook_Isbn13(isbn13));
     }
 }

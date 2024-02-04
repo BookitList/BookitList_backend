@@ -205,5 +205,20 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.totalResults").value(6))
         ;
     }
+
+    @Test
+    @DisplayName("isbn13을 이용해 게시글 count를 조회한다.")
+    void givenIsbn13_whenCountingPost_thenReturnPostCountResponse() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+
+        //when & then
+        mockMvc.perform(get("/posts/count")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(4))
+        ;
+    }
 }
 

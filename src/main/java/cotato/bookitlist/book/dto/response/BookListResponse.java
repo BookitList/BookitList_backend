@@ -8,18 +8,16 @@ import java.util.List;
 
 public record BookListResponse(
         int totalResults,
+        int totalPages,
         int startIndex,
         int itemsPerPage,
         List<BookDto> bookList
 ) {
 
-    public static BookListResponse of(int totalResults, int startIndex, int itemsPerPage, List<BookDto> bookDtoList) {
-        return new BookListResponse(totalResults, startIndex, itemsPerPage, bookDtoList);
-    }
-
     public static BookListResponse from(Page<Book> bookPage) {
         return new BookListResponse(
                 (int) bookPage.getTotalElements(),
+                bookPage.getTotalPages(),
                 bookPage.getNumber(),
                 bookPage.getNumberOfElements(),
                 bookPage

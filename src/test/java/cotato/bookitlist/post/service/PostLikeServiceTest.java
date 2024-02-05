@@ -71,6 +71,7 @@ class PostLikeServiceTest {
         Post post = createPost(postId);
         Member member = createMember(memberId);
         PostLike postLike = createPostLike(post, member);
+        post.increaseLikeCount();
 
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
         given(memberRepository.getReferenceById(anyLong())).willReturn(member);
@@ -108,7 +109,6 @@ class PostLikeServiceTest {
 
     PostLike createPostLike(Post post, Member member) {
         PostLike postLike = PostLike.of(member, post);
-        postLike.increasePostLikeCount();
         ReflectionTestUtils.setField(postLike, "id", 1L);
         return postLike;
     }

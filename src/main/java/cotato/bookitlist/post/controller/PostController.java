@@ -71,9 +71,10 @@ public class PostController {
     @GetMapping
     public ResponseEntity<PostListResponse> searchPost(
             @IsValidIsbn @RequestParam String isbn13,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(postService.searchPost(isbn13, pageable));
+        return ResponseEntity.ok(postService.searchPost(isbn13, pageable, details));
     }
 
     @GetMapping("/count")

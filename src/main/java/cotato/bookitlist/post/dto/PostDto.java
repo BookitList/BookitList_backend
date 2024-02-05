@@ -9,7 +9,8 @@ public record PostDto(
         String title,
         String content,
         int likeCount,
-        int viewCount
+        int viewCount,
+        boolean liked
 ) {
 
     public static PostDto from(Post entity) {
@@ -20,7 +21,8 @@ public record PostDto(
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getLikeCount(),
-                entity.getViewCount()
+                entity.getViewCount(),
+                false
         );
     }
 }

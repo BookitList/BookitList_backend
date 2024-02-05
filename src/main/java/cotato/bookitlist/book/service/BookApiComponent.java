@@ -2,6 +2,7 @@ package cotato.bookitlist.book.service;
 
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
+import cotato.bookitlist.book.dto.response.BookApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,7 +53,8 @@ public class BookApiComponent {
             bookApiCacheService.saveBookApiCache(bookApiDto);
         }
 
-        return BookApiListResponse.of(totalResults, startIndex, itemsPerPage, bookApiDtoList);
+        return BookApiListResponse.of(totalResults, startIndex, itemsPerPage,
+                bookApiDtoList.stream().map(BookApiResponse::from).toList());
     }
 
     public BookApiDto findByIsbn13(String isbn13) {

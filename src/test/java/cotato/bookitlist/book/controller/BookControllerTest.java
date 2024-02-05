@@ -30,13 +30,13 @@ class BookControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    @DisplayName("[Api] keyword가 주어지면 응답을 준다.")
-    void givenKeyword_whenExternalSearching_thenReturnBookApiResponse() throws Exception {
+    @DisplayName("[Api] keyword 가 주어지면 응답을 준다.")
+    void givenKeyword_whenSearching_thenReturnBookApiResponse() throws Exception {
         //given
         String keyword = "aladdin";
 
         //when&then
-        mockMvc.perform(get("/books/external/search")
+        mockMvc.perform(get("/books/search")
                         .param("keyword", keyword)
                         .param("start", "1")
                 )
@@ -50,11 +50,11 @@ class BookControllerTest {
 
     @Test
     @DisplayName("[Api] start만 주어지면 에러를 반환한다.")
-    void givenStart_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+    void givenStart_whenSearching_thenReturnErrorResponse() throws Exception {
         //given
 
         //when&then
-        mockMvc.perform(get("/books/external/search")
+        mockMvc.perform(get("/books/search")
                         .param("start", "1"))
                 .andExpect(status().isBadRequest())
         ;
@@ -62,11 +62,11 @@ class BookControllerTest {
 
     @Test
     @DisplayName("[Api] 아무것도 주어지지 않으면 에러를 반환한다.")
-    void givenNothing_whenExternalSearching_thenReturnErrorResponse() throws Exception {
+    void givenNothing_whenSearching_thenReturnErrorResponse() throws Exception {
         //given
 
         //when&then
-        mockMvc.perform(get("/books/external/search")
+        mockMvc.perform(get("/books/search")
                 )
                 .andExpect(status().isBadRequest())
         ;
@@ -213,25 +213,6 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.isbn13").exists())
                 .andExpect(jsonPath("$.price").exists())
                 .andExpect(jsonPath("$.cover").exists())
-        ;
-    }
-
-    @Test
-    @DisplayName("[DB] keyword이 주어지면 응답을 준다.")
-    void givenKeyword_whenSearchingBook_thenReturnBookResponse() throws Exception {
-        //given
-        String keyword = "aladdin";
-
-        //when&then
-        mockMvc.perform(get("/books/search")
-                        .param("keyword", keyword)
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(3))
-                .andExpect(jsonPath("$.startIndex").value(0))
-                .andExpect(jsonPath("$.itemsPerPage").value(3))
-                .andExpect(jsonPath("$.bookList").exists())
-                .andDo(print())
         ;
     }
 

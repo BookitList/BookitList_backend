@@ -40,6 +40,7 @@ public class BookService {
                 );
     }
 
+    @Deprecated
     public Page<Book> search(String keyword, Pageable pageable) {
         return bookRepository.findAllByKeyword(keyword, pageable);
     }

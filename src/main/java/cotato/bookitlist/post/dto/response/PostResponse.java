@@ -1,6 +1,8 @@
 package cotato.bookitlist.post.dto.response;
 
-import cotato.bookitlist.post.dto.PostDto;
+import cotato.bookitlist.post.dto.PostDetailDto;
+
+import java.time.LocalDateTime;
 
 public record PostResponse(
         Long postId,
@@ -9,10 +11,14 @@ public record PostResponse(
         String title,
         String content,
         int likeCount,
-        int viewCount
+        int viewCount,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt,
+        boolean liked,
+        boolean isMine
 ) {
 
-    public static PostResponse from(PostDto dto) {
+    public static PostResponse from(PostDetailDto dto, Long memberId) {
         return new PostResponse(
                 dto.postId(),
                 dto.memberId(),
@@ -20,7 +26,11 @@ public record PostResponse(
                 dto.title(),
                 dto.content(),
                 dto.likeCount(),
-                dto.viewCount()
+                dto.viewCount(),
+                dto.createdAt(),
+                dto.modifiedAt(),
+                dto.liked(),
+                dto.memberId().equals(memberId)
         );
     }
 }

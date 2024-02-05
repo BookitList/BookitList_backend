@@ -24,6 +24,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostController {
+    private static final Long DEFAULT_USER_ID = 0L;
 
     private final PostService postService;
 
@@ -56,9 +57,13 @@ public class PostController {
 
     @GetMapping("/{post-id}")
     public ResponseEntity<PostResponse> getPost(
-            @PathVariable("post-id") Long postId
+            @PathVariable("post-id") Long postId,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(PostResponse.from(postService.getPost(postId)));
+        if (details == null) {
+            return ResponseEntity.ok(PostResponse.from(postService.getPost(postId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(PostResponse.from(postService.getPost(postId, details.getId()), details.getId()));
     }
 
     @GetMapping("/all")
@@ -74,7 +79,11 @@ public class PostController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(postService.searchPost(isbn13, pageable, details));
+        if (details == null) {
+            return ResponseEntity.ok(postService.searchPost(isbn13, DEFAULT_USER_ID, pageable));
+        }
+
+        return ResponseEntity.ok(postService.searchPost(isbn13, details.getId(), pageable));
     }
 
     @GetMapping("/count")

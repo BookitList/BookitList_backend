@@ -168,6 +168,34 @@ class PostControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 본인 게시글을 조회한다.")
+    void givenPostIdWithLogin_whenGettingPost_thenPostResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isMine").value(true))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 다른 사람 게시글을 조회한다.")
+    void givenPostIdWithLogin_whenGettingAnotherPersonPost_thenPostResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isMine").value(false))
+        ;
+    }
+
+    @Test
     @DisplayName("없는 게시글 id로 조회하면 에러를 반환한다.")
     void givenNonExistedPostId_whenGettingPost_thenErrorResponse() throws Exception {
         //given

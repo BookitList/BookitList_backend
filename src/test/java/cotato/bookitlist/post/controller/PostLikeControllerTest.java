@@ -45,6 +45,20 @@ class PostLikeControllerTest {
 
     @Test
     @WithCustomMockUser
+    @DisplayName("존재하지 않는 게시글에 좋아요를 요청하면 에러를 반환한다.")
+    void givenNonExistedPostId_whenRegisteringPostLike_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(post("/posts/10/likes")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("책을 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
     @DisplayName("게시글 좋아요를 삭제한다.")
     void givenPostLikeId_whenDeletingPostLike_thenDeletePostLike() throws Exception {
         //given

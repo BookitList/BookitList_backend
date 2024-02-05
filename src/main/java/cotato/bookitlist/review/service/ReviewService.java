@@ -8,9 +8,11 @@ import cotato.bookitlist.review.domain.Review;
 import cotato.bookitlist.review.dto.ReviewDto;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +50,15 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
 
         return ReviewDto.from(review);
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewListResponse getAllReview(Pageable pageable) {
+        return ReviewListResponse.from(reviewRepository.findAll(pageable));
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewListResponse searchReview(String isbn13, Pageable pageable) {
+        return ReviewListResponse.from(reviewRepository.findByBook_Isbn13(isbn13, pageable));
     }
 }

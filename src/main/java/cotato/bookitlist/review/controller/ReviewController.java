@@ -1,12 +1,17 @@
 package cotato.bookitlist.review.controller;
 
+import cotato.bookitlist.book.controller.IsValidIsbn;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +57,20 @@ public class ReviewController {
             @PathVariable("review-id") Long reviewId
     ) {
         return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId)));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ReviewListResponse> getAllReview(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(reviewService.getAllReview(pageable));
+    }
+
+    @GetMapping
+    public ResponseEntity<ReviewListResponse> searchReview(
+            @IsValidIsbn @RequestParam String isbn13,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(reviewService.searchReview(isbn13, pageable));
     }
 }

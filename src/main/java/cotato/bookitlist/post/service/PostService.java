@@ -2,15 +2,14 @@ package cotato.bookitlist.post.service;
 
 import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.repository.BookRepository;
-import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
-import cotato.bookitlist.post.dto.PostDto;
-import cotato.bookitlist.post.dto.response.PostCountResponse;
-import cotato.bookitlist.post.dto.response.PostListResponse;
+import cotato.bookitlist.post.dto.PostDetailDto;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
+import cotato.bookitlist.post.dto.response.PostCountResponse;
+import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -48,9 +47,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto getPost(Long postId) {
-        return PostDto.from(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")));
+    public PostDetailDto getPost(Long postId, Long memberId) {
+        return postRepository.findDetailByPostId(postId, memberId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -59,12 +58,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse searchPost(String isbn13, Pageable pageable, AuthDetails details) {
-        if (details == null) {
-            return PostListResponse.from(postRepository.findByBook_Isbn13(isbn13, pageable));
-        }
-
-        return PostListResponse.fromDto(postRepository.findWithLikedByIsbn13(isbn13, details.getId(), pageable));
+    public PostListResponse searchPost(String isbn13, Long memberId, Pageable pageable) {
+        return PostListResponse.fromDto(postRepository.findWithLikedByIsbn13(isbn13, memberId, pageable));
     }
 
     @Transactional(readOnly = true)

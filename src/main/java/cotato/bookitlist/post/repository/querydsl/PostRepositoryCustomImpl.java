@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.post.dto.PostDetailDto;
 import cotato.bookitlist.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static cotato.bookitlist.post.domain.QPost.post;
 import static cotato.bookitlist.post.domain.QPostLike.postLike;
@@ -56,6 +58,33 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .from(post);
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<PostDetailDto> findDetailByPostId(Long postId, Long memberId) {
+       return Optional.ofNullable(queryFactory
+                .select(
+                        Projections.constructor(
+                                PostDetailDto.class,
+                                post.id,
+                                post.member.id,
+                                post.book.id,
+                                post.title,
+                                post.content,
+                                post.likeCount,
+                                post.viewCount,
+                                post.createdAt,
+                                post.modifiedAt,
+                                Expressions.cases()
+                                        .when(isLikedByMember(memberId, post.id))
+                                        .then(true)
+                                        .otherwise(false)
+                                        .as("liked")
+                        )
+                )
+                .from(post)
+                .where(post.id.eq(postId))
+                .fetchOne());
     }
 
     private BooleanExpression isLikedByMember(Long memberId, NumberPath<Long> postId) {

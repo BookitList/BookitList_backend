@@ -4,6 +4,7 @@ import cotato.bookitlist.book.controller.IsValidIsbn;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.service.ReviewService;
@@ -72,5 +73,12 @@ public class ReviewController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(reviewService.searchReview(isbn13, pageable));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<ReviewCountResponse> getReviewCount(
+            @IsValidIsbn @RequestParam String isbn13
+    ) {
+        return ResponseEntity.ok(reviewService.getReviewCount(isbn13));
     }
 }

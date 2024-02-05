@@ -8,6 +8,7 @@ import cotato.bookitlist.review.domain.Review;
 import cotato.bookitlist.review.dto.ReviewDto;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -60,5 +61,10 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewListResponse searchReview(String isbn13, Pageable pageable) {
         return ReviewListResponse.from(reviewRepository.findByBook_Isbn13(isbn13, pageable));
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewCountResponse getReviewCount(String isbn13) {
+        return ReviewCountResponse.of(reviewRepository.countByBook_Isbn13(isbn13));
     }
 }

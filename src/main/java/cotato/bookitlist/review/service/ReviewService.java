@@ -2,6 +2,7 @@ package cotato.bookitlist.review.service;
 
 import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.repository.BookRepository;
+import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.Review;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final BookService bookService;
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
@@ -29,8 +31,10 @@ public class ReviewService {
     public Long registerReview(ReviewRegisterRequest request, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
-        Book book = bookRepository.findById(request.bookId())
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 책입니다."));
+        Book book = bookRepository.findByIsbn13(request.isbn13())
+                .orElseGet(() -> bookRepository.getReferenceById(
+                        bookService.registerBook(request.isbn13())
+                ));
 
         Review review = Review.of(member, book, request.content());
 

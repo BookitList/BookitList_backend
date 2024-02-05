@@ -5,10 +5,7 @@ import cotato.bookitlist.post.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -34,5 +31,16 @@ public class PostLikeController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/{post-like-id}")
+    public ResponseEntity<Void> deleteLike(
+            @PathVariable("post-id") Long postId,
+            @PathVariable("post-like-id") Long postLikeId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        postLikeService.deleteLike(postId, postLikeId, details.getId());
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -29,4 +29,16 @@ public class PostLikeService {
 
         return postLikeRepository.save(postLike).getId();
     }
+
+    public void deleteLike(Long postId, Long postLikeId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("책을 찾을 수 없습니다."));
+        Member member = memberRepository.getReferenceById(memberId);
+
+        PostLike postLike = postLikeRepository.findById(postLikeId)
+                .orElseThrow(() -> new EntityNotFoundException("좋아요 정보를 찾을 수 없습니다."));
+
+        postLike.decreasePostLikeCount(member, post);
+        postLikeRepository.delete(postLike);
+    }
 }

@@ -39,13 +39,13 @@ class PostLikeServiceTest {
     MemberRepository memberRepository;
 
     @Test
-    @DisplayName("게시글 좋아요를 생성한다.")
+    @DisplayName("게시글 좋아요를 생성시 게시글 likeCount가 증가한다.")
     void givenPostId_whenRegisteringPostLike_thenRegisterPostLike() throws Exception {
         //given
         Long postId = 1L;
         Long memberId = 1L;
-        Post post = createPost();
-        Member member = createMember();
+        Post post = createPost(memberId);
+        Member member = createMember(memberId);
 
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
         given(memberRepository.getReferenceById(anyLong())).willReturn(member);
@@ -61,20 +61,54 @@ class PostLikeServiceTest {
         then(postLikeRepository).should().save(any(PostLike.class));
     }
 
-    Post createPost() {
-        return Post.of(createMember(), createBook(), "title", "content");
+    @Test
+    @DisplayName("게시글 좋아요를 삭제시 게시글 likeCount가 감소한다.")
+    void givenPostLikeId_whenDeletingPostLike_thenDeletePostLike() throws Exception {
+        //given
+        Long postId = 1L;
+        Long memberId = 1L;
+        Long postLikeId = 1L;
+        Post post = createPost(postId);
+        Member member = createMember(memberId);
+        PostLike postLike = createPostLike(post, member);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
+        given(memberRepository.getReferenceById(anyLong())).willReturn(member);
+        given(postLikeRepository.findById(anyLong())).willReturn(Optional.of(postLike));
+
+        //when
+        sut.deleteLike(postId, postLikeId, memberId);
+
+        //then
+        assertThat(post.getLikeCount()).isZero();
+        then(postRepository).should().findById(anyLong());
+        then(memberRepository).should().getReferenceById(anyLong());
+        then(postLikeRepository).should().delete(any(PostLike.class));
+    }
+
+    Post createPost(Long postId) {
+        Post post = Post.of(createMember(), createBook(), "title", "content");
+        ReflectionTestUtils.setField(post, "id", postId);
+        return post;
     }
 
     Book createBook() {
         return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
     }
 
+    Member createMember(Long memberId) {
+        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO);
+        ReflectionTestUtils.setField(member, "id", memberId);
+        return member;
+    }
+
     Member createMember() {
-        return new Member("email", "name", "oauth2Id", AuthProvider.KAKAO);
+        return createMember(1L);
     }
 
     PostLike createPostLike(Post post, Member member) {
         PostLike postLike = PostLike.of(member, post);
+        postLike.increasePostLikeCount();
         ReflectionTestUtils.setField(postLike, "id", 1L);
         return postLike;
     }

@@ -23,7 +23,7 @@ VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, 
        ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO post (member_id, book_id, title, content, like_count, view_count, deleted)
-VALUES (1, 1, 'postTitle', 'postContent', 0, 0, false),
+VALUES (1, 1, 'postTitle', 'postContent', 1, 0, false),
        (2, 1, 'postTitle1', 'Content', 0, 0, false),
        (2, 1, 'postTitle2', '제목', 0, 0, false),
        (2, 1, 'postTitle3', 'post', 0, 0, false),
@@ -33,3 +33,7 @@ VALUES (1, 1, 'postTitle', 'postContent', 0, 0, false),
 INSERT INTO review (member_id, book_id, content, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 0, 0, false),
        (2, 1, 'reviewContent', 0, 0, false);
+
+INSERT INTO post_like (member_id, post_id)
+VALUES (1, 2),
+       (2, 2);

@@ -2,6 +2,7 @@ package cotato.bookitlist.post.service;
 
 import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.repository.BookRepository;
+import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
@@ -58,8 +59,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse searchPost(String isbn13, Pageable pageable) {
-        return PostListResponse.from(postRepository.findByBook_Isbn13(isbn13, pageable));
+    public PostListResponse searchPost(String isbn13, Pageable pageable, AuthDetails details) {
+        if (details == null) {
+            return PostListResponse.from(postRepository.findByBook_Isbn13(isbn13, pageable));
+        }
+
+        return PostListResponse.fromDto(postRepository.findWithLikedByIsbn13(isbn13, details.getId(), pageable));
     }
 
     @Transactional(readOnly = true)

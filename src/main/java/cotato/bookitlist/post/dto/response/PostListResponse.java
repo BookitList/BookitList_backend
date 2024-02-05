@@ -23,4 +23,14 @@ public record PostListResponse(
                 page.stream().map(PostDto::from).toList()
         );
     }
+
+    public static PostListResponse fromDto(Page<PostDto> dtoPage) {
+        return new PostListResponse(
+                (int) dtoPage.getTotalElements(),
+                dtoPage.getTotalPages(),
+                dtoPage.getNumber(),
+                dtoPage.getSize(),
+                dtoPage.stream().toList()
+        );
+    }
 }

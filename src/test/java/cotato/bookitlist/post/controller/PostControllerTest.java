@@ -191,6 +191,24 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(4))
+                .andExpect(jsonPath("$.postList[1].liked").value(false))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인한 유저가 isbn13을 이용해 게시글을 조회한다.")
+    void givenIsbn13WithLogin_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+
+        //when & then
+        mockMvc.perform(get("/posts")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(4))
+                .andExpect(jsonPath("$.postList[1].liked").value(true))
         ;
     }
 

@@ -1,4 +1,4 @@
-package cotato.bookitlist.config;
+package cotato.bookitlist.config.p6spy;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

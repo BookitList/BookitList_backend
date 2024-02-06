@@ -13,10 +13,21 @@ public record BookApiResponse(
         String link,
         String isbn13,
         Integer price,
-        String cover
+        String cover,
+        boolean isBook
 ) {
 
-    public static BookApiResponse fromBookApiDto(BookApiDto dto) {
-        return new BookApiResponse(dto.title(), dto.author(), dto.publisher(), dto.pubDate(), dto.description(), dto.link(), dto.isbn13(), dto.price(), dto.cover());
+    public static BookApiResponse from(BookApiDto dto) {
+        return new BookApiResponse(
+                dto.title(),
+                dto.author(),
+                dto.publisher(),
+                dto.pubDate(),
+                dto.description(),
+                dto.link(),
+                dto.isbn13(),
+                dto.price(),
+                dto.cover(),
+                !dto.isbn13().isBlank());
     }
 }

@@ -25,7 +25,7 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/external/search")
+    @GetMapping("/search")
     public ResponseEntity<BookApiListResponse> searchExternal(
             @RequestParam String keyword,
             @RequestParam Integer start) {
@@ -36,10 +36,11 @@ public class BookController {
     public ResponseEntity<BookApiResponse> getExternal(
             @IsValidIsbn @RequestParam String isbn13
     ) {
-        return ResponseEntity.ok(BookApiResponse.fromBookApiDto(bookService.getExternal(isbn13)));
+        return ResponseEntity.ok(BookApiResponse.from(bookService.getExternal(isbn13)));
     }
 
-    @GetMapping("/search")
+    @Deprecated
+    @GetMapping("/deprecated/search")
     public ResponseEntity<BookListResponse> search(
             @RequestParam String keyword,
             @Parameter(hidden = true) @PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable

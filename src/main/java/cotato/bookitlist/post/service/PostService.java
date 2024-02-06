@@ -70,4 +70,10 @@ public class PostService {
     public PostCountResponse getPostCount(String isbn13) {
         return PostCountResponse.of(postRepository.countByBook_Isbn13(isbn13));
     }
+
+    @Transactional
+    public void increaseViewCount(Long postId) {
+        Post post = postRepository.getReferenceById(postId);
+        post.increaseViewCount();
+    }
 }

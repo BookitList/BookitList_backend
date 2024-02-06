@@ -38,10 +38,26 @@ class PostControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("게시글을 생성한다")
+    @DisplayName("DB에 등록된 책에 게시글을 생성한다")
     void givenPostRegisterRequest_whenRegisteringPost_thenRegisterPost() throws Exception {
         //given
-        PostRegisterRequest request = new PostRegisterRequest(1L, "title", "content");
+        PostRegisterRequest request = new PostRegisterRequest("9788931514810", "title", "content");
+
+        //when & then
+        mockMvc.perform(post("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("DB에 존재하지 않는 책으로 게시글을 생성요청하면 API 통신을 통해 책을 등록하고 게시글을 등록한다.")
+    void givenNonExistedInDataBaseIsbn13_whenRegisteringPost_thenRegisterBookAndPost() throws Exception {
+        //given
+        PostRegisterRequest request = new PostRegisterRequest("9791193235119", "title", "content");
 
         //when & then
         mockMvc.perform(post("/posts")
@@ -55,15 +71,15 @@ class PostControllerTest {
     @Test
     @WithCustomMockUser
     @DisplayName("존재하지 않은 책으로 게시글을 생성요청하면 에러를 반환한다.")
-    void givenNonExistedBookId_whenRegisteringPost_thenReturnErrorResponse() throws Exception {
+    void givenNonExistedIsbn13_whenRegisteringPost_thenReturnErrorResponse() throws Exception {
         //given
-        PostRegisterRequest request = new PostRegisterRequest(100L, "title", "content");
+        PostRegisterRequest request = new PostRegisterRequest("9782345678908", "title", "content");
 
         //when & then
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(request)))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
         ;
     }
 
@@ -87,11 +103,11 @@ class PostControllerTest {
         String tooLongTitle = "TooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLongTitle";
 
         return List.of(
-                new PostRegisterRequest(1L, "", "content"),
-                new PostRegisterRequest(1L, "title", ""),
-                new PostRegisterRequest(1L, "", ""),
-                new PostRegisterRequest(1L, tooLongTitle, ""),
-                new PostRegisterRequest(1L, tooLongTitle, "content")
+                new PostRegisterRequest("9788931514810", "", "content"),
+                new PostRegisterRequest("9788931514810", "title", ""),
+                new PostRegisterRequest("9788931514810", "", ""),
+                new PostRegisterRequest("9788931514810", tooLongTitle, ""),
+                new PostRegisterRequest("9788931514810", tooLongTitle, "content")
         );
     }
 

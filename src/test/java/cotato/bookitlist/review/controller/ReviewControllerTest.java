@@ -38,10 +38,10 @@ class ReviewControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("한줄요약을 생성한다")
+    @DisplayName("DB에 등록된 책에 한줄요약을 생성한다")
     void givenReviewRegisterRequest_whenRegisteringReview_thenRegisterRegister() throws Exception {
         //given
-        ReviewRegisterRequest request = new ReviewRegisterRequest(1L, "content");
+        ReviewRegisterRequest request = new ReviewRegisterRequest("9788931514810", "content");
 
         //when & then
         mockMvc.perform(post("/reviews")
@@ -54,16 +54,32 @@ class ReviewControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("존재하지 않은 책으로 게시글을 생성요청하면 에러를 반환한다.")
-    void givenNonExistedBookId_whenRegisteringReview_thenReturnErrorResponse() throws Exception {
+    @DisplayName("DB에 존재하지 않는 책으로 한줄요약을 생성요청하면 API 통신을 통해 책을 등록하고 한줄요약을 등록한다.")
+    void givenNonExistedInDataBaseIsbn13_whenRegisteringReview_thenRegisterBookAndReview() throws Exception {
         //given
-        ReviewRegisterRequest request = new ReviewRegisterRequest(100L, "content");
+        ReviewRegisterRequest request = new ReviewRegisterRequest("9791193235119", "content");
 
         //when & then
         mockMvc.perform(post("/reviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(request)))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("존재하지 않은 책으로 한줄요약을 생성요청하면 에러를 반환한다.")
+    void givenNonExistedIsbn13_whenRegisteringReview_thenReturnErrorResponse() throws Exception {
+        //given
+        ReviewRegisterRequest request = new ReviewRegisterRequest("9782345678908", "content");
+
+        //when & then
+        mockMvc.perform(post("/reviews")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isBadRequest())
         ;
     }
 
@@ -87,8 +103,8 @@ class ReviewControllerTest {
         String tooLongContent = "TooooooooooooooooooooooooooooooooooooooooooooooLong"; // 51글자
 
         return List.of(
-                new ReviewRegisterRequest(1L, ""),
-                new ReviewRegisterRequest(1L, tooLongContent)
+                new ReviewRegisterRequest("9788931514810", ""),
+                new ReviewRegisterRequest("9788931514810", tooLongContent)
         );
     }
 

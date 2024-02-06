@@ -2,6 +2,7 @@ package cotato.bookitlist.post.service;
 
 import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.repository.BookRepository;
+import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.Post;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final BookService bookService;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
@@ -29,12 +31,14 @@ public class PostService {
     public Long registerPost(PostRegisterRequest request, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
-        Book book = bookRepository.findById(request.bookId())
-                .orElseThrow(() -> new EntityNotFoundException("책을 찾을 수 없습니다."));
+        Book book = bookRepository.findByIsbn13(request.isbn13())
+                .orElseGet(() -> bookRepository.getReferenceById(
+                        bookService.registerBook(request.isbn13())
+                ));
 
-        return postRepository.save(
-                Post.of(member, book, request.title(), request.content())
-        ).getId();
+        Post post = Post.of(member, book, request.title(), request.content());
+
+        return postRepository.save(post).getId();
     }
 
     public void updatePost(Long postId, PostUpdateRequest request, Long memberId) {

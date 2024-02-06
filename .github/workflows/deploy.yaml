@@ -49,6 +49,7 @@ jobs:
           spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
           auth.jwt.secretKey: ${{ secrets.JWT_SECRET }}
           api.aladin.key: ${{ secrets.ALADIN_KEY }}
+          spring.jpa.hibernate.ddl-auto: ${{ secrets.DDL_AUTO }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

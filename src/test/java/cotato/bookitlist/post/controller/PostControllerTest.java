@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -182,6 +183,37 @@ class PostControllerTest {
                 .andExpect(status().isOk())
         ;
     }
+
+    @Test
+    @DisplayName("쿠키없이 게시글을 조회하면 쿠키를 생성한다.")
+    void givenNonCookie_whenGettingPost_thenCookie() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("post_view", "[1]"))
+                .andExpect(cookie().path("post_view", "/posts"));
+        ;
+    }
+
+    @Test
+    @DisplayName("쿠키를 가지고 게시글을 조회하면 쿠키에 id를 추가하여 넘겨준다.")
+    void givenCookie_whenGettingPost_thenCookie() throws Exception {
+        //given
+        Cookie cookie = new Cookie("post_view", "[1]");
+
+        //when & then
+        mockMvc.perform(get("/posts/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(cookie))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("post_view", "[1][2]"))
+                .andExpect(cookie().path("post_view", "/posts"))
+        ;
+    }
+
 
     @Test
     @WithCustomMockUser

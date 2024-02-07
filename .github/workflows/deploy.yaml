@@ -50,6 +50,7 @@ jobs:
           auth.jwt.secretKey: ${{ secrets.JWT_SECRET }}
           api.aladin.key: ${{ secrets.ALADIN_KEY }}
           spring.jpa.hibernate.ddl-auto: ${{ secrets.DDL_AUTO }}
+          spring.servlet.multipart.location: ${{ secrets.LOCATION }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

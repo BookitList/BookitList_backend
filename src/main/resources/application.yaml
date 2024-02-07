@@ -22,6 +22,14 @@ spring:
   profiles:
     include: oauth
 
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0B
+      location: ${LOCATION}
+      max-file-size: 100MB
+      max-request-size: 100MB
+
 api:
   aladin:
     key: ${ALADIN_KEY}
@@ -31,3 +39,13 @@ auth:
     secretKey: ${JWT_SECRET}
     accessExp: 3600000
     refreshExp: 604800000
+
+cloud:
+  aws:
+    s3:
+      bucket: bookitlist-profile
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-2

@@ -1,4 +1,4 @@
-package cotato.bookitlist.config;
+package cotato.bookitlist.config.p6spy;
 
 import com.p6spy.engine.common.ConnectionInformation;
 import com.p6spy.engine.event.JdbcEventListener;

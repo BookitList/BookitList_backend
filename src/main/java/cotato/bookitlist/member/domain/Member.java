@@ -31,6 +31,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
 
+    private String profileLink;
+
     private int followCount = 0;
 
     private boolean deleted = false;
@@ -52,5 +54,10 @@ public class Member extends BaseEntity {
         this.oauth2Id = oAuth2UserInfo.getOAuth2Id();
 
         return this;
+    }
+
+    public String updateProfileLine(String url) {
+        profileLink = url;
+        return profileLink;
     }
 }

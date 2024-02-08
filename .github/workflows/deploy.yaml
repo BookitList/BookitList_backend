@@ -51,8 +51,8 @@ jobs:
           api.aladin.key: ${{ secrets.ALADIN_KEY }}
           spring.jpa.hibernate.ddl-auto: ${{ secrets.DDL_AUTO }}
           spring.servlet.multipart.location: ${{ secrets.LOCATION }}
-          cloud.aws.s3.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
-          cloud.aws.s3.credentials.secret-key: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.credentials.access-key: ${{ secrets.S3_PROFILE_ACCESS_KEY }}
+          cloud.aws.credentials.secret-key: ${{ secrets.S3_PROFILE_SECRET_KEY }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

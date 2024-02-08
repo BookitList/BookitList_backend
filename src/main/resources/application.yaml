@@ -45,7 +45,7 @@ cloud:
     s3:
       bucket: bookitlist-profile
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${S3_PROFILE_ACCESS_KEY}
+      secret-key: ${S3_PROFiLE_SECRET_KEY}
     region:
       static: ap-northeast-2

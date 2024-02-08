@@ -43,7 +43,27 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").exists())
                 .andExpect(jsonPath("$.startIndex").exists())
-                .andExpect(jsonPath("$.itemsPerPage").exists())
+                .andExpect(jsonPath("$.itemsPerPage").value(5))
+                .andExpect(jsonPath("$.bookApiList").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("[Api] MaxResults가 주어지면 그 수 만큼 응답을 준다.")
+    void givenMaxResults_whenSearching_thenReturnBookApiResponse() throws Exception {
+        //given
+        String keyword = "aladdin";
+
+        //when&then
+        mockMvc.perform(get("/books/search")
+                        .param("keyword", keyword)
+                        .param("start", "1")
+                        .param("max-results", "10")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").exists())
+                .andExpect(jsonPath("$.startIndex").exists())
+                .andExpect(jsonPath("$.itemsPerPage").value(10))
                 .andExpect(jsonPath("$.bookApiList").exists())
         ;
     }

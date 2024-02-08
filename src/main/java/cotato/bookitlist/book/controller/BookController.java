@@ -28,8 +28,10 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<BookApiListResponse> searchExternal(
             @RequestParam String keyword,
-            @RequestParam Integer start) {
-        return ResponseEntity.ok(bookService.searchExternal(keyword, start));
+            @RequestParam int start,
+            @RequestParam(name = "max-results", defaultValue = "5") int maxResults
+    ) {
+        return ResponseEntity.ok(bookService.searchExternal(keyword, start, maxResults));
     }
 
     @GetMapping("/external")

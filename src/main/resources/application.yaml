@@ -27,8 +27,8 @@ spring:
       enabled: true
       file-size-threshold: 0B
       location: ${LOCATION}
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 api:
   aladin:

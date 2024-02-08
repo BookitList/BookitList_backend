@@ -1,4 +1,4 @@
-package cotato.bookitlist.book.controller;
+package cotato.bookitlist.book.annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

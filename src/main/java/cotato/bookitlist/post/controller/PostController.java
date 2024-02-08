@@ -1,6 +1,6 @@
 package cotato.bookitlist.post.controller;
 
-import cotato.bookitlist.book.controller.IsValidIsbn;
+import cotato.bookitlist.book.annotation.IsValidIsbn;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;

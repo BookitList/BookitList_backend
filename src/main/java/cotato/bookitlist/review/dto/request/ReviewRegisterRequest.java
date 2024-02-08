@@ -1,6 +1,6 @@
 package cotato.bookitlist.review.dto.request;
 
-import cotato.bookitlist.book.controller.IsValidIsbn;
+import cotato.bookitlist.book.annotation.IsValidIsbn;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

@@ -1,7 +1,7 @@
 package cotato.bookitlist.book.dto.request;
 
 
-import cotato.bookitlist.book.controller.IsValidIsbn;
+import cotato.bookitlist.book.annotation.IsValidIsbn;
 
 public record BookRegisterRequest(
         @IsValidIsbn

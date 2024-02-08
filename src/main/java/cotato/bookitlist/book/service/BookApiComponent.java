@@ -22,8 +22,8 @@ public class BookApiComponent {
     private final AladinComponent aladinComponent;
     private final BookApiCacheService bookApiCacheService;
 
-    public BookApiListResponse findListByKeyWordAndApi(String keyword, int start) {
-        JSONObject json = new JSONObject(aladinComponent.findAllByQuery(aladinKey, keyword, "JS", start, 20131101));
+    public BookApiListResponse findListByKeyWordAndApi(String keyword, int start, int maxResults) {
+        JSONObject json = new JSONObject(aladinComponent.findAllByQuery(aladinKey, keyword, "JS", start, maxResults, 20131101));
 
         int totalResults = json.getInt("totalResults");
         int startIndex = json.getInt("startIndex");

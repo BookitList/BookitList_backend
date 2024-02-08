@@ -8,14 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 
 import java.time.LocalDateTime;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(DuplicateKeyException.class)
@@ -47,7 +47,7 @@ public class GlobalControllerAdvice {
         log.error("EntityNotFoundException occurred: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 ex.getMessage(),
                 request.getRequestURI()
         );
@@ -90,15 +90,6 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRunTimeException(RuntimeException ex, HttpServletRequest request) {
-        log.error("handleRuntimeException occurred: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST,
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+    //TODO RunTimeExceptionHandler 사용시 HV000028: Unexpected exception during isValid call 발생 이유를 찾고 해결하자
+
 }

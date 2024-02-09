@@ -6,7 +6,9 @@ import cotato.bookitlist.book.repository.BookLikeRepository;
 import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +34,14 @@ public class BookLikeService {
         bookLike.increaseBookLikeCount();
 
         return bookLikeRepository.save(bookLike).getId();
+    }
+
+    public void deleteLike(String isbn13, Long memberId) {
+        BookLike bookLike = bookLikeRepository.findByBook_Isbn13AndMemberId(isbn13, memberId)
+                .orElseThrow(() -> new EntityNotFoundException("도서 좋아요 정보를 찾을 수 없습니다."));
+
+        bookLike.decreaseBookLikeCount();
+
+        bookLikeRepository.delete(bookLike);
     }
 }

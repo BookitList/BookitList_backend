@@ -33,7 +33,7 @@ public class Book extends BaseEntity {
     private Integer price;
     private String cover;
 
-    private int markCount = 0;
+    private int likeCount = 0;
 
     private boolean deleted = false;
 
@@ -51,6 +51,10 @@ public class Book extends BaseEntity {
 
     public static Book of(String title, String author, String publisher, LocalDate pubDate, String description, String link, String isbn13, Integer price, String cover) {
         return new Book(title, author, publisher, pubDate, description, link, isbn13, price, cover);
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
     }
 
 }

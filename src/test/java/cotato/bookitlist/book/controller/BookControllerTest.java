@@ -1,7 +1,7 @@
 package cotato.bookitlist.book.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cotato.bookitlist.book.dto.request.BookRegisterRequest;
+import cotato.bookitlist.book.dto.request.BookIsbn13Request;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +144,7 @@ class BookControllerTest {
     @DisplayName("[DB] isbn13을 통해 책을 등록한다.")
     void givenIsbn13_whenRegisteringBook_thenReturnBookResponse() throws Exception {
         //given
-        BookRegisterRequest request = new BookRegisterRequest("9791197045318");
+        BookIsbn13Request request = new BookIsbn13Request("9791197045318");
 
         //when&then
         mockMvc.perform(post("/books")
@@ -161,7 +161,7 @@ class BookControllerTest {
     @DisplayName("[DB] 이미 등록된 책을 등록하면 에러를 반환한다.")
     void givenRegisteredIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given
-        BookRegisterRequest request = new BookRegisterRequest("9788931514803");
+        BookIsbn13Request request = new BookIsbn13Request("9788931514803");
 
         //when&then
         mockMvc.perform(post("/books")
@@ -178,7 +178,7 @@ class BookControllerTest {
     @DisplayName("[DB] 잘못된 형식의 isbn13으로 등록하면 에러를 반환한다.")
     void givenInvalidIsbn13_whenRegisteringBook_thenReturnErrorResponse() throws Exception {
         //given
-        BookRegisterRequest request = new BookRegisterRequest("9788931514invalid");
+        BookIsbn13Request request = new BookIsbn13Request("9788931514invalid");
 
         //when&then
         mockMvc.perform(post("/books")

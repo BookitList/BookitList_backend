@@ -1,4 +1,4 @@
-INSERT INTO book (title, author, publisher, pub_date, description, link, isbn13, price, cover, mark_count, deleted)
+INSERT INTO book (title, author, publisher, pub_date, description, link, isbn13, price, cover, like_count, deleted)
 VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette Taylor Treadwel, Margaret Free (지은이)',
         '레드버드(Redbud)', '2009-12-01',
         'Reading Classics with Redbud 시리즈 8권. 어린이들에게 영어로 된 세계명작 동화들을 읽게 함으로써 영어 문장을 읽고 이해하는 능력을 갖도록 도와주는 시리즈로 어린이들에게 알맞은 동요나 동시를 포함하고 있다.',

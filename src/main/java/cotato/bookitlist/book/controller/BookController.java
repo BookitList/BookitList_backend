@@ -1,7 +1,7 @@
 package cotato.bookitlist.book.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
-import cotato.bookitlist.book.dto.request.BookRegisterRequest;
+import cotato.bookitlist.book.dto.request.BookIsbn13Request;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
@@ -67,7 +67,7 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<Void> registerBook(
-            @Valid @RequestBody BookRegisterRequest request
+            @Valid @RequestBody BookIsbn13Request request
     ) {
         Long bookId = bookService.registerBook(request.isbn13());
 

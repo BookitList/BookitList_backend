@@ -33,13 +33,12 @@ public class PostLikeController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/{post-like-id}")
+    @DeleteMapping
     public ResponseEntity<Void> deleteLike(
             @PathVariable("post-id") Long postId,
-            @PathVariable("post-like-id") Long postLikeId,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        postLikeService.deleteLike(postId, postLikeId, details.getId());
+        postLikeService.deleteLike(postId, details.getId());
 
         return ResponseEntity.noContent().build();
     }

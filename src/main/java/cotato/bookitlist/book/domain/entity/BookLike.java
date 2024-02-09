@@ -36,4 +36,8 @@ public class BookLike {
     public void increaseBookLikeCount() {
         book.increaseLikeCount();
     }
+
+    public void decreaseBookLikeCount() {
+        book.decreaseLikeCount();
+    }
 }

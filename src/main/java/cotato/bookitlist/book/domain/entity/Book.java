@@ -57,4 +57,8 @@ public class Book extends BaseEntity {
         this.likeCount++;
     }
 
+    public void decreaseLikeCount() {
+        this.likeCount--;
+    }
+
 }

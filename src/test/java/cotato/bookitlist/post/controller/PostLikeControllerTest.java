@@ -45,6 +45,21 @@ class PostLikeControllerTest {
 
     @Test
     @WithCustomMockUser
+    @DisplayName("중복된 좋아요를 요청하면 에러를 반환한다.")
+    void givenExistedPostLike_whenRegisteringPostLike_thenErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(post("/posts/2/likes")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("게시글 좋아요가 이미 존재합니다."))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
     @DisplayName("존재하지 않는 게시글에 좋아요를 요청하면 에러를 반환한다.")
     void givenNonExistedPostId_whenRegisteringPostLike_thenReturnErrorResponse() throws Exception {
         //given
@@ -53,7 +68,7 @@ class PostLikeControllerTest {
         mockMvc.perform(post("/posts/10/likes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("책을 찾을 수 없습니다."))
+                .andExpect(jsonPath("$.message").value("게시글을 찾을 수 없습니다."))
         ;
     }
 
@@ -64,7 +79,7 @@ class PostLikeControllerTest {
         //given
 
         //when & then
-        mockMvc.perform(delete("/posts/2/likes/1")
+        mockMvc.perform(delete("/posts/2/likes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         ;
@@ -72,30 +87,15 @@ class PostLikeControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("잘못된 게시글 좋아요 삭제요청시 에러를 반환한다.")
-    void givenInvalidPostId_whenDeletingPostLike_thenDeletePostLike() throws Exception {
+    @DisplayName("존재하지 않는 좋아요 삭제 요청시 에러를 반환한다.")
+    void givenNonExistedPostLike_whenDeletingPostLike_thenDeletePostLike() throws Exception {
         //given
 
         //when & then
-        mockMvc.perform(delete("/posts/1/likes/1")
+        mockMvc.perform(delete("/posts/3/likes")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("해당 게시글의 좋아요가 아닙니다."))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("도서 좋아요 정보를 찾을 수 없습니다."))
         ;
     }
-
-    @Test
-    @WithCustomMockUser
-    @DisplayName("권한이 없는 유저가 좋아요 삭제요청시 에러를 반환한다.")
-    void givenInvalidMemberId_whenDeletingPostLike_thenDeletePostLike() throws Exception {
-        //given
-
-        //when & then
-        mockMvc.perform(delete("/posts/2/likes/2")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.message").value("권한이 없는 유저입니다."))
-        ;
-    }
-
 }

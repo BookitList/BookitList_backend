@@ -22,8 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 
 @DisplayName("게시글 좋아요 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +46,7 @@ class PostLikeServiceTest {
         Post post = createPost(memberId);
         Member member = createMember(memberId);
 
+        given(postLikeRepository.existsByPostIdAndMemberId(postId, memberId)).willReturn(false);
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
         given(memberRepository.getReferenceById(anyLong())).willReturn(member);
         given(postLikeRepository.save(any(PostLike.class))).willReturn(createPostLike(post, member));
@@ -55,10 +55,11 @@ class PostLikeServiceTest {
         sut.registerLike(postId, memberId);
 
         //then
-        assertThat(post.getLikeCount()).isEqualTo(1);
+        then(postLikeRepository).should().existsByPostIdAndMemberId(postId, memberId);
         then(postRepository).should().findById(anyLong());
         then(memberRepository).should().getReferenceById(anyLong());
         then(postLikeRepository).should().save(any(PostLike.class));
+        assertThat(post.getLikeCount()).isEqualTo(1);
     }
 
     @Test
@@ -67,24 +68,20 @@ class PostLikeServiceTest {
         //given
         Long postId = 1L;
         Long memberId = 1L;
-        Long postLikeId = 1L;
         Post post = createPost(postId);
         Member member = createMember(memberId);
         PostLike postLike = createPostLike(post, member);
         post.increaseLikeCount();
 
-        given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
-        given(memberRepository.getReferenceById(anyLong())).willReturn(member);
-        given(postLikeRepository.findById(anyLong())).willReturn(Optional.of(postLike));
+        given(postLikeRepository.findByPostIdAndMemberId(postId, memberId)).willReturn(Optional.of(postLike));
+        willDoNothing().given(postLikeRepository).delete(postLike);
 
         //when
-        sut.deleteLike(postId, postLikeId, memberId);
+        sut.deleteLike(postId, memberId);
 
         //then
+        then(postLikeRepository).should().findByPostIdAndMemberId(postId, memberId);
         assertThat(post.getLikeCount()).isZero();
-        then(postRepository).should().findById(anyLong());
-        then(memberRepository).should().getReferenceById(anyLong());
-        then(postLikeRepository).should().delete(any(PostLike.class));
     }
 
     Post createPost(Long postId) {

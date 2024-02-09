@@ -23,6 +23,10 @@ public class BookLikeService {
     private final MemberRepository memberRepository;
 
     public Long registerLike(String isbn13, Long memberId) {
+        if (bookLikeRepository.existsByBook_Isbn13AndMemberId(isbn13, memberId)) {
+            throw new DuplicateKeyException("도서 좋아요가 이미 존재합니다.");
+        }
+
         Book book = bookRepository.findByIsbn13(isbn13)
                 .orElseGet(() -> bookRepository.getReferenceById(
                         bookService.registerBook(isbn13)

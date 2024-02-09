@@ -69,7 +69,7 @@ class BookLikeControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("이미 도서 좋아요 정보가 존재하면 에러를 반환한다.")
+    @DisplayName("중복된 좋아요를 요청하면 에러를 반환한다.")
     void givenExistedBookLike_whenRegisteringBookLike_thenErrorResponse() throws Exception {
         //given
         BookIsbn13Request request = new BookIsbn13Request("9788931514810");

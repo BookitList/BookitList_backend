@@ -41,3 +41,7 @@ VALUES (1, 1, 'reviewContent', 0, 0, false),
 INSERT INTO post_like (member_id, post_id)
 VALUES (1, 2),
        (2, 2);
+
+INSERT INTO book_like (book_id, member_id)
+VALUES (1, 1),
+       (2, 1);

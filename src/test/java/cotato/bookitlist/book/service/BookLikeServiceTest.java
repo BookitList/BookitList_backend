@@ -20,8 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 
 @DisplayName("도서 좋아요 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +45,7 @@ class BookLikeServiceTest {
         Member member = createMember();
         Book book = createBook(isbn13);
 
+        given(bookLikeRepository.existsByBook_Isbn13AndMemberId(isbn13, member.getId())).willReturn(false);
         given(bookRepository.findByIsbn13(isbn13)).willReturn(Optional.of(book));
         given(memberRepository.getReferenceById(member.getId())).willReturn(member);
         given(bookLikeRepository.save(any(BookLike.class))).willReturn(createBookLike(book, member));
@@ -54,10 +54,11 @@ class BookLikeServiceTest {
         sut.registerLike(isbn13, member.getId());
 
         //then
+        then(bookLikeRepository).should().existsByBook_Isbn13AndMemberId(isbn13, member.getId());
         then(bookRepository).should().findByIsbn13(isbn13);
         then(memberRepository).should().getReferenceById(member.getId());
         then(bookLikeRepository).should().save(any(BookLike.class));
-        assertThat(book.getLikeCount()).isEqualTo(1);
+        assertThat(book.getLikeCount()).isOne();
     }
 
     @Test
@@ -68,6 +69,7 @@ class BookLikeServiceTest {
         Member member = createMember();
         Book book = createBook(isbn13);
 
+        given(bookLikeRepository.existsByBook_Isbn13AndMemberId(isbn13, member.getId())).willReturn(false);
         given(bookRepository.findByIsbn13(isbn13)).willReturn(Optional.empty());
         given(bookService.registerBook(isbn13)).willReturn(book.getId());
         given(bookRepository.getReferenceById(book.getId())).willReturn(book);
@@ -78,13 +80,37 @@ class BookLikeServiceTest {
         sut.registerLike(isbn13, member.getId());
 
         //then
+        then(bookLikeRepository).should().existsByBook_Isbn13AndMemberId(isbn13, member.getId());
         then(bookRepository).should().findByIsbn13(isbn13);
         then(bookService).should().registerBook(isbn13);
         then(bookRepository).should().getReferenceById(book.getId());
         then(memberRepository).should().getReferenceById(member.getId());
         then(bookLikeRepository).should().save(any(BookLike.class));
-        assertThat(book.getLikeCount()).isEqualTo(1);
+        assertThat(book.getLikeCount()).isOne();
     }
+
+    @Test
+    @DisplayName("도서 좋아요 삭제시 LikeCount가 감소한다.")
+    void givenIsbn13_whenDeletingBookLike_thenDeleteBookLike() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+        Member member = createMember();
+        Book book = createBook(isbn13);
+        BookLike bookLike = createBookLike(book, member);
+        book.increaseLikeCount();
+
+        given(bookLikeRepository.findByBook_Isbn13AndMemberId(isbn13, member.getId())).willReturn(Optional.of(bookLike));
+        willDoNothing().given(bookLikeRepository).delete(bookLike);
+
+        //when
+        sut.deleteLike(isbn13, member.getId());
+
+        //then
+        then(bookLikeRepository).should().findByBook_Isbn13AndMemberId(isbn13, member.getId());
+        then(bookLikeRepository).should().delete(bookLike);
+        assertThat(book.getLikeCount()).isZero();
+    }
+
 
     Book createBook(String isbn13) {
         return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", isbn13, 10000, "cover");

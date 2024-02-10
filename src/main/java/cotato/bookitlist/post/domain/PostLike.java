@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 
 @Getter
 @Entity
@@ -38,15 +37,7 @@ public class PostLike {
         post.increaseLikeCount();
     }
 
-    public void decreasePostLikeCount(Member member, Post post) {
-        if (!member.getId().equals(this.member.getId())) {
-            throw new AccessDeniedException("권한이 없는 유저입니다.");
-        }
-
-        if (!post.getId().equals(this.post.getId())) {
-            throw new IllegalArgumentException("해당 게시글의 좋아요가 아닙니다.");
-        }
-
+    public void decreasePostLikeCount() {
         post.decreaseLikeCount();
     }
 }

@@ -1,8 +1,9 @@
-package cotato.bookitlist.post.domain;
+package cotato.bookitlist.post.domain.entity;
 
 import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.common.domain.BaseEntity;
 import cotato.bookitlist.member.domain.Member;
+import cotato.bookitlist.post.domain.PostStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,30 +37,35 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    private PostStatus status;
+
     private int likeCount = 0;
 
     private int viewCount = 0;
 
     private boolean deleted = false;
 
-    private Post(Member member, Book book, String title, String content) {
+    private Post(Member member, Book book, String title, String content, PostStatus status) {
         this.member = member;
         this.book = book;
         this.title = title;
         this.content = content;
+        this.status = status;
     }
 
-    public static Post of(Member member, Book book, String title, String content) {
-        return new Post(member, book, title, content);
+    public static Post of(Member member, Book book, String title, String content, PostStatus status) {
+        return new Post(member, book, title, content, status);
     }
 
-    public void updatePost(Member member, String title, String content) {
+    public void updatePost(Member member, String title, String content, PostStatus status) {
         if (!this.member.getId().equals(member.getId())) {
             throw new AccessDeniedException("권한이 없는 유저입니다.");
         }
 
         this.title = title;
         this.content = content;
+        this.status = status;
     }
 
     public void increaseLikeCount() {
@@ -70,7 +76,7 @@ public class Post extends BaseEntity {
         this.likeCount--;
     }
 
-    public void increaseViewCount(){
+    public void increaseViewCount() {
         this.viewCount++;
     }
 }

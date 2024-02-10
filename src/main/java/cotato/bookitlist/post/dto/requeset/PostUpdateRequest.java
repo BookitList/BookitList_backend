@@ -1,6 +1,8 @@
 package cotato.bookitlist.post.dto.requeset;
 
+import cotato.bookitlist.post.domain.PostStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record PostUpdateRequest(
@@ -8,6 +10,8 @@ public record PostUpdateRequest(
         @NotBlank
         String title,
         @NotBlank
-        String content
+        String content,
+        @NotNull
+        PostStatus status
 ) {
 }

@@ -5,7 +5,7 @@ import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.post.domain.Post;
+import cotato.bookitlist.post.domain.entity.Post;
 import cotato.bookitlist.post.dto.PostDetailDto;
 import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
@@ -36,7 +36,7 @@ public class PostService {
                         bookService.registerBook(request.isbn13())
                 ));
 
-        Post post = Post.of(member, book, request.title(), request.content());
+        Post post = Post.of(member, book, request.title(), request.content(), request.status());
 
         return postRepository.save(post).getId();
     }
@@ -47,28 +47,28 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
-        post.updatePost(member, request.title(), request.content());
+        post.updatePost(member, request.title(), request.content(), request.status());
     }
 
     @Transactional(readOnly = true)
     public PostDetailDto getPost(Long postId, Long memberId) {
-        return postRepository.findDetailByPostId(postId, memberId)
+        return postRepository.findPublicPostDetailByPostId(postId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 
     @Transactional(readOnly = true)
     public PostListResponse getAllPost(Pageable pageable) {
-        return PostListResponse.from(postRepository.findAll(pageable));
+        return PostListResponse.from(postRepository.findPublicPostAll(pageable));
     }
 
     @Transactional(readOnly = true)
     public PostListResponse searchPost(String isbn13, Long memberId, Pageable pageable) {
-        return PostListResponse.fromDto(postRepository.findWithLikedByIsbn13(isbn13, memberId, pageable));
+        return PostListResponse.fromDto(postRepository.findPublicPostWithLikedByIsbn13(isbn13, memberId, pageable));
     }
 
     @Transactional(readOnly = true)
     public PostCountResponse getPostCount(String isbn13) {
-        return PostCountResponse.of(postRepository.countByBook_Isbn13(isbn13));
+        return PostCountResponse.of(postRepository.countPublicPostByBook_Isbn13(isbn13));
     }
 
     @Transactional

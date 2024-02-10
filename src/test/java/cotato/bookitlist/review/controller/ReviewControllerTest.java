@@ -205,12 +205,12 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("전체 게시글을 조회한다.")
-    void givenNothing_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+    @DisplayName("전체 한줄요약을 조회한다.")
+    void givenNothing_whenSearchingReview_thenReturnReviewListResponse() throws Exception {
         //given
 
         //when & then
-        mockMvc.perform(get("/posts/all")
+        mockMvc.perform(get("/reviews/all")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(6))
@@ -218,13 +218,13 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("isbn13을 이용해 게시글 count를 조회한다.")
-    void givenIsbn13_whenCountingPost_thenReturnPostCountResponse() throws Exception {
+    @DisplayName("isbn13을 이용해 한줄요약 count를 조회한다.")
+    void givenIsbn13_whenCountingReview_thenReturnReviewCountResponse() throws Exception {
         //given
         String isbn13 = "9788931514810";
 
         //when & then
-        mockMvc.perform(get("/posts/count")
+        mockMvc.perform(get("/reviews/count")
                         .param("isbn13", isbn13)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

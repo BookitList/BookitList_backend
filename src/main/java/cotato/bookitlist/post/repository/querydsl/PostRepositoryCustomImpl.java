@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.dto.PostDetailDto;
 import cotato.bookitlist.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static cotato.bookitlist.post.domain.QPost.post;
-import static cotato.bookitlist.post.domain.QPostLike.postLike;
+import static cotato.bookitlist.post.domain.entity.QPost.post;
+import static cotato.bookitlist.post.domain.entity.QPostLike.postLike;
 
 @RequiredArgsConstructor
 public class PostRepositoryCustomImpl implements PostRepositoryCustom {
@@ -26,7 +27,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostDto> findWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
+    public Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
         List<PostDto> result = queryFactory
                 .select(
                         Projections.constructor(
@@ -46,7 +47,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .where(post.book.isbn13.eq(isbn13))
+                .where(post.book.isbn13.eq(isbn13), post.status.eq(PostStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -61,8 +62,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Optional<PostDetailDto> findDetailByPostId(Long postId, Long memberId) {
-       return Optional.ofNullable(queryFactory
+    public Optional<PostDetailDto> findPublicPostDetailByPostId(Long postId, Long memberId) {
+        return Optional.ofNullable(queryFactory
                 .select(
                         Projections.constructor(
                                 PostDetailDto.class,
@@ -83,7 +84,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .where(post.id.eq(postId))
+                .where(post.id.eq(postId), post.status.eq(PostStatus.PUBLIC))
                 .fetchOne());
     }
 

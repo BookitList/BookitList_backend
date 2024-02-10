@@ -2,8 +2,8 @@ package cotato.bookitlist.post.service;
 
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.post.domain.Post;
-import cotato.bookitlist.post.domain.PostLike;
+import cotato.bookitlist.post.domain.entity.Post;
+import cotato.bookitlist.post.domain.entity.PostLike;
 import cotato.bookitlist.post.repository.PostLikeRepository;
 import cotato.bookitlist.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;

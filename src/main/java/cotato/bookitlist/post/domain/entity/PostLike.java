@@ -1,4 +1,4 @@
-package cotato.bookitlist.post.domain;
+package cotato.bookitlist.post.domain.entity;
 
 import cotato.bookitlist.member.domain.Member;
 import jakarta.persistence.*;

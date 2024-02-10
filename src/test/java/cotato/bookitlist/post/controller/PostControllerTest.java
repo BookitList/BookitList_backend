@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,7 +43,7 @@ class PostControllerTest {
     @DisplayName("DB에 등록된 책에 게시글을 생성한다")
     void givenPostRegisterRequest_whenRegisteringPost_thenRegisterPost() throws Exception {
         //given
-        PostRegisterRequest request = new PostRegisterRequest("9788931514810", "title", "content");
+        PostRegisterRequest request = new PostRegisterRequest("9788931514810", "title", "content", PUBLIC);
 
         //when & then
         mockMvc.perform(post("/posts")
@@ -58,7 +59,7 @@ class PostControllerTest {
     @DisplayName("DB에 존재하지 않는 책으로 게시글을 생성요청하면 API 통신을 통해 책을 등록하고 게시글을 등록한다.")
     void givenNonExistedInDataBaseIsbn13_whenRegisteringPost_thenRegisterBookAndPost() throws Exception {
         //given
-        PostRegisterRequest request = new PostRegisterRequest("9791193235119", "title", "content");
+        PostRegisterRequest request = new PostRegisterRequest("9791193235119", "title", "content", PUBLIC);
 
         //when & then
         mockMvc.perform(post("/posts")
@@ -74,7 +75,7 @@ class PostControllerTest {
     @DisplayName("존재하지 않은 책으로 게시글을 생성요청하면 에러를 반환한다.")
     void givenNonExistedIsbn13_whenRegisteringPost_thenReturnErrorResponse() throws Exception {
         //given
-        PostRegisterRequest request = new PostRegisterRequest("9782345678908", "title", "content");
+        PostRegisterRequest request = new PostRegisterRequest("9782345678908", "title", "content", PUBLIC);
 
         //when & then
         mockMvc.perform(post("/posts")
@@ -104,11 +105,11 @@ class PostControllerTest {
         String tooLongTitle = "TooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLongTitle";
 
         return List.of(
-                new PostRegisterRequest("9788931514810", "", "content"),
-                new PostRegisterRequest("9788931514810", "title", ""),
-                new PostRegisterRequest("9788931514810", "", ""),
-                new PostRegisterRequest("9788931514810", tooLongTitle, ""),
-                new PostRegisterRequest("9788931514810", tooLongTitle, "content")
+                new PostRegisterRequest("9788931514810", "", "content", PUBLIC),
+                new PostRegisterRequest("9788931514810", "title", "", PUBLIC),
+                new PostRegisterRequest("9788931514810", "", "", PUBLIC),
+                new PostRegisterRequest("9788931514810", tooLongTitle, "", PUBLIC),
+                new PostRegisterRequest("9788931514810", tooLongTitle, "content", PUBLIC)
         );
     }
 
@@ -117,7 +118,7 @@ class PostControllerTest {
     @DisplayName("게시글을 수정한다.")
     void givenPostUpdateRequest_whenUpdatingPost_thenUpdatePost() throws Exception {
         //given
-        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent");
+        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent", PUBLIC);
 
         //when & then
         mockMvc.perform(put("/posts/1")
@@ -133,7 +134,7 @@ class PostControllerTest {
     @DisplayName("권한이 없는 게시글을 수정하면 에러를 반환한다.")
     void givenInvalidMemberId_whenUpdatingPost_thenReturnErrorResponse() throws Exception {
         //given
-        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent");
+        PostUpdateRequest request = new PostUpdateRequest("updateTitle", "updateContent", PUBLIC);
 
         //when & then
         mockMvc.perform(put("/posts/2")
@@ -164,11 +165,12 @@ class PostControllerTest {
         String tooLongTitle = "TooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLongTitle";
 
         return List.of(
-                new PostUpdateRequest("", "content"),
-                new PostUpdateRequest("title", ""),
-                new PostUpdateRequest("", ""),
-                new PostUpdateRequest(tooLongTitle, ""),
-                new PostUpdateRequest(tooLongTitle, "content")
+                new PostUpdateRequest("title", "content", null),
+                new PostUpdateRequest("", "content", PUBLIC),
+                new PostUpdateRequest("title", "", PUBLIC),
+                new PostUpdateRequest("", "", PUBLIC),
+                new PostUpdateRequest(tooLongTitle, "", PUBLIC),
+                new PostUpdateRequest(tooLongTitle, "content", PUBLIC)
         );
     }
 

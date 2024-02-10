@@ -4,8 +4,8 @@ import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.post.domain.Post;
-import cotato.bookitlist.post.domain.PostLike;
+import cotato.bookitlist.post.domain.entity.Post;
+import cotato.bookitlist.post.domain.entity.PostLike;
 import cotato.bookitlist.post.repository.PostLikeRepository;
 import cotato.bookitlist.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -85,7 +86,7 @@ class PostLikeServiceTest {
     }
 
     Post createPost(Long postId) {
-        Post post = Post.of(createMember(), createBook(), "title", "content");
+        Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC);
         ReflectionTestUtils.setField(post, "id", postId);
         return post;
     }

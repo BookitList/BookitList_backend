@@ -24,6 +24,7 @@ import java.net.URI;
 @RequestMapping("/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
+    private static final Long DEFAULT_USER_ID = 0L;
 
     private final ReviewService reviewService;
 
@@ -55,9 +56,13 @@ public class ReviewController {
 
     @GetMapping("/{review-id}")
     public ResponseEntity<ReviewResponse> getReview(
-            @PathVariable("review-id") Long reviewId
+            @PathVariable("review-id") Long reviewId,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId)));
+        if (details == null) {
+            return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID)));
+        }
+        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId())));
     }
 
     @GetMapping("/all")

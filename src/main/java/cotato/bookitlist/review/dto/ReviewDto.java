@@ -8,7 +8,8 @@ public record ReviewDto(
         Long bookId,
         String content,
         int likeCount,
-        int viewCount
+        int viewCount,
+        boolean liked
 ) {
     public static ReviewDto from(Review entity) {
         return new ReviewDto(
@@ -17,7 +18,8 @@ public record ReviewDto(
                 entity.getBook().getId(),
                 entity.getContent(),
                 entity.getLikeCount(),
-                entity.getViewCount()
+                entity.getViewCount(),
+                false
         );
     }
 }

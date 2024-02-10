@@ -50,11 +50,10 @@ public class ReviewService {
         review.updateReview(member, reviewUpdateRequest.content());
     }
 
-    public ReviewDto getReview(Long reviewId) {
-        Review review = reviewRepository.findById(reviewId)
+    @Transactional(readOnly = true)
+    public ReviewDto getReview(Long reviewId, Long memberId) {
+        return reviewRepository.findReviewByReviewId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
-
-        return ReviewDto.from(review);
     }
 
     @Transactional(readOnly = true)

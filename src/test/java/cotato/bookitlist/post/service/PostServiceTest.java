@@ -31,7 +31,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 조회수 증가 요청시 조회수가 증가한다.")
-    void givenPostId_whenIncreasingViewCount_thenIncreaseViewCount() throws Exception{
+    void givenPostId_whenIncreasingViewCount_thenIncreaseViewCount() {
         //given
         Long postId = 1L;
         Post post = createPost(postId);

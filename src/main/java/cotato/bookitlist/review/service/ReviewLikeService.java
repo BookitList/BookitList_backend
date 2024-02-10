@@ -23,7 +23,7 @@ public class ReviewLikeService {
 
     public Long registerLike(Long reviewId, Long memberId) {
         if (reviewLikeRepository.existsByReviewIdAndMemberId(reviewId, memberId)) {
-            throw new DuplicateKeyException("한줄요약 좋아요가 이미 존재합니다");
+            throw new DuplicateKeyException("한줄요약 좋아요가 이미 존재합니다.");
         }
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));

@@ -52,7 +52,7 @@ class PostServiceTest {
     }
 
     Book createBook() {
-        return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
+        return Book.of("title", "author", "publisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
     }
 
     Member createMember(Long memberId) {

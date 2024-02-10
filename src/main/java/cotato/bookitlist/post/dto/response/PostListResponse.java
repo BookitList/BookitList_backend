@@ -1,6 +1,6 @@
 package cotato.bookitlist.post.dto.response;
 
-import cotato.bookitlist.post.domain.Post;
+import cotato.bookitlist.post.domain.entity.Post;
 import cotato.bookitlist.post.dto.PostDto;
 import org.springframework.data.domain.Page;
 

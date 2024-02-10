@@ -1,6 +1,6 @@
 package cotato.bookitlist.post.dto;
 
-import cotato.bookitlist.post.domain.Post;
+import cotato.bookitlist.post.domain.entity.Post;
 
 public record PostDto(
         Long postId,

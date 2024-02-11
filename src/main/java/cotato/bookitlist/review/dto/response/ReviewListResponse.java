@@ -11,7 +11,7 @@ public record ReviewListResponse(
         int totalPages,
         int startIndex,
         int itemsPerPage,
-        List<ReviewDto> reviewDtoList
+        List<ReviewDto> reviewList
 ) {
     public static ReviewListResponse from(Page<Review> page) {
         return new ReviewListResponse(

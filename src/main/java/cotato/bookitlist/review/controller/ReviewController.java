@@ -61,9 +61,9 @@ public class ReviewController {
             @AuthenticationPrincipal AuthDetails details
     ) {
         if (details == null) {
-            return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID)));
+            return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
         }
-        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId())));
+        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
     }
 
     @GetMapping("/all")

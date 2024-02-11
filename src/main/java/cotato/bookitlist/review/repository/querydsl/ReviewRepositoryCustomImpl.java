@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -59,17 +60,19 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Optional<ReviewDto> findReviewByReviewId(Long reviewId, Long memberId) {
+    public Optional<ReviewDetailDto> findReviewDetailByReviewId(Long reviewId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .select(
                         Projections.constructor(
-                                ReviewDto.class,
+                                ReviewDetailDto.class,
                                 review.id,
                                 review.member.id,
                                 review.book.id,
                                 review.content,
                                 review.likeCount,
                                 review.viewCount,
+                                review.createdAt,
+                                review.modifiedAt,
                                 Expressions.cases()
                                         .when(isLikedByMember(memberId, review.id))
                                         .then(true)

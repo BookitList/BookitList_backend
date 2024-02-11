@@ -62,8 +62,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewListResponse searchReview(String isbn13, Pageable pageable) {
-        return ReviewListResponse.from(reviewRepository.findByBook_Isbn13(isbn13, pageable));
+    public ReviewListResponse searchReview(String isbn13, Long memberId, Pageable pageable) {
+        return ReviewListResponse.fromDto(reviewRepository.findReviewWithLikedByIsbn13(isbn13, memberId, pageable));
     }
 
     @Transactional(readOnly = true)

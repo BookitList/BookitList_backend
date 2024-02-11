@@ -30,7 +30,7 @@ public record PostListResponse(
                 dtoPage.getTotalPages(),
                 dtoPage.getNumber(),
                 dtoPage.getSize(),
-                dtoPage.stream().toList()
+                dtoPage.toList()
         );
     }
 }

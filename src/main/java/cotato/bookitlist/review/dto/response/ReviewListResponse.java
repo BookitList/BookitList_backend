@@ -22,4 +22,14 @@ public record ReviewListResponse(
                 page.stream().map(ReviewDto::from).toList()
         );
     }
+
+    public static ReviewListResponse fromDto(Page<ReviewDto> page) {
+        return new ReviewListResponse(
+                (int) page.getTotalElements(),
+                page.getTotalPages(),
+                page.getNumber(),
+                page.getSize(),
+                page.toList()
+        );
+    }
 }

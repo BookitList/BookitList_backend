@@ -45,10 +45,11 @@ public class ReviewController {
     }
 
     @PutMapping("/{review-id}")
-    public ResponseEntity<Void> updateReview
-            (@PathVariable(value = "review-id") Long reviewId,
-             @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
-             @AuthenticationPrincipal AuthDetails details) {
+    public ResponseEntity<Void> updateReview(
+            @PathVariable(value = "review-id") Long reviewId,
+            @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
         reviewService.updateReview(reviewId, reviewUpdateRequest, details.getId());
 
         return ResponseEntity.ok().build();
@@ -75,9 +76,13 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<ReviewListResponse> searchReview(
             @IsValidIsbn @RequestParam String isbn13,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(reviewService.searchReview(isbn13, pageable));
+        if (details == null) {
+            return ResponseEntity.ok(reviewService.searchReview(isbn13, DEFAULT_USER_ID, pageable));
+        }
+        return ResponseEntity.ok(reviewService.searchReview(isbn13, details.getId(), pageable));
     }
 
     @GetMapping("/count")

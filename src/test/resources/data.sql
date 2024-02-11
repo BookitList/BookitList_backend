@@ -34,7 +34,7 @@ VALUES (1, 1, 'postTitle', 'postContent', 'PUBLIC', 0, 0, false),
 
 INSERT INTO review (member_id, book_id, content, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 0, 0, false),
-       (2, 1, 'reviewContent1', 0, 0, false),
+       (2, 1, 'reviewContent1', 2, 0, false),
        (2, 1, 'rContent', 0, 0, false),
        (2, 1, 'rContent2', 0, 0, false),
        (2, 2, 'rContent3', 0, 0, false),

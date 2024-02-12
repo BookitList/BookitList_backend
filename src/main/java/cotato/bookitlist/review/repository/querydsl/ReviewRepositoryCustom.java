@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface ReviewRepositoryCustom {
-    Page<ReviewDto> findReviewWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable);
-    Optional<ReviewDetailDto> findReviewDetailByReviewId(Long reviewId, Long memberId);
+    Page<ReviewDto> findPublicReviewWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable);
+    Optional<ReviewDetailDto> findPublicReviewDetailByReviewId(Long reviewId, Long memberId);
 }

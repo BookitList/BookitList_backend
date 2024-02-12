@@ -36,7 +36,7 @@ public class ReviewService {
                         bookService.registerBook(request.isbn13())
                 ));
 
-        Review review = Review.of(member, book, request.content());
+        Review review = Review.of(member, book, request.content(), request.status());
 
         return reviewRepository.save(review).getId();
     }
@@ -47,28 +47,28 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
 
-        review.updateReview(member, reviewUpdateRequest.content());
+        review.updateReview(member, reviewUpdateRequest.content(), reviewUpdateRequest.status());
     }
 
     @Transactional(readOnly = true)
     public ReviewDetailDto getReview(Long reviewId, Long memberId) {
-        return reviewRepository.findReviewDetailByReviewId(reviewId, memberId)
+        return reviewRepository.findPublicReviewDetailByReviewId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 
     @Transactional(readOnly = true)
     public ReviewListResponse getAllReview(Pageable pageable) {
-        return ReviewListResponse.from(reviewRepository.findAll(pageable));
+        return ReviewListResponse.from(reviewRepository.findPublicReviewAll(pageable));
     }
 
     @Transactional(readOnly = true)
     public ReviewListResponse searchReview(String isbn13, Long memberId, Pageable pageable) {
-        return ReviewListResponse.fromDto(reviewRepository.findReviewWithLikedByIsbn13(isbn13, memberId, pageable));
+        return ReviewListResponse.fromDto(reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, pageable));
     }
 
     @Transactional(readOnly = true)
     public ReviewCountResponse getReviewCount(String isbn13) {
-        return ReviewCountResponse.of(reviewRepository.countByBook_Isbn13(isbn13));
+        return ReviewCountResponse.of(reviewRepository.countPublicReviewByBook_Isbn13(isbn13));
     }
 
     @Transactional

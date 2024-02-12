@@ -14,23 +14,23 @@ public record PostListResponse(
         List<PostResponse> postList
 ) {
 
-    public static PostListResponse from(Page<Post> page) {
+    public static PostListResponse from(Page<Post> page, Long memberId) {
         return new PostListResponse(
                 (int) page.getTotalElements(),
                 page.getTotalPages(),
                 page.getNumber(),
                 page.getSize(),
-                page.stream().map(PostResponse::from).toList()
+                page.stream().map(p -> PostResponse.from(p, memberId)).toList()
         );
     }
 
-    public static PostListResponse fromDto(Page<PostDto> dtoPage) {
+    public static PostListResponse fromDto(Page<PostDto> dtoPage, Long memberId) {
         return new PostListResponse(
                 (int) dtoPage.getTotalElements(),
                 dtoPage.getTotalPages(),
                 dtoPage.getNumber(),
                 dtoPage.getSize(),
-                dtoPage.stream().map(PostResponse::fromDto).toList()
+                dtoPage.stream().map(p -> PostResponse.fromDto(p, memberId)).toList()
         );
     }
 }

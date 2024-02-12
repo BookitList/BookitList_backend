@@ -80,9 +80,14 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<PostListResponse> getAllPost(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(postService.getAllPost(pageable));
+        if (details == null) {
+            return ResponseEntity.ok(postService.getAllPost(pageable, DEFAULT_USER_ID));
+        }
+
+        return ResponseEntity.ok(postService.getAllPost(pageable, details.getId()));
     }
 
     @GetMapping

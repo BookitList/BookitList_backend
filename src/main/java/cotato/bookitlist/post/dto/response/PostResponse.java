@@ -15,10 +15,11 @@ public record PostResponse(
         int likeCount,
         int viewCount,
         boolean liked,
+        boolean isMine,
         PostTemplate template
 ) {
 
-    public static PostResponse from(Post entity) {
+    public static PostResponse from(Post entity, Long memberId) {
         return new PostResponse(
                 entity.getId(),
                 entity.getMember().getId(),
@@ -28,11 +29,12 @@ public record PostResponse(
                 entity.getLikeCount(),
                 entity.getViewCount(),
                 false,
+                entity.getMember().getId().equals(memberId),
                 entity.getTemplate()
         );
     }
 
-    public static PostResponse fromDto(PostDto dto) {
+    public static PostResponse fromDto(PostDto dto, Long memberId) {
         return new PostResponse(
                 dto.postId(),
                 dto.memberId(),
@@ -42,12 +44,13 @@ public record PostResponse(
                 dto.likeCount(),
                 dto.viewCount(),
                 dto.liked(),
+                dto.memberId().equals(memberId),
                 dto.template()
         );
     }
 
     private static List<String> getContentList(String content, PostTemplate template) {
-        if (template != PostTemplate.NON) {
+        if (template != cotato.bookitlist.post.domain.PostTemplate.NON) {
             return List.of(content.split(template.split));
         }
         return List.of(content);

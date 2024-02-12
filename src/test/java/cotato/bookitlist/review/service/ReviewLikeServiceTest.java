@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static cotato.bookitlist.review.domain.ReviewStatus.PUBLIC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -85,7 +86,7 @@ class ReviewLikeServiceTest {
     }
 
     private Review createReview(Long reviewId) {
-        Review review = Review.of(createMember(), createBook(), "content");
+        Review review = Review.of(createMember(), createBook(), "content", PUBLIC);
         ReflectionTestUtils.setField(review, "id", reviewId);
         return review;
     }

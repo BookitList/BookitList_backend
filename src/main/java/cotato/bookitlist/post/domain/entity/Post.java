@@ -4,6 +4,7 @@ import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.common.domain.BaseEntity;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.post.domain.PostStatus;
+import cotato.bookitlist.post.domain.PostTemplate;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,22 +41,26 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private PostTemplate template;
+
     private int likeCount = 0;
 
     private int viewCount = 0;
 
     private boolean deleted = false;
 
-    private Post(Member member, Book book, String title, String content, PostStatus status) {
+    private Post(Member member, Book book, String title, String content, PostStatus status, PostTemplate template) {
         this.member = member;
         this.book = book;
         this.title = title;
         this.content = content;
         this.status = status;
+        this.template = template;
     }
 
-    public static Post of(Member member, Book book, String title, String content, PostStatus status) {
-        return new Post(member, book, title, content, status);
+    public static Post of(Member member, Book book, String title, String content, PostStatus status, PostTemplate template) {
+        return new Post(member, book, title, content, status, template);
     }
 
     public void updatePost(Member member, String title, String content, PostStatus status) {

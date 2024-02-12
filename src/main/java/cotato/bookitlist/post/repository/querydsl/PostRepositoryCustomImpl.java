@@ -43,7 +43,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                         .when(isLikedByMember(memberId, post.id))
                                         .then(true)
                                         .otherwise(false)
-                                        .as("liked")
+                                        .as("liked"),
+                                post.template
                         )
                 )
                 .from(post)
@@ -80,7 +81,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                         .when(isLikedByMember(memberId, post.id))
                                         .then(true)
                                         .otherwise(false)
-                                        .as("liked")
+                                        .as("liked"),
+                                post.template
                         )
                 )
                 .from(post)

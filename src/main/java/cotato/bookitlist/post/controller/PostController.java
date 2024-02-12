@@ -6,7 +6,7 @@ import cotato.bookitlist.post.dto.requeset.PostRegisterRequest;
 import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
 import cotato.bookitlist.post.dto.response.PostCountResponse;
 import cotato.bookitlist.post.dto.response.PostListResponse;
-import cotato.bookitlist.post.dto.response.PostResponse;
+import cotato.bookitlist.post.dto.response.PostDetailResponse;
 import cotato.bookitlist.post.service.PostService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,17 +61,17 @@ public class PostController {
     }
 
     @GetMapping("/{post-id}")
-    public ResponseEntity<PostResponse> getPost(
+    public ResponseEntity<PostDetailResponse> getPost(
             HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("post-id") Long postId,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        ResponseEntity<PostResponse> responseEntity;
+        ResponseEntity<PostDetailResponse> responseEntity;
         if (details == null) {
-            responseEntity = ResponseEntity.ok(PostResponse.from(postService.getPost(postId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+            responseEntity = ResponseEntity.ok(PostDetailResponse.from(postService.getPost(postId, DEFAULT_USER_ID), DEFAULT_USER_ID));
         } else {
-            responseEntity = ResponseEntity.ok(PostResponse.from(postService.getPost(postId, details.getId()), details.getId()));
+            responseEntity = ResponseEntity.ok(PostDetailResponse.from(postService.getPost(postId, details.getId()), details.getId()));
         }
 
         handlePostViewCount(request, response, postId);

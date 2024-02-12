@@ -1,5 +1,7 @@
 package cotato.bookitlist.post.dto;
 
+import cotato.bookitlist.post.domain.PostTemplate;
+
 import java.time.LocalDateTime;
 
 public record PostDetailDto(
@@ -12,6 +14,7 @@ public record PostDetailDto(
         int viewCount,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
-        boolean liked
+        boolean liked,
+        PostTemplate template
 ) {
 }

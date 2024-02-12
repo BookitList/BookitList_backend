@@ -36,7 +36,7 @@ public class PostService {
                         bookService.registerBook(request.isbn13())
                 ));
 
-        Post post = Post.of(member, book, request.title(), request.content(), request.status());
+        Post post = Post.of(member, book, request.title(), request.content(), request.status(), request.template());
 
         return postRepository.save(post).getId();
     }

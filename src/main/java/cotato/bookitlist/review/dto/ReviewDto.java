@@ -1,6 +1,6 @@
 package cotato.bookitlist.review.dto;
 
-import cotato.bookitlist.review.domain.Review;
+import cotato.bookitlist.review.domain.entity.Review;
 
 public record ReviewDto(
         Long reviewId,

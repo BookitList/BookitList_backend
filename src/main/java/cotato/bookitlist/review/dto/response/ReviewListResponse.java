@@ -1,6 +1,6 @@
 package cotato.bookitlist.review.dto.response;
 
-import cotato.bookitlist.review.domain.Review;
+import cotato.bookitlist.review.domain.entity.Review;
 import cotato.bookitlist.review.dto.ReviewDto;
 import org.springframework.data.domain.Page;
 

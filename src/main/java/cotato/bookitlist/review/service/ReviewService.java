@@ -5,7 +5,7 @@ import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.review.domain.Review;
+import cotato.bookitlist.review.domain.entity.Review;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;

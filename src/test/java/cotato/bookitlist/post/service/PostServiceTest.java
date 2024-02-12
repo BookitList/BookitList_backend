@@ -31,7 +31,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 조회수 증가 요청시 조회수가 증가한다.")
-    void givenPostId_whenIncreasingViewCount_thenIncreaseViewCount() throws Exception{
+    void givenPostId_whenIncreasingViewCount_thenIncreaseViewCount() {
         //given
         Long postId = 1L;
         Post post = createPost(postId);
@@ -52,7 +52,7 @@ class PostServiceTest {
     }
 
     Book createBook() {
-        return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
+        return Book.of("title", "author", "publisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
     }
 
     Member createMember(Long memberId) {

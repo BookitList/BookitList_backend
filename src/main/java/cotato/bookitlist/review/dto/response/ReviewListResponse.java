@@ -11,7 +11,7 @@ public record ReviewListResponse(
         int totalPages,
         int startIndex,
         int itemsPerPage,
-        List<ReviewDto> reviewDtoList
+        List<ReviewDto> reviewList
 ) {
     public static ReviewListResponse from(Page<Review> page) {
         return new ReviewListResponse(
@@ -20,6 +20,16 @@ public record ReviewListResponse(
                 page.getNumber(),
                 page.getSize(),
                 page.stream().map(ReviewDto::from).toList()
+        );
+    }
+
+    public static ReviewListResponse fromDto(Page<ReviewDto> page) {
+        return new ReviewListResponse(
+                (int) page.getTotalElements(),
+                page.getTotalPages(),
+                page.getNumber(),
+                page.getSize(),
+                page.toList()
         );
     }
 }

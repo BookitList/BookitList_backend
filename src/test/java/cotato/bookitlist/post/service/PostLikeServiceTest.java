@@ -40,11 +40,11 @@ class PostLikeServiceTest {
 
     @Test
     @DisplayName("게시글 좋아요를 생성시 게시글 likeCount가 증가한다.")
-    void givenPostId_whenRegisteringPostLike_thenRegisterPostLike() throws Exception {
+    void givenPostId_whenRegisteringPostLike_thenRegisterPostLike() {
         //given
         Long postId = 1L;
         Long memberId = 1L;
-        Post post = createPost(memberId);
+        Post post = createPost(postId);
         Member member = createMember(memberId);
 
         given(postLikeRepository.existsByPostIdAndMemberId(postId, memberId)).willReturn(false);
@@ -65,7 +65,7 @@ class PostLikeServiceTest {
 
     @Test
     @DisplayName("게시글 좋아요를 삭제시 게시글 likeCount가 감소한다.")
-    void givenPostLikeId_whenDeletingPostLike_thenDeletePostLike() throws Exception {
+    void givenPostLikeId_whenDeletingPostLike_thenDeletePostLike() {
         //given
         Long postId = 1L;
         Long memberId = 1L;
@@ -92,7 +92,15 @@ class PostLikeServiceTest {
     }
 
     Book createBook() {
-        return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
+        return Book.of("title",
+                "author",
+                "publisher",
+                LocalDate.now(),
+                "description",
+                "link",
+                "isbn13",
+                10000,
+                "cover");
     }
 
     Member createMember(Long memberId) {

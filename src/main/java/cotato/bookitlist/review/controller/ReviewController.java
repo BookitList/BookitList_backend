@@ -24,6 +24,7 @@ import java.net.URI;
 @RequestMapping("/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
+    private static final Long DEFAULT_USER_ID = 0L;
 
     private final ReviewService reviewService;
 
@@ -44,10 +45,11 @@ public class ReviewController {
     }
 
     @PutMapping("/{review-id}")
-    public ResponseEntity<Void> updateReview
-            (@PathVariable(value = "review-id") Long reviewId,
-             @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
-             @AuthenticationPrincipal AuthDetails details) {
+    public ResponseEntity<Void> updateReview(
+            @PathVariable(value = "review-id") Long reviewId,
+            @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
         reviewService.updateReview(reviewId, reviewUpdateRequest, details.getId());
 
         return ResponseEntity.ok().build();
@@ -55,9 +57,13 @@ public class ReviewController {
 
     @GetMapping("/{review-id}")
     public ResponseEntity<ReviewResponse> getReview(
-            @PathVariable("review-id") Long reviewId
+            @PathVariable("review-id") Long reviewId,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId)));
+        if (details == null) {
+            return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
     }
 
     @GetMapping("/all")
@@ -70,9 +76,13 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<ReviewListResponse> searchReview(
             @IsValidIsbn @RequestParam String isbn13,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(reviewService.searchReview(isbn13, pageable));
+        if (details == null) {
+            return ResponseEntity.ok(reviewService.searchReview(isbn13, DEFAULT_USER_ID, pageable));
+        }
+        return ResponseEntity.ok(reviewService.searchReview(isbn13, details.getId(), pageable));
     }
 
     @GetMapping("/count")

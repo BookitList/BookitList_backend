@@ -129,7 +129,7 @@ class ReviewControllerTest {
     @DisplayName("권한이 없는 한줄요약를 수정하면 에러를 반환한다.")
     void givenInvalidMemberId_whenUpdatingReview_thenReturnErrorResponse() throws Exception {
         //given
-        ReviewUpdateRequest request = new ReviewUpdateRequest( "updateContent");
+        ReviewUpdateRequest request = new ReviewUpdateRequest("updateContent");
 
         //when & then
         mockMvc.perform(put("/reviews/2")
@@ -178,6 +178,32 @@ class ReviewControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 본인 게시글을 조회한다.")
+    void givenReviewIdWithLogin_whenGettingMyReview_thenReviewResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isMine").value(true));
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 다른 사람 게시글을 조회한다.")
+    void givenReviewIdWithLogin_whenGettingAnotherPersonReview_thenReviewResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isMine").value(false));
+    }
+
+    @Test
     @DisplayName("없는 한줄요약 id로 조회하면 에러를 반환한다.")
     void givenNonExistedReviewId_whenGettingReview_thenErrorResponse() throws Exception {
         //given
@@ -201,6 +227,24 @@ class ReviewControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(4))
+                .andExpect(jsonPath("$.reviewList[1].liked").value(false))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인한 유저가 isbn13을 이용해 한줄요약을 조회한다.")
+    void givenIsbn13WithLogin_whenSearchingReview_thenReturnReviewListResponse() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+
+        //when & then
+        mockMvc.perform(get("/reviews")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(4))
+                .andExpect(jsonPath("$.reviewList[1].liked").value(true))
         ;
     }
 

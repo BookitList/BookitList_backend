@@ -6,7 +6,7 @@ import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.Review;
-import cotato.bookitlist.review.dto.ReviewDto;
+import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
@@ -45,16 +45,15 @@ public class ReviewService {
         Member member = memberRepository.getReferenceById(memberId);
 
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
 
         review.updateReview(member, reviewUpdateRequest.content());
     }
 
-    public ReviewDto getReview(Long reviewId) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다"));
-
-        return ReviewDto.from(review);
+    @Transactional(readOnly = true)
+    public ReviewDetailDto getReview(Long reviewId, Long memberId) {
+        return reviewRepository.findReviewDetailByReviewId(reviewId, memberId)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -63,8 +62,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewListResponse searchReview(String isbn13, Pageable pageable) {
-        return ReviewListResponse.from(reviewRepository.findByBook_Isbn13(isbn13, pageable));
+    public ReviewListResponse searchReview(String isbn13, Long memberId, Pageable pageable) {
+        return ReviewListResponse.fromDto(reviewRepository.findReviewWithLikedByIsbn13(isbn13, memberId, pageable));
     }
 
     @Transactional(readOnly = true)

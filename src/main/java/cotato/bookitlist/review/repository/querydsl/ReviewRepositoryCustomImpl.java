@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.review.domain.ReviewStatus;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static cotato.bookitlist.review.domain.QReview.review;
-import static cotato.bookitlist.review.domain.QReviewLike.reviewLike;
+import static cotato.bookitlist.review.domain.entity.QReview.review;
+import static cotato.bookitlist.review.domain.entity.QReviewLike.reviewLike;
 
 @RequiredArgsConstructor
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
@@ -26,7 +27,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ReviewDto> findReviewWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
+    public Page<ReviewDto> findPublicReviewWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
         List<ReviewDto> result = queryFactory
                 .select(
                         Projections.constructor(
@@ -45,7 +46,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
-                .where(review.book.isbn13.eq(isbn13))
+                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -60,7 +61,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Optional<ReviewDetailDto> findReviewDetailByReviewId(Long reviewId, Long memberId) {
+    public Optional<ReviewDetailDto> findPublicReviewDetailByReviewId(Long reviewId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .select(
                         Projections.constructor(
@@ -81,7 +82,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
-                .where(review.id.eq(reviewId))
+                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC))
                 .fetchOne());
     }
 

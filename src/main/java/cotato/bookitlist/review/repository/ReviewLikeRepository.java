@@ -1,6 +1,6 @@
 package cotato.bookitlist.review.repository;
 
-import cotato.bookitlist.review.domain.ReviewLike;
+import cotato.bookitlist.review.domain.entity.ReviewLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

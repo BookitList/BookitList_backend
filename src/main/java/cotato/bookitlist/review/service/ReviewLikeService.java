@@ -2,8 +2,8 @@ package cotato.bookitlist.review.service;
 
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.review.domain.Review;
-import cotato.bookitlist.review.domain.ReviewLike;
+import cotato.bookitlist.review.domain.entity.Review;
+import cotato.bookitlist.review.domain.entity.ReviewLike;
 import cotato.bookitlist.review.repository.ReviewLikeRepository;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;

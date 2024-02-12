@@ -4,8 +4,8 @@ import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
-import cotato.bookitlist.review.domain.Review;
-import cotato.bookitlist.review.domain.ReviewLike;
+import cotato.bookitlist.review.domain.entity.Review;
+import cotato.bookitlist.review.domain.entity.ReviewLike;
 import cotato.bookitlist.review.repository.ReviewLikeRepository;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static cotato.bookitlist.review.domain.ReviewStatus.PUBLIC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -85,7 +86,7 @@ class ReviewLikeServiceTest {
     }
 
     private Review createReview(Long reviewId) {
-        Review review = Review.of(createMember(), createBook(), "content");
+        Review review = Review.of(createMember(), createBook(), "content", PUBLIC);
         ReflectionTestUtils.setField(review, "id", reviewId);
         return review;
     }

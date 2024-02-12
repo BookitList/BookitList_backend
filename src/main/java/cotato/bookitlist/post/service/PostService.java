@@ -36,7 +36,7 @@ public class PostService {
                         bookService.registerBook(request.isbn13())
                 ));
 
-        Post post = Post.of(member, book, request.title(), request.content(), request.status());
+        Post post = Post.of(member, book, request.title(), request.content(), request.status(), request.template());
 
         return postRepository.save(post).getId();
     }
@@ -57,13 +57,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse getAllPost(Pageable pageable) {
-        return PostListResponse.from(postRepository.findPublicPostAll(pageable));
+    public PostListResponse getAllPost(Pageable pageable, Long memberId) {
+        return PostListResponse.from(postRepository.findPublicPostAll(pageable), memberId);
     }
 
     @Transactional(readOnly = true)
     public PostListResponse searchPost(String isbn13, Long memberId, Pageable pageable) {
-        return PostListResponse.fromDto(postRepository.findPublicPostWithLikedByIsbn13(isbn13, memberId, pageable));
+        return PostListResponse.fromDto(postRepository.findPublicPostWithLikedByIsbn13(isbn13, memberId, pageable), memberId);
     }
 
     @Transactional(readOnly = true)

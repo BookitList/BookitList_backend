@@ -1,12 +1,12 @@
 package cotato.bookitlist.post.dto.response;
 
 import cotato.bookitlist.post.domain.PostTemplate;
-import cotato.bookitlist.post.domain.entity.Post;
-import cotato.bookitlist.post.dto.PostDto;
+import cotato.bookitlist.post.dto.PostDetailDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-public record PostResponse(
+public record PostDetailResponse(
         Long postId,
         Long memberId,
         Long bookId,
@@ -14,28 +14,15 @@ public record PostResponse(
         List<String> content,
         int likeCount,
         int viewCount,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,
         PostTemplate template
 ) {
 
-    public static PostResponse from(Post entity, Long memberId) {
-        return new PostResponse(
-                entity.getId(),
-                entity.getMember().getId(),
-                entity.getBook().getId(),
-                entity.getTitle(),
-                getContentList(entity.getContent(), entity.getTemplate()),
-                entity.getLikeCount(),
-                entity.getViewCount(),
-                false,
-                entity.getMember().getId().equals(memberId),
-                entity.getTemplate()
-        );
-    }
-
-    public static PostResponse fromDto(PostDto dto, Long memberId) {
-        return new PostResponse(
+    public static PostDetailResponse from(PostDetailDto dto, Long memberId) {
+        return new PostDetailResponse(
                 dto.postId(),
                 dto.memberId(),
                 dto.bookId(),
@@ -43,6 +30,8 @@ public record PostResponse(
                 getContentList(dto.content(), dto.template()),
                 dto.likeCount(),
                 dto.viewCount(),
+                dto.createdAt(),
+                dto.modifiedAt(),
                 dto.liked(),
                 dto.memberId().equals(memberId),
                 dto.template()
@@ -50,7 +39,7 @@ public record PostResponse(
     }
 
     private static List<String> getContentList(String content, PostTemplate template) {
-        if (template != cotato.bookitlist.post.domain.PostTemplate.NON) {
+        if (template != PostTemplate.NON) {
             return List.of(content.split(template.split));
         }
         return List.of(content);

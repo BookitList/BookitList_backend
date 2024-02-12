@@ -22,15 +22,16 @@ INSERT INTO member (email, name, oauth2Id, auth_provider, follow_count, deleted,
 VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO post (member_id, book_id, title, content, status, like_count, view_count, deleted)
-VALUES (1, 1, 'postTitle', 'postContent', 'PUBLIC', 0, 0, false),
-       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 2, 0, false),
-       (2, 1, 'postTitle2', '제목', 'PUBLIC', 0, 0, false),
-       (2, 1, 'postTitle3', 'post', 'PUBLIC', 0, 0, false),
-       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 0, 0, false),
-       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 0, 0, false),
-       (2, 2, 'positle', 'postent', 'PUBLIC', 0, 0, false),
-       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 0, 0, false);
+INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
+values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 2, 0, false),
+       (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
+       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
+       (2, 2, 'privateTitle', 'first<============================>second<============================>third<============================>fourth', 'PUBLIC', 'TEMPLATE', 0, 0, false);
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 'PUBLIC', 0, 0, false),

@@ -57,10 +57,18 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         log.error("handleMethodArgumentNotValidException occurred: {}", ex.getMessage());
+
+        String message;
+        if (ex.getBindingResult().getFieldErrors().isEmpty()) {
+            message = ex.getMessage();
+        } else {
+            message = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+        }
+
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
-                ex.getMessage(),
+                message,
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

@@ -16,6 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 
 import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
+import static cotato.bookitlist.post.domain.PostTemplate.NON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -46,7 +47,7 @@ class PostServiceTest {
     }
 
     Post createPost(Long postId) {
-        Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC);
+        Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC, NON);
         ReflectionTestUtils.setField(post, "id", postId);
         return post;
     }

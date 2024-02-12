@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +22,6 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Transactional
 @SpringBootTest
@@ -175,6 +175,34 @@ class ReviewControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
         ;
+    }
+
+    @Test
+    @DisplayName("쿠키없이 한줄요약을 조회하면 쿠키를 생성하다.")
+    void givenNonCookie_whenGettingReview_thenCreateCookie() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("review_view", "[1]"))
+                .andExpect(cookie().path("review_view", "/reviews"));
+    }
+
+    @Test
+    @DisplayName("쿠키를 가지고 한줄요약을 조회하면 쿠키에 id를 추가하여 넘겨준다.")
+    void givenCookie_whenGettingReview_thenAddIdIntoCookie() throws Exception {
+        //given
+        Cookie cookie = new Cookie("review_view", "[1]");
+
+        //when & then
+        mockMvc.perform(get("/reviews/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(cookie))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("review_view", "[1][2]"))
+                .andExpect(cookie().path("review_view", "/reviews"));
     }
 
     @Test

@@ -70,4 +70,10 @@ public class ReviewService {
     public ReviewCountResponse getReviewCount(String isbn13) {
         return ReviewCountResponse.of(reviewRepository.countByBook_Isbn13(isbn13));
     }
+
+    @Transactional
+    public void increaseViewCount(Long reviewId) {
+        Review review = reviewRepository.getReferenceById(reviewId);
+        review.increaseViewCount();
+    }
 }

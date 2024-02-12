@@ -8,6 +8,9 @@ import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.service.ReviewService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +22,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
     private static final Long DEFAULT_USER_ID = 0L;
+    private static final String REVIEW_VIEW_COOKIE_NAME = "review_view";
 
     private final ReviewService reviewService;
 
@@ -57,13 +62,20 @@ public class ReviewController {
 
     @GetMapping("/{review-id}")
     public ResponseEntity<ReviewResponse> getReview(
+            HttpServletRequest request,
+            HttpServletResponse response,
             @PathVariable("review-id") Long reviewId,
             @AuthenticationPrincipal AuthDetails details
     ) {
+        ResponseEntity<ReviewResponse> responseEntity;
         if (details == null) {
-            return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+            responseEntity = ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+        } else {
+            responseEntity = ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
         }
-        return ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
+
+        handleReviewViewCount(request, response, reviewId);
+        return responseEntity;
     }
 
     @GetMapping("/all")
@@ -90,5 +102,34 @@ public class ReviewController {
             @IsValidIsbn @RequestParam String isbn13
     ) {
         return ResponseEntity.ok(reviewService.getReviewCount(isbn13));
+    }
+
+    private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {
+        Cookie[] cookies = request.getCookies();
+        Cookie reviewViewCookie = findCookie(cookies);
+
+        if (reviewViewCookie != null) {
+            if (!reviewViewCookie.getValue().contains("[" + reviewId + "]")) {
+                reviewViewCookie.setValue(reviewViewCookie.getValue() + "[" + reviewId + "]");
+                reviewService.increaseViewCount(reviewId);
+                reviewViewCookie.setPath("/reviews");
+            }
+            response.addCookie(reviewViewCookie);
+        } else {
+            Cookie newCookie = new Cookie(REVIEW_VIEW_COOKIE_NAME, "[" + reviewId + "]");
+            newCookie.setPath("/reviews");
+            reviewService.increaseViewCount(reviewId);
+            response.addCookie(newCookie);
+        }
+    }
+
+    private Cookie findCookie(Cookie[] cookies) {
+        if (cookies == null) {
+            return null;
+        }
+        return Arrays.stream(cookies)
+                .filter(cookie -> REVIEW_VIEW_COOKIE_NAME.equals(cookie.getName()))
+                .findFirst()
+                .orElse(null);
     }
 }

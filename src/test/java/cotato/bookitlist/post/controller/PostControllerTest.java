@@ -188,7 +188,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("쿠키없이 게시글을 조회하면 쿠키를 생성한다.")
-    void givenNonCookie_whenGettingPost_thenCookie() throws Exception {
+    void givenNonCookie_whenGettingPost_thenCreateCookie() throws Exception {
         //given
 
         //when & then
@@ -196,13 +196,13 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(cookie().value("post_view", "[1]"))
-                .andExpect(cookie().path("post_view", "/posts"));
+                .andExpect(cookie().path("post_view", "/posts"))
         ;
     }
 
     @Test
     @DisplayName("쿠키를 가지고 게시글을 조회하면 쿠키에 id를 추가하여 넘겨준다.")
-    void givenCookie_whenGettingPost_thenCookie() throws Exception {
+    void givenCookie_whenGettingPost_thenAddIdIntoCookie() throws Exception {
         //given
         Cookie cookie = new Cookie("post_view", "[1]");
 

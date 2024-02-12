@@ -74,6 +74,6 @@ public class ReviewService {
     @Transactional
     public void increaseViewCount(Long reviewId) {
         Review review = reviewRepository.getReferenceById(reviewId);
-        review.increaseViewCount ();
+        review.increaseViewCount();
     }
 }

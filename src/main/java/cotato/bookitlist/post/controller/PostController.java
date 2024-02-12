@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -124,13 +125,12 @@ public class PostController {
     }
 
     private Cookie findCookie(Cookie[] cookies) {
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (POST_VIEW_COOKIE_NAME.equals(cookie.getName())) {
-                    return cookie;
-                }
-            }
+        if (cookies == null) {
+            return null;
         }
-        return null;
+        return Arrays.stream(cookies)
+                .filter(cookie -> POST_VIEW_COOKIE_NAME.equals(cookie.getName()))
+                .findFirst()
+                .orElse(null);
     }
 }

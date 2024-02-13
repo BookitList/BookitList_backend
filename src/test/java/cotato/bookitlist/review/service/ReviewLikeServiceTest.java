@@ -1,7 +1,5 @@
 package cotato.bookitlist.review.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
-import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.entity.Review;
@@ -14,12 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import static cotato.bookitlist.review.domain.ReviewStatus.PUBLIC;
+import static cotato.bookitlist.fixture.MemberFixture.createMember;
+import static cotato.bookitlist.fixture.ReviewFixture.createReview;
+import static cotato.bookitlist.fixture.ReviewLikeFixture.createReviewLike;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -83,40 +81,6 @@ class ReviewLikeServiceTest {
         //then
         then(reviewLikeRepository).should().findByReviewIdAndMemberId(reviewId, memberId);
         assertThat(review.getLikeCount()).isZero();
-    }
-
-    private Review createReview(Long reviewId) {
-        Review review = Review.of(createMember(), createBook(), "content", PUBLIC);
-        ReflectionTestUtils.setField(review, "id", reviewId);
-        return review;
-    }
-
-    private Book createBook() {
-        return Book.of("title",
-                "author",
-                "publisher",
-                LocalDate.now(),
-                "description",
-                "link",
-                "isbn13",
-                10000,
-                "cover");
-    }
-
-    private Member createMember(Long memberId) {
-        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO, "profile");
-        ReflectionTestUtils.setField(member, "id", memberId);
-        return member;
-    }
-
-    private Member createMember() {
-        return createMember(1L);
-    }
-
-    private ReviewLike createReviewLike(Review review, Member member) {
-        ReviewLike reviewLike = ReviewLike.of(member, review);
-        ReflectionTestUtils.setField(reviewLike, "id", 1L);
-        return reviewLike;
     }
 
 }

@@ -1,8 +1,5 @@
 package cotato.bookitlist.post.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
-import cotato.bookitlist.config.security.oauth.AuthProvider;
-import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.post.domain.entity.Post;
 import cotato.bookitlist.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
-import static cotato.bookitlist.post.domain.PostTemplate.NON;
+import static cotato.bookitlist.fixture.PostFixture.createPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -49,7 +43,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시물 삭제 요청시 게시물을 삭제한다.")
-    void givenPostId_whenDeletingPost_thenDeletePost() throws Exception{
+    void givenPostId_whenDeletingPost_thenDeletePost() throws Exception {
         //given
         Long memberId = 1L;
         Long postId = 1L;
@@ -65,27 +59,4 @@ class PostServiceTest {
         assertThat(post.getLikeCount()).isZero();
     }
 
-    Post createPost(Long postId, Long memberId) {
-        Post post = Post.of(createMember(memberId), createBook(), "title", "content", PUBLIC, NON);
-        ReflectionTestUtils.setField(post, "id", postId);
-        return post;
-    }
-
-    Post createPost(Long postId) {
-        return createPost(postId, 1L);
-    }
-
-    Book createBook() {
-        return Book.of("title", "author", "publisher", LocalDate.now(), "description", "link", "isbn13", 10000, "cover");
-    }
-
-    Member createMember(Long memberId) {
-        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO, "profile");
-        ReflectionTestUtils.setField(member, "id", memberId);
-        return member;
-    }
-
-    Member createMember() {
-        return createMember(1L);
-    }
 }

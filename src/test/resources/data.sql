@@ -18,10 +18,16 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
         'http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=209468603&amp;partner=openAPI&amp;start=api',
         '9791187824824', 14400, 'https://image.aladin.co.kr/product/20946/86/cover500sum/k822636271_1.jpg', 0, false);
 
-INSERT INTO member (email, name, oauth2Id, auth_provider, follow_count, deleted, created_at, modified_at)
-VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO member (email, name, oauth2Id, auth_provider, profile_status, profile_link, deleted, created_at,
+                    modified_at)
+VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP);
 
 INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
 values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),

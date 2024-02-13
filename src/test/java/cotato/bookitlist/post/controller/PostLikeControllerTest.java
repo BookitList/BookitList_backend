@@ -65,7 +65,7 @@ class PostLikeControllerTest {
         //given
 
         //when & then
-        mockMvc.perform(post("/posts/10/likes")
+        mockMvc.perform(post("/posts/100/likes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("게시글을 찾을 수 없습니다."))

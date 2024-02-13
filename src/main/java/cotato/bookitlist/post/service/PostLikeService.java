@@ -43,4 +43,8 @@ public class PostLikeService {
 
         postLikeRepository.delete(postLike);
     }
+
+    public void deleteAllPostLike(Long postId) {
+        postLikeRepository.deleteAllByPostId(postId);
+    }
 }

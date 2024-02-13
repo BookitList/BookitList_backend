@@ -7,6 +7,7 @@ import cotato.bookitlist.post.dto.requeset.PostUpdateRequest;
 import cotato.bookitlist.post.dto.response.PostCountResponse;
 import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.dto.response.PostDetailResponse;
+import cotato.bookitlist.post.service.PostFacade;
 import cotato.bookitlist.post.service.PostService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class PostController {
     private static final String POST_VIEW_COOKIE_NAME = "post_view";
 
     private final PostService postService;
+    private final PostFacade postFacade;
 
     @PostMapping
     public ResponseEntity<Void> registerPost(
@@ -108,6 +110,16 @@ public class PostController {
             @IsValidIsbn @RequestParam String isbn13
     ) {
         return ResponseEntity.ok(postService.getPostCount(isbn13));
+    }
+
+    @DeleteMapping("/{post-id}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable("post-id") Long postId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+
+        postFacade.deletePost(postId, details.getId());
+        return ResponseEntity.noContent().build();
     }
 
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {

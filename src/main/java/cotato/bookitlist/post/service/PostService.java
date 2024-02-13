@@ -71,9 +71,15 @@ public class PostService {
         return PostCountResponse.of(postRepository.countPublicPostByBook_Isbn13(isbn13));
     }
 
-    @Transactional
     public void increaseViewCount(Long postId) {
         Post post = postRepository.getReferenceById(postId);
         post.increaseViewCount();
+    }
+
+    public void deletePost(Long postId, Long memberId) {
+        Post post = postRepository.findByIdAndMemberId(postId, memberId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        post.deletePost();
     }
 }

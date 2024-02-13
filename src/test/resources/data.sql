@@ -20,7 +20,8 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
 
 INSERT INTO member (email, name, oauth2Id, auth_provider, follow_count, deleted, created_at, modified_at)
 VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
 values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
@@ -31,7 +32,11 @@ values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
        (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 0, 0, false),
        (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 0, 0, false),
        (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
-       (2, 2, 'privateTitle', 'first<============================>second<============================>third<============================>fourth', 'PUBLIC', 'TEMPLATE', 0, 0, false);
+       (2, 2, 'privateTitle',
+        'first<============================>second<============================>third<============================>fourth',
+        'PUBLIC', 'TEMPLATE', 0, 0, false),
+       (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
+       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 'PUBLIC', 0, 0, false),
@@ -42,7 +47,9 @@ VALUES (1, 1, 'reviewContent', 'PUBLIC', 0, 0, false),
        (2, 2, 'reContent2', 'PUBLIC', 0, 0, false);
 
 INSERT INTO post_like (member_id, post_id)
-VALUES (1, 2),
+VALUES (2, 1),
+       (3, 1),
+       (1, 2),
        (2, 2);
 
 INSERT INTO review_like (member_id, review_id)

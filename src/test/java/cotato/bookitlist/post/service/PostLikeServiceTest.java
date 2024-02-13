@@ -86,6 +86,20 @@ class PostLikeServiceTest {
         assertThat(post.getLikeCount()).isZero();
     }
 
+    @Test
+    @DisplayName("게시글 삭제시 모든 게시글 좋아요를 삭제한다.")
+    void givenPostId_whenDeletingPost_thenDeleteAllPostLike() throws Exception{
+        //given
+        Long postId = 1L;
+        willDoNothing().given(postLikeRepository).deleteAllByPostId(postId);
+
+        //when
+        sut.deleteAllPostLike(postId);
+
+        //then
+        then(postLikeRepository).should().deleteAllByPostId(postId);
+    }
+
     Post createPost(Long postId) {
         Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC, NON);
         ReflectionTestUtils.setField(post, "id", postId);

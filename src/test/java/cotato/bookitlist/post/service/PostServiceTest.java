@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
 import static cotato.bookitlist.post.domain.PostTemplate.NON;
@@ -46,10 +47,32 @@ class PostServiceTest {
         assertThat(post.getViewCount()).isEqualTo(1);
     }
 
-    Post createPost(Long postId) {
-        Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC, NON);
+    @Test
+    @DisplayName("게시물 삭제 요청시 게시물을 삭제한다.")
+    void givenPostId_whenDeletingPost_thenDeletePost() throws Exception{
+        //given
+        Long memberId = 1L;
+        Long postId = 1L;
+        Post post = createPost(postId, memberId);
+        given(postRepository.findByIdAndMemberId(postId, memberId)).willReturn(Optional.of(post));
+
+        //when
+        sut.deletePost(postId, memberId);
+
+        //then
+        then(postRepository).should().findByIdAndMemberId(postId, memberId);
+        assertThat(post.isDeleted()).isTrue();
+        assertThat(post.getLikeCount()).isZero();
+    }
+
+    Post createPost(Long postId, Long memberId) {
+        Post post = Post.of(createMember(memberId), createBook(), "title", "content", PUBLIC, NON);
         ReflectionTestUtils.setField(post, "id", postId);
         return post;
+    }
+
+    Post createPost(Long postId) {
+        return createPost(postId, 1L);
     }
 
     Book createBook() {

@@ -48,8 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public Authentication getAuthentication(String token) {
         AccessTokenInfo accessTokenInfo = jwtTokenProvider.parseAccessToken(token);
+        authService.validateRegisteredMember(accessTokenInfo.userId());
         UserDetails userDetails = new AuthDetails(accessTokenInfo.userId().toString(), accessTokenInfo.role());
         return new UsernamePasswordAuthenticationToken(userDetails, "user", userDetails.getAuthorities());
     }
-
 }

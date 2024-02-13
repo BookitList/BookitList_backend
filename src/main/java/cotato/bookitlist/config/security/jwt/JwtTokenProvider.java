@@ -2,10 +2,7 @@ package cotato.bookitlist.config.security.jwt;
 
 import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
 import cotato.bookitlist.config.security.jwt.properties.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -93,21 +90,17 @@ public class JwtTokenProvider {
                     (String) claims.get("role")
             );
         } else {
-            throw new RuntimeException();
+            throw new UnsupportedJwtException("올바르지 않은 Access Token입니다.");
         }
     }
 
     public Long parseRefreshToken(String token) {
-        try {
-            if (isRefreshToken(token)) {
-                Claims claims = getJws(token).getBody();
-                return Long.parseLong(claims.getSubject());
-            }
-        } catch (ExpiredJwtException ex) {
-            throw new RuntimeException();
+        if (isRefreshToken(token)) {
+            Claims claims = getJws(token).getBody();
+            return Long.parseLong(claims.getSubject());
+        } else {
+            throw new UnsupportedJwtException("올바르지 않은 Refresh Token입니다.");
         }
-
-        throw new RuntimeException();
     }
 
     public Long getAccessTokenTtlMilliSecond() {

@@ -9,6 +9,7 @@ import cotato.bookitlist.auth.repository.BlackListRepository;
 import cotato.bookitlist.auth.repository.RefreshTokenRepository;
 import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
 import cotato.bookitlist.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,9 @@ public class AuthService {
         return blackListRepository.findById(accessToken).isPresent();
     }
 
-    public boolean isRegisteredMember(Long memberId) {
-        return memberRepository.existsById(memberId);
+    public void validateRegisteredMember(Long memberId) {
+        if (memberRepository.existsById(memberId)) {
+            throw new EntityNotFoundException("유저 정보를 찾을 수 없습니다.");
+        }
     }
 }

@@ -1,7 +1,8 @@
 package cotato.bookitlist.member.controller;
 
 import cotato.bookitlist.config.security.jwt.AuthDetails;
-import cotato.bookitlist.member.dto.ProfileResponse;
+import cotato.bookitlist.member.dto.response.MemberResponse;
+import cotato.bookitlist.member.dto.response.ProfileResponse;
 import cotato.bookitlist.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/members")
 public class MemberController {
 
+    private static final Long DEFAULT_USER_ID = 0L;
+
     private final MemberService memberService;
+
+    @GetMapping("/{member-id}")
+    public ResponseEntity<MemberResponse> getMemberInfo(
+            @PathVariable("member-id") Long memberId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        if (details == null) {
+            return ResponseEntity.ok(MemberResponse.from(memberService.getMemberInfo(memberId, DEFAULT_USER_ID)));
+        }
+        return ResponseEntity.ok(MemberResponse.from(memberService.getMemberInfo(memberId, details.getId())));
+    }
 
     @PatchMapping("/profiles")
     public ResponseEntity<ProfileResponse> uploadProfile(

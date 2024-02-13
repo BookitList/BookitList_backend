@@ -4,6 +4,7 @@ import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.config.security.oauth.OAuth2UserInfo;
 import cotato.bookitlist.config.security.oauth.OAuth2UserInfoFactory;
 import cotato.bookitlist.config.security.oauth.UserPrincipal;
+import cotato.bookitlist.member.component.MemberComponent;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
+    private final MemberComponent memberComponent;
 
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
@@ -40,7 +42,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private Member registerMember(AuthProvider authProvider, OAuth2UserInfo oAuth2UserInfo) {
-        Member member = Member.of(authProvider, oAuth2UserInfo);
+        Member member = Member.of(authProvider, oAuth2UserInfo, memberComponent.getDefaultProfileUrl());
         return memberRepository.save(member);
     }
 

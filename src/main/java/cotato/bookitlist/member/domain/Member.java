@@ -69,4 +69,12 @@ public class Member extends BaseEntity {
             throw new AccessDeniedException("권한이 존재하지 않는 멤버입니다.");
         }
     }
+
+    public void changeProfileStatus() {
+        if (profileStatus.equals(ProfileStatus.PRIVATE)) {
+            profileStatus = ProfileStatus.PUBLIC;
+        } else {
+            profileStatus = ProfileStatus.PRIVATE;
+        }
+    }
 }

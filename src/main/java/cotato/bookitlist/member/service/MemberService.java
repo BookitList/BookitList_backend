@@ -37,4 +37,9 @@ public class MemberService {
 
         return member.updateProfileLink(url);
     }
+
+    public void changeProfileStatus(Long memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        member.changeProfileStatus();
+    }
 }

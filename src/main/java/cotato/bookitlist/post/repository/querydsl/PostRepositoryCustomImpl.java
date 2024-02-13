@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.member.domain.ProfileStatus;
 import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.dto.PostDetailDto;
 import cotato.bookitlist.post.dto.PostDto;
@@ -48,7 +49,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .where(post.book.isbn13.eq(isbn13), post.status.eq(PostStatus.PUBLIC))
+                .where(post.book.isbn13.eq(isbn13), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -86,7 +87,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .where(post.id.eq(postId), post.status.eq(PostStatus.PUBLIC))
+                .where(post.id.eq(postId), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .fetchOne());
     }
 

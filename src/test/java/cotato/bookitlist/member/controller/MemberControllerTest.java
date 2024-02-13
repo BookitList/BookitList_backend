@@ -40,6 +40,7 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.isMe").value(false))
                 .andExpect(jsonPath("$.email").doesNotExist())
+                .andExpect(jsonPath("$.profileLink").exists())
         ;
     }
 
@@ -55,6 +56,7 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.isMe").value(true))
                 .andExpect(jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.profileLink").exists())
         ;
     }
 

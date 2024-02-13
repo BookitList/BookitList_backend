@@ -201,7 +201,6 @@ class BookControllerTest {
                         .param("isbn13", isbn13)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.bookId").exists())
                 .andExpect(jsonPath("$.title").exists())
                 .andExpect(jsonPath("$.author").exists())
                 .andExpect(jsonPath("$.publisher").exists())
@@ -245,7 +244,15 @@ class BookControllerTest {
         //when&then
         mockMvc.perform(get("/books/" + bookId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.bookId").value(1L))
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.author").exists())
+                .andExpect(jsonPath("$.publisher").exists())
+                .andExpect(jsonPath("$.pubDate").exists())
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.link").exists())
+                .andExpect(jsonPath("$.isbn13").exists())
+                .andExpect(jsonPath("$.price").exists())
+                .andExpect(jsonPath("$.cover").exists())
         ;
     }
 

@@ -1,7 +1,5 @@
 package cotato.bookitlist.post.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
-import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.entity.Post;
@@ -14,13 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import static cotato.bookitlist.post.domain.PostStatus.PUBLIC;
-import static cotato.bookitlist.post.domain.PostTemplate.NON;
+import static cotato.bookitlist.fixture.MemberFixture.createMember;
+import static cotato.bookitlist.fixture.PostFixture.createPost;
+import static cotato.bookitlist.fixture.PostLikeFixture.createPostLike;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -100,38 +97,5 @@ class PostLikeServiceTest {
         then(postLikeRepository).should().deleteAllByPostId(postId);
     }
 
-    Post createPost(Long postId) {
-        Post post = Post.of(createMember(), createBook(), "title", "content", PUBLIC, NON);
-        ReflectionTestUtils.setField(post, "id", postId);
-        return post;
-    }
-
-    Book createBook() {
-        return Book.of("title",
-                "author",
-                "publisher",
-                LocalDate.now(),
-                "description",
-                "link",
-                "isbn13",
-                10000,
-                "cover");
-    }
-
-    Member createMember(Long memberId) {
-        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO, "profile");
-        ReflectionTestUtils.setField(member, "id", memberId);
-        return member;
-    }
-
-    Member createMember() {
-        return createMember(1L);
-    }
-
-    PostLike createPostLike(Post post, Member member) {
-        PostLike postLike = PostLike.of(member, post);
-        ReflectionTestUtils.setField(postLike, "id", 1L);
-        return postLike;
-    }
 
 }

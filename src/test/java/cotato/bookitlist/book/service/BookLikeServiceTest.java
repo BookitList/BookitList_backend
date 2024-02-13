@@ -4,7 +4,6 @@ import cotato.bookitlist.book.domain.entity.Book;
 import cotato.bookitlist.book.domain.entity.BookLike;
 import cotato.bookitlist.book.repository.BookLikeRepository;
 import cotato.bookitlist.book.repository.BookRepository;
-import cotato.bookitlist.config.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
+import static cotato.bookitlist.fixture.BookFixture.createBook;
+import static cotato.bookitlist.fixture.BookLikeFixture.createBookLike;
+import static cotato.bookitlist.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
@@ -111,24 +111,4 @@ class BookLikeServiceTest {
         assertThat(book.getLikeCount()).isZero();
     }
 
-
-    Book createBook(String isbn13) {
-        return Book.of("title", "author", "pubisher", LocalDate.now(), "description", "link", isbn13, 10000, "cover");
-    }
-
-    Member createMember(Long memberId) {
-        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO, "profile");
-        ReflectionTestUtils.setField(member, "id", memberId);
-        return member;
-    }
-
-    Member createMember() {
-        return createMember(1L);
-    }
-
-    BookLike createBookLike(Book book, Member member) {
-        BookLike bookLike = BookLike.of(book, member);
-        ReflectionTestUtils.setField(bookLike, "id", 1L);
-        return bookLike;
-    }
 }

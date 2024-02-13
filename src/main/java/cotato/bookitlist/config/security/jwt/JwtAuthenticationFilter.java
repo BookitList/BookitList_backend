@@ -2,6 +2,7 @@ package cotato.bookitlist.config.security.jwt;
 
 import cotato.bookitlist.auth.service.AuthService;
 import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -48,8 +49,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public Authentication getAuthentication(String token) {
         AccessTokenInfo accessTokenInfo = jwtTokenProvider.parseAccessToken(token);
+        validateRegisteredMember(accessTokenInfo.userId());
         UserDetails userDetails = new AuthDetails(accessTokenInfo.userId().toString(), accessTokenInfo.role());
         return new UsernamePasswordAuthenticationToken(userDetails, "user", userDetails.getAuthorities());
+    }
+
+    private void validateRegisteredMember(Long memberId) {
+        if (!authService.isRegisteredMember(memberId)) {
+            throw new EntityNotFoundException("유저 정보를 찾을 수 없습니다.");
+        }
     }
 
 }

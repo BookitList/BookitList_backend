@@ -5,7 +5,6 @@ import cotato.bookitlist.book.dto.BookDto;
 import java.time.LocalDate;
 
 public record BookResponse(
-        Long bookId,
         String title,
         String author,
         String publisher,
@@ -18,7 +17,16 @@ public record BookResponse(
 ) {
 
     public static BookResponse fromBookDto(BookDto dto) {
-        return new BookResponse(dto.bookId(), dto.title(), dto.author(), dto.publisher(), dto.pubDate(), dto.description(), dto.link(), dto.isbn13(), dto.price(), dto.cover());
+        return new BookResponse(
+                dto.title(),
+                dto.author(),
+                dto.publisher(),
+                dto.pubDate(),
+                dto.description(),
+                dto.link(),
+                dto.isbn13(),
+                dto.price(), dto.cover()
+        );
     }
 
 }

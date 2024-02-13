@@ -24,7 +24,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("멤버를 찾을 수 없습니다."));
 
-        member.canVisitProfile(loginMemberId);
+        member.validatePubicProfile(loginMemberId);
 
         return MemberDto.from(member, loginMemberId);
     }

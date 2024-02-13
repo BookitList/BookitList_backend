@@ -42,7 +42,9 @@ values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
         'first<============================>second<============================>third<============================>fourth',
         'PUBLIC', 'TEMPLATE', 0, 0, false),
        (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
+       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false),
+       (4, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
+       (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 'PUBLIC', 0, 0, false),

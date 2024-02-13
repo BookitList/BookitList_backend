@@ -287,7 +287,7 @@ class PostControllerTest {
         //given
 
         //when & then
-        mockMvc.perform(get("/posts/10")
+        mockMvc.perform(get("/posts/100")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
         ;
@@ -334,7 +334,7 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/all")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(7))
+                .andExpect(jsonPath("$.totalResults").value(8))
         ;
     }
 
@@ -352,5 +352,42 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.count").value(4))
         ;
     }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("게시글 id를 이용해 게시글을 삭제한다.")
+    void givenPostId_whenDeletingPost_thenDeletePost() throws Exception {
+        //given
+
+        mockMvc.perform(delete("/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("좋아요가 없는 게시글 id를 이용해 게시글을 삭제한다.")
+    void givenPostIdNonPostLike_whenDeletingPost_thenDeletePost() throws Exception {
+        //given
+
+        mockMvc.perform(delete("/posts/10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("비공개 게시글 id를 이용해 게시글을 삭제한다.")
+    void givenPostIdNonPrivate_whenDeletingPost_thenDeletePost() throws Exception {
+        //given
+
+        mockMvc.perform(delete("/posts/11")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
 }
 

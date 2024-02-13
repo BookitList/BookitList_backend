@@ -53,6 +53,7 @@ jobs:
           spring.servlet.multipart.location: ${{ secrets.LOCATION }}
           cloud.aws.credentials.access-key: ${{ secrets.S3_PROFILE_ACCESS_KEY }}
           cloud.aws.credentials.secret-key: ${{ secrets.S3_PROFILE_SECRET_KEY }}
+          profile.default.url: ${{ secrets.PROFILE_DEFAULT_URL }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

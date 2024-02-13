@@ -49,3 +49,7 @@ cloud:
       secret-key: ${S3_PROFiLE_SECRET_KEY}
     region:
       static: ap-northeast-2
+
+profile:
+  default:
+    url: ${PROFILE_DEFAULT_URL}

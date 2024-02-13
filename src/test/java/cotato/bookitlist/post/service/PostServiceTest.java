@@ -80,7 +80,7 @@ class PostServiceTest {
     }
 
     Member createMember(Long memberId) {
-        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO);
+        Member member = new Member("email", "name", "oauth2Id", AuthProvider.KAKAO, "profile");
         ReflectionTestUtils.setField(member, "id", memberId);
         return member;
     }

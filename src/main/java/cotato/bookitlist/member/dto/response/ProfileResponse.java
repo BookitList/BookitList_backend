@@ -1,4 +1,4 @@
-package cotato.bookitlist.member.dto;
+package cotato.bookitlist.member.dto.response;
 
 public record ProfileResponse(
         String url

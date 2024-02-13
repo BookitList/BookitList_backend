@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.access.AccessDeniedException;
 
 @Entity
 @Getter
@@ -33,20 +34,22 @@ public class Member extends BaseEntity {
 
     private String profileLink;
 
-    private int followCount = 0;
+    @Enumerated(EnumType.STRING)
+    private ProfileStatus profileStatus = ProfileStatus.PUBLIC;
 
     private boolean deleted = false;
 
-    public Member(String email, String name, String oauth2Id, AuthProvider authProvider) {
+    public Member(String email, String name, String oauth2Id, AuthProvider authProvider, String profileLink) {
         this.email = email;
         this.name = name;
         this.oauth2Id = oauth2Id;
         this.authProvider = authProvider;
+        this.profileLink = profileLink;
     }
 
-    public static Member of(AuthProvider authProvider, OAuth2UserInfo oAuth2UserInfo) {
+    public static Member of(AuthProvider authProvider, OAuth2UserInfo oAuth2UserInfo, String profileLink) {
         return new Member(oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(), oAuth2UserInfo.getOAuth2Id(),
-                authProvider);
+                authProvider, profileLink);
     }
 
     public Member update(OAuth2UserInfo oAuth2UserInfo) {
@@ -56,8 +59,14 @@ public class Member extends BaseEntity {
         return this;
     }
 
-    public String updateProfileLine(String url) {
+    public String updateProfileLink(String url) {
         profileLink = url;
         return profileLink;
+    }
+
+    public void validatePubicProfile(Long memberId) {
+        if (profileStatus.equals(ProfileStatus.PRIVATE) && !id.equals(memberId)) {
+            throw new AccessDeniedException("권한이 존재하지 않는 멤버입니다.");
+        }
     }
 }

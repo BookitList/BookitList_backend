@@ -5,7 +5,6 @@ import cotato.bookitlist.book.domain.entity.Book;
 import java.time.LocalDate;
 
 public record BookDto(
-        Long bookId,
         String title,
         String author,
         String publisher,
@@ -18,7 +17,7 @@ public record BookDto(
 ) {
 
     public static BookDto from(Book entity) {
-        return new BookDto(entity.getId(),
+        return new BookDto(
                 entity.getTitle(),
                 entity.getAuthor(),
                 entity.getPublisher(),
@@ -27,11 +26,12 @@ public record BookDto(
                 entity.getLink(),
                 entity.getIsbn13(),
                 entity.getPrice(),
-                entity.getCover());
+                entity.getCover()
+        );
     }
 
     public static BookDto from(BookApiDto bookApiDto) {
-        return new BookDto(0L,
+        return new BookDto(
                 bookApiDto.title(),
                 bookApiDto.author(),
                 bookApiDto.publisher(),
@@ -40,6 +40,7 @@ public record BookDto(
                 bookApiDto.link(),
                 bookApiDto.isbn13(),
                 bookApiDto.price(),
-                bookApiDto.cover());
+                bookApiDto.cover()
+        );
     }
 }

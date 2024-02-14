@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
         return profileLink;
     }
 
-    public void validatePubicProfile(Long memberId) {
+    public void validatePublicProfile(Long memberId) {
         if (profileStatus.equals(ProfileStatus.PRIVATE) && !id.equals(memberId)) {
             throw new AccessDeniedException("권한이 존재하지 않는 멤버입니다.");
         }

@@ -24,7 +24,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("멤버를 찾을 수 없습니다."));
 
-        member.validatePubicProfile(loginMemberId);
+        member.validatePublicProfile(loginMemberId);
 
         return MemberDto.from(member, loginMemberId);
     }
@@ -36,5 +36,10 @@ public class MemberService {
         String url = fileService.uploadFileToS3(member.getId(), PROFILE_FILE_NAME, profile);
 
         return member.updateProfileLink(url);
+    }
+
+    public void changeProfileStatus(Long memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        member.changeProfileStatus();
     }
 }

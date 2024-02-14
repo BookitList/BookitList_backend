@@ -37,4 +37,13 @@ public class MemberController {
     ) {
         return ResponseEntity.ok(ProfileResponse.of(memberService.uploadProfile(multipartFile, details.getId())));
     }
+
+    @PatchMapping("/profile-status")
+    public ResponseEntity<Void> changeProfileStatus(
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        memberService.changeProfileStatus(details.getId());
+        return ResponseEntity.ok().build();
+    }
+
 }

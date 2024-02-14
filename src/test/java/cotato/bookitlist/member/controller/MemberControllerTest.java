@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -84,6 +85,19 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value("권한이 존재하지 않는 멤버입니다."))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("profileStatus를 변경하는 요청을 한다.")
+    void givenLoginMember_whenChangingProfileStatus_thenChangeProfileStatus() throws Exception{
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/members/profile-status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
         ;
     }
 

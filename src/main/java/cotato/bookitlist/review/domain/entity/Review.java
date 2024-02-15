@@ -75,4 +75,10 @@ public class Review extends BaseEntity {
     public void increaseViewCount() {
         this.viewCount++;
     }
+
+    // 좋아요는 모두 삭제하고 조회수 등 나머지 내용은 유지한다.
+    public void deleteReview() {
+        deleted = true;
+        likeCount = 0;
+    }
 }

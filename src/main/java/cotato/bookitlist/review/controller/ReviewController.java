@@ -7,6 +7,7 @@ import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.dto.response.ReviewResponse;
+import cotato.bookitlist.review.service.ReviewFacade;
 import cotato.bookitlist.review.service.ReviewService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class ReviewController {
     private static final String REVIEW_VIEW_COOKIE_NAME = "review_view";
 
     private final ReviewService reviewService;
+    private final ReviewFacade reviewFacade;
 
     @PostMapping
     public ResponseEntity<Void> registerReview(
@@ -102,6 +104,15 @@ public class ReviewController {
             @IsValidIsbn @RequestParam String isbn13
     ) {
         return ResponseEntity.ok(reviewService.getReviewCount(isbn13));
+    }
+
+    @DeleteMapping("/{review-id}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable("review-id") Long reviewId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        reviewFacade.deleteReview(reviewId, details.getId());
+        return ResponseEntity.noContent().build();
     }
 
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {

@@ -47,12 +47,14 @@ values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
        (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
-VALUES (1, 1, 'reviewContent', 'PUBLIC', 0, 0, false),
+VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false),
        (2, 1, 'reviewContent1', 'PUBLIC', 2, 0, false),
        (2, 1, 'rContent', 'PUBLIC', 0, 0, false),
        (2, 1, 'rContent2', 'PUBLIC', 0, 0, false),
        (2, 2, 'rContent3', 'PUBLIC', 0, 0, false),
-       (2, 2, 'reContent2', 'PUBLIC', 0, 0, false);
+       (2, 2, 'reContent2', 'PUBLIC', 0, 0, false),
+       (1, 2, 'rContent', 'PUBLIC', 0, 0, false),
+       (1, 2, 'rContent', 'PRIVATE', 0, 0, false);
 
 INSERT INTO post_like (member_id, post_id)
 VALUES (2, 1),
@@ -61,7 +63,9 @@ VALUES (2, 1),
        (2, 2);
 
 INSERT INTO review_like (member_id, review_id)
-VALUES (1, 2),
+VALUES (2, 1),
+       (3, 1),
+       (1, 2),
        (2, 2);
 
 INSERT INTO book_like (book_id, member_id)

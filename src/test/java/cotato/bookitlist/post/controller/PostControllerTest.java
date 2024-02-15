@@ -359,6 +359,7 @@ class PostControllerTest {
     void givenPostId_whenDeletingPost_thenDeletePost() throws Exception {
         //given
 
+        //when & then
         mockMvc.perform(delete("/posts/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
@@ -367,10 +368,11 @@ class PostControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("좋아요가 없는 게시글 id를 이용해 게시글을 삭제한다.")
+    @DisplayName("게시글 id를 이용해 좋아요가 없는 게시글을 삭제한다.")
     void givenPostIdNonPostLike_whenDeletingPost_thenDeletePost() throws Exception {
         //given
 
+        //when & then
         mockMvc.perform(delete("/posts/10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
@@ -379,10 +381,11 @@ class PostControllerTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("비공개 게시글 id를 이용해 게시글을 삭제한다.")
+    @DisplayName("게시글 id를 이용해 비공개 게시글을 삭제한다.")
     void givenPostIdNonPrivate_whenDeletingPost_thenDeletePost() throws Exception {
         //given
 
+        //when & then
         mockMvc.perform(delete("/posts/11")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())

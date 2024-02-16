@@ -92,7 +92,7 @@ public class AuthService {
     }
 
     public void validateRegisteredMember(Long memberId) {
-        if (memberRepository.existsById(memberId)) {
+        if (!memberRepository.existsById(memberId)) {
             throw new EntityNotFoundException("유저 정보를 찾을 수 없습니다.");
         }
     }

@@ -304,4 +304,43 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.count").value(4))
         ;
     }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("한줄요약 id를 이용해 좋아요가 있는 한줄요약을 삭제한다.")
+    void givenReviewId_whenDeletingReview_thenDeleteReview() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(delete("/reviews/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("한줄요약 id를 이용해 좋아요가 없는 한줄요약을 삭제한다.")
+    void givenReviewIdNonReviewLike_whenDeletingReview_thenDeleteReview() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(delete("/reviews/7")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("한줄요약 id를 이용해 비공개 한줄요약을 삭제한다.")
+    void givenPrivateReviewId_whenDeletingReview_thenDeleteReview() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(delete("/reviews/8")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+        ;
+    }
 }

@@ -43,4 +43,8 @@ public class ReviewLikeService {
 
         reviewLikeRepository.delete(reviewLike);
     }
+
+    public void deleteAllReviewLike(Long reviewId) {
+        reviewLikeRepository.deleteAllByReviewId(reviewId);
+    }
 }

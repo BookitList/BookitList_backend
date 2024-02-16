@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.member.domain.ProfileStatus;
 import cotato.bookitlist.review.domain.ReviewStatus;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.ReviewDto;
@@ -18,6 +19,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
+import static cotato.bookitlist.member.domain.QMember.member;
 import static cotato.bookitlist.review.domain.entity.QReview.review;
 import static cotato.bookitlist.review.domain.entity.QReviewLike.reviewLike;
 
@@ -46,7 +48,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
-                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC))
+                .join(review.member, member)
+                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC), review.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -82,7 +85,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
-                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC))
+                .join(review.member, member)
+                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC), review.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .fetchOne());
     }
 

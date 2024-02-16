@@ -286,7 +286,7 @@ class ReviewControllerTest {
         mockMvc.perform(get("/reviews/all")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(6))
+                .andExpect(jsonPath("$.totalResults").value(7))
         ;
     }
 

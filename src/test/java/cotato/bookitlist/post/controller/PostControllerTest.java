@@ -517,5 +517,20 @@ class PostControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("좋아요가 많은 순으로 게시글을 3개 반환한다.")
+    void givenPageStart_whenGettingMostLikePosts_thenReturnMostLikePosts() throws Exception {
+        //given
+        int start = 0;
+
+        //when & then
+        mockMvc.perform(get("/posts/recommend/like")
+                        .param("start", String.valueOf(start))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList[0].likeCount").value(3))
+                .andExpect(jsonPath("$.postList[1].likeCount").value(2))
+        ;
+    }
 }
 

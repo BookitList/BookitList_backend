@@ -27,11 +27,13 @@ VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, C
        ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP),
        ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP);
 
 INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
-values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 2, 0, false),
+values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 2, 0, false),
+       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 3, 0, false),
        (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false),
        (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false),
        (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
@@ -48,7 +50,7 @@ values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false),
-       (2, 1, 'reviewContent1', 'PUBLIC', 2, 0, false),
+       (2, 1, 'reviewContent1', 'PUBLIC', 3, 0, false),
        (2, 1, 'rContent', 'PUBLIC', 0, 0, false),
        (2, 1, 'rContent2', 'PUBLIC', 0, 0, false),
        (2, 2, 'rContent3', 'PUBLIC', 0, 0, false),
@@ -62,13 +64,15 @@ VALUES (2, 1),
        (1, 2),
        (2, 2),
        (1, 6),
-       (1, 7);
+       (1, 7),
+       (5, 2);
 
 INSERT INTO review_like (member_id, review_id)
 VALUES (2, 1),
        (3, 1),
        (1, 2),
-       (2, 2);
+       (2, 2),
+       (5, 2);
 
 INSERT INTO book_like (book_id, member_id)
 VALUES (1, 1),

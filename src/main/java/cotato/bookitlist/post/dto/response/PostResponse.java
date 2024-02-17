@@ -1,5 +1,6 @@
 package cotato.bookitlist.post.dto.response;
 
+import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;
 import cotato.bookitlist.post.domain.entity.Post;
 import cotato.bookitlist.post.dto.PostDto;
@@ -16,6 +17,7 @@ public record PostResponse(
         int viewCount,
         boolean liked,
         boolean isMine,
+        PostStatus postStatus,
         PostTemplate template
 ) {
 
@@ -30,6 +32,7 @@ public record PostResponse(
                 entity.getViewCount(),
                 false,
                 entity.getMember().getId().equals(memberId),
+                entity.getStatus(),
                 entity.getTemplate()
         );
     }
@@ -45,6 +48,7 @@ public record PostResponse(
                 dto.viewCount(),
                 dto.liked(),
                 dto.memberId().equals(memberId),
+                dto.postStatus(),
                 dto.template()
         );
     }

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface PostRepositoryCustom {
-    Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13,Long memberId, Long loginMemberId, Pageable pageable);
+    Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13, Long memberId, Long loginMemberId, Pageable pageable);
 
     Optional<PostDetailDto> findPublicPostDetailByPostId(Long postId, Long memberId);
 }

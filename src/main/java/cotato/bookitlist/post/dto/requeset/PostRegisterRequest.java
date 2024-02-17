@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import static cotato.bookitlist.post.domain.PostTemplate.*;
 
 public record PostRegisterRequest(
+        @NotNull
         @IsValidIsbn
         String isbn13,
         @Size(max = 256)

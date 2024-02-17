@@ -59,8 +59,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(isbnEq(isbn13), memberIdEq(memberId))
-                .from(post);
+                .join(post.member, member)
+                .where(isbnEq(isbn13), memberIdEq(memberId));
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
     }
@@ -92,6 +92,41 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .join(post.member, member)
                 .where(post.id.eq(postId), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .fetchOne());
+    }
+
+    @Override
+    public Page<PostDto> findLikePostByMemberId(Long memberId, Pageable pageable) {
+        List<PostDto> result = queryFactory
+                .select(
+                        Projections.constructor(
+                                PostDto.class,
+                                post.id,
+                                post.member.id,
+                                post.book.id,
+                                post.title,
+                                post.content,
+                                post.likeCount,
+                                post.viewCount,
+                                Expressions.constant(true),
+                                post.template
+                        )
+                )
+                .from(postLike)
+                .join(postLike.post, post)
+                .join(postLike.member, member)
+                .where(postLike.member.id.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
+                .from(postLike)
+                .join(postLike.post, post)
+                .join(postLike.member, member)
+                .where(postLike.member.id.eq(memberId));
+
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression isLikedByMember(Long memberId, NumberPath<Long> postId) {

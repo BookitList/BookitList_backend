@@ -123,6 +123,14 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/likes")
+    public ResponseEntity<PostListResponse> searchLikePost(
+            Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        return ResponseEntity.ok(postService.searchLikePost(details.getId(), pageable));
+    }
+
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {
         Cookie[] cookies = request.getCookies();
         Cookie postViewCookie = findCookie(cookies);

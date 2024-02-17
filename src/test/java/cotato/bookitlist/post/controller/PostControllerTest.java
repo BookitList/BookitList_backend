@@ -450,5 +450,31 @@ class PostControllerTest {
         ;
     }
 
+    @Test
+    @WithCustomMockUser
+    @DisplayName("유저가 본인이 작성한 게시글을 조회한다.")
+    void givenLogin_whenGettingMyPost_thenReturnPostListResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(3))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 본인이 작성한 게시글을 조회하면 에러를 반환한다.")
+    void givenNonLogin_whenGettingMyPost_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
 }
 

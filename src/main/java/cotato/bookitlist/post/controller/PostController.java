@@ -139,6 +139,17 @@ public class PostController {
         return ResponseEntity.ok(postService.getMyPosts(details.getId(), pageable));
     }
 
+    @GetMapping("/recommend/like")
+    public ResponseEntity<PostListResponse> getMostLikePosts(
+            @RequestParam int start,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        if (details == null) {
+            return ResponseEntity.ok(postService.getMostLikePosts(start, DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(postService.getMostLikePosts(start, details.getId()));
+    }
+
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {
         Cookie[] cookies = request.getCookies();
         Cookie postViewCookie = findCookie(cookies);

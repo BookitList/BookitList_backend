@@ -14,7 +14,11 @@ import cotato.bookitlist.post.dto.response.PostListResponse;
 import cotato.bookitlist.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
+
+    @Value("${recommend.count.post}")
+    private int recommendCount;
 
     private final BookService bookService;
     private final PostRepository postRepository;
@@ -91,5 +98,12 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostListResponse getMyPosts(Long memberId, Pageable pageable) {
         return PostListResponse.from(postRepository.findByMemberId(memberId, pageable), memberId);
+    }
+
+    public PostListResponse getMostLikePosts(int start, Long memberId) {
+        Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("likeCount").descending());
+        Page<Post> postPage = postRepository.findPublicPostAll(pageable);
+
+        return PostListResponse.from(postPage, memberId);
     }
 }

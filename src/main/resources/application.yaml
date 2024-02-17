@@ -53,3 +53,9 @@ cloud:
 profile:
   default:
     url: ${PROFILE_DEFAULT_URL}
+
+recommend:
+  count:
+    book: 3
+    post: 3
+    review: 4

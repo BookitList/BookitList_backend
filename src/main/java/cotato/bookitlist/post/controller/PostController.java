@@ -94,15 +94,16 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostListResponse> searchPost(
-            @IsValidIsbn @RequestParam String isbn13,
+            @IsValidIsbn @RequestParam(required = false) String isbn13,
+            @RequestParam(name = "member-id", required = false) Long memberId,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal AuthDetails details
     ) {
         if (details == null) {
-            return ResponseEntity.ok(postService.searchPost(isbn13, DEFAULT_USER_ID, pageable));
+            return ResponseEntity.ok(postService.searchPost(isbn13, memberId, DEFAULT_USER_ID, pageable));
         }
 
-        return ResponseEntity.ok(postService.searchPost(isbn13, details.getId(), pageable));
+        return ResponseEntity.ok(postService.searchPost(isbn13, memberId, details.getId(), pageable));
     }
 
     @GetMapping("/count")

@@ -29,7 +29,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
+    public Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13, Long memberId, Long loginMemberId, Pageable pageable) {
         List<PostDto> result = queryFactory
                 .select(
                         Projections.constructor(
@@ -42,7 +42,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                 post.likeCount,
                                 post.viewCount,
                                 Expressions.cases()
-                                        .when(isLikedByMember(memberId, post.id))
+                                        .when(isLikedByMember(loginMemberId, post.id))
                                         .then(true)
                                         .otherwise(false)
                                         .as("liked"),
@@ -51,7 +51,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 )
                 .from(post)
                 .join(post.member, member)
-                .where(post.book.isbn13.eq(isbn13), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
+                .where(isbnEq(isbn13), memberIdEq(memberId), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -59,7 +59,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(post.book.isbn13.eq(isbn13))
+                .where(isbnEq(isbn13), memberIdEq(memberId))
                 .from(post);
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
@@ -100,5 +100,19 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .where(postLike.member.id.eq(memberId)
                         .and(postLike.post.id.eq(postId)))
                 .exists();
+    }
+
+    private BooleanExpression isbnEq(String isbn13) {
+        if (isbn13 == null) {
+            return null;
+        }
+        return post.book.isbn13.eq(isbn13);
+    }
+
+    private BooleanExpression memberIdEq(Long memberId) {
+        if (memberId == null) {
+            return null;
+        }
+        return post.member.id.eq(memberId);
     }
 }

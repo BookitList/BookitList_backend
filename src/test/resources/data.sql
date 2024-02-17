@@ -35,8 +35,8 @@ values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
        (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false),
        (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false),
        (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
-       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 0, 0, false),
+       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 1, 0, false),
+       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 1, 0, false),
        (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
        (2, 2, 'privateTitle',
         'first<============================>second<============================>third<============================>fourth',
@@ -60,7 +60,9 @@ INSERT INTO post_like (member_id, post_id)
 VALUES (2, 1),
        (3, 1),
        (1, 2),
-       (2, 2);
+       (2, 2),
+       (1, 6),
+       (1, 7);
 
 INSERT INTO review_like (member_id, review_id)
 VALUES (2, 1),

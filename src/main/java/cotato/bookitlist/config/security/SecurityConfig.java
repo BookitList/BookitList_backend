@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(WHITE_LIST).permitAll()
+                        .requestMatchers("/posts/likes").authenticated()
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .anyRequest().authenticated()

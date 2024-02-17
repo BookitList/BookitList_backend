@@ -82,4 +82,9 @@ public class PostService {
 
         post.deletePost();
     }
+
+    @Transactional(readOnly = true)
+    public PostListResponse searchLikePost(Long memberId, Pageable pageable) {
+        return PostListResponse.fromDto(postRepository.findLikePostByMemberId(memberId, pageable), memberId);
+    }
 }

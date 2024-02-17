@@ -41,7 +41,7 @@ class PostLikeServiceTest {
     void givenPostId_whenRegisteringPostLike_thenRegisterPostLike() {
         //given
         Long postId = 1L;
-        Long memberId = 1L;
+        Long memberId = 2L;
         Post post = createPost(postId);
         Member member = createMember(memberId);
 

@@ -36,7 +36,7 @@ class PostLikeControllerTest {
         //given
 
         //when & then
-        mockMvc.perform(post("/posts/1/likes")
+        mockMvc.perform(post("/posts/7/likes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
@@ -96,6 +96,20 @@ class PostLikeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("게시글 좋아요 정보를 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("본인의 게시글을 좋아요하면 에러를 반환한다.")
+    void givenMyPost_whenRegisteringPostLike_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(post("/posts/1/likes")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("본인의 게시글은 좋아요할 수 없습니다."))
         ;
     }
 }

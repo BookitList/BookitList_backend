@@ -62,8 +62,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse searchPost(String isbn13, Long memberId, Pageable pageable) {
-        return PostListResponse.fromDto(postRepository.findPublicPostWithLikedByIsbn13(isbn13, memberId, pageable), memberId);
+    public PostListResponse searchPost(String isbn13, Long memberId, Long loginMemberId, Pageable pageable) {
+        return PostListResponse.fromDto(postRepository.findPublicPostWithLikedByIsbn13(isbn13, memberId, loginMemberId, pageable), loginMemberId);
     }
 
     @Transactional(readOnly = true)

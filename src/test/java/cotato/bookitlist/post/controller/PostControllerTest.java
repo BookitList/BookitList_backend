@@ -392,5 +392,37 @@ class PostControllerTest {
         ;
     }
 
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인한 유저가 memberId를 이용해 게시글을 조회한다.")
+    void givenMemberIdWithLogin_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts")
+                        .param("member-id", "2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(6))
+                .andExpect(jsonPath("$.postList[0].liked").value(true))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("유저가 memberId를 이용해 게시글을 조회한다.")
+    void givenMemberId_whenSearchingPost_thenReturnPostListResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts")
+                        .param("member-id", "2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(6))
+                .andExpect(jsonPath("$.postList[0].liked").value(false))
+        ;
+    }
+
 }
 

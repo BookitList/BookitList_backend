@@ -14,7 +14,11 @@ public class IsbnValidator implements ConstraintValidator<IsValidIsbn, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.length() != 13) {
+        if (value == null) {
+            return true;
+        }
+
+        if (value.length() != 13) {
             throw new IllegalArgumentException(defaultMessage);
         }
 

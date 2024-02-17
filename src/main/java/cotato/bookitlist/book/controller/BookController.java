@@ -1,6 +1,7 @@
 package cotato.bookitlist.book.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
+import cotato.bookitlist.book.dto.response.BookRecommendResponse;
 import cotato.bookitlist.book.dto.request.BookIsbn13Request;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -78,6 +80,11 @@ public class BookController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<List<BookRecommendResponse>> recommendBook() {
+        return ResponseEntity.ok(bookService.recommendBook());
     }
 
 }

@@ -1,24 +1,31 @@
 package cotato.bookitlist.book.service;
 
-import cotato.bookitlist.book.domain.Book;
+import cotato.bookitlist.book.domain.entity.Book;
+import cotato.bookitlist.book.domain.redis.BookApiCache;
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.BookDto;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
-import cotato.bookitlist.book.redis.BookApiCache;
+import cotato.bookitlist.book.dto.response.BookRecommendResponse;
 import cotato.bookitlist.book.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookService {
+
+    @Value("${recommend.count.book}")
+    private int recommendCount;
 
     private final BookApiComponent bookApiComponent;
     private final BookApiCacheService bookApiCacheService;
@@ -65,5 +72,12 @@ public class BookService {
 
     public BookListResponse getLikeBooks(Long memberId, Pageable pageable) {
         return BookListResponse.from(bookRepository.findLikeBookByMemberId(memberId, pageable));
+    }
+
+    public List<BookRecommendResponse> recommendBook() {
+        return bookRepository.findBooksByRandom(recommendCount).stream()
+                .map(BookDto::from)
+                .map(BookRecommendResponse::from)
+                .toList();
     }
 }

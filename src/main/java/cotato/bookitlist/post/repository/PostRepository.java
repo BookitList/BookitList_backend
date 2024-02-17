@@ -18,4 +18,6 @@ public interface PostRepository extends PostRepositoryCustom, JpaRepository<Post
     int countPublicPostByBook_Isbn13(String isbn13);
 
     Optional<Post> findByIdAndMemberId(Long postId, Long memberId);
+
+    Page<Post> findByMemberId(Long memberId, Pageable pageable);
 }

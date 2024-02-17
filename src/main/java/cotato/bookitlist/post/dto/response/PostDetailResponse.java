@@ -1,5 +1,6 @@
 package cotato.bookitlist.post.dto.response;
 
+import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;
 import cotato.bookitlist.post.dto.PostDetailDto;
 
@@ -18,6 +19,7 @@ public record PostDetailResponse(
         LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,
+        PostStatus postStatus,
         PostTemplate template
 ) {
 
@@ -34,6 +36,7 @@ public record PostDetailResponse(
                 dto.modifiedAt(),
                 dto.liked(),
                 dto.memberId().equals(memberId),
+                dto.postStatus(),
                 dto.template()
         );
     }

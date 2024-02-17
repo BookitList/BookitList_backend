@@ -46,6 +46,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                         .then(true)
                                         .otherwise(false)
                                         .as("liked"),
+                                post.status,
                                 post.template
                         )
                 )
@@ -85,6 +86,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                         .then(true)
                                         .otherwise(false)
                                         .as("liked"),
+                                post.status,
                                 post.template
                         )
                 )
@@ -108,6 +110,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                 post.likeCount,
                                 post.viewCount,
                                 Expressions.constant(true),
+                                post.status,
                                 post.template
                         )
                 )

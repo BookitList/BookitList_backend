@@ -36,7 +36,7 @@ class PostLikeControllerTest {
         //given
 
         //when & then
-        mockMvc.perform(post("/posts/7/likes")
+        mockMvc.perform(post("/posts/12/likes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))

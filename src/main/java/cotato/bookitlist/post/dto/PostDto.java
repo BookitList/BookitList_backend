@@ -1,5 +1,6 @@
 package cotato.bookitlist.post.dto;
 
+import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;
 import cotato.bookitlist.post.domain.entity.Post;
 
@@ -12,6 +13,7 @@ public record PostDto(
         int likeCount,
         int viewCount,
         boolean liked,
+        PostStatus postStatus,
         PostTemplate template
 ) {
 
@@ -25,6 +27,7 @@ public record PostDto(
                 entity.getLikeCount(),
                 entity.getViewCount(),
                 false,
+                entity.getStatus(),
                 entity.getTemplate()
         );
     }

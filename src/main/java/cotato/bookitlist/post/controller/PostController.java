@@ -125,10 +125,18 @@ public class PostController {
 
     @GetMapping("/likes")
     public ResponseEntity<PostListResponse> searchLikePost(
-            Pageable pageable,
-            @AuthenticationPrincipal AuthDetails details
+            @AuthenticationPrincipal AuthDetails details,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(postService.searchLikePost(details.getId(), pageable));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<PostListResponse> getMyPosts(
+            @AuthenticationPrincipal AuthDetails details,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(postService.getMyPosts(details.getId(), pageable));
     }
 
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {

@@ -424,5 +424,31 @@ class PostControllerTest {
         ;
     }
 
+    @Test
+    @WithCustomMockUser
+    @DisplayName("유저가 좋아요한 게시글을 조회한다.")
+    void givenLogin_whenSearchingLikePost_thenReturnPostListResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/likes")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(3))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 좋아요 요청시 에러를 반환한다.")
+    void givenNonLogin_whenSearchingLikePost_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/likes")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
 }
 

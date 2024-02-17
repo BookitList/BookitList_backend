@@ -2,6 +2,7 @@ package cotato.bookitlist.post.dto.requeset;
 
 import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,8 @@ public record PostUpdateRequest(
         @NotNull
         PostTemplate template
 ) {
+
+    @Hidden
     @AssertTrue(message = "잘못된 템플릿 형식입니다.")
     public boolean isValidTemplateContent() {
         if (template.equals(TEMPLATE)) {

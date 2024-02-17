@@ -89,4 +89,10 @@ public class Post extends BaseEntity {
         deleted = true;
         likeCount = 0;
     }
+
+    public void validatePostLike(Member member) {
+        if (member.getId().equals(this.member.getId())) {
+            throw new AccessDeniedException("본인의 게시글은 좋아요할 수 없습니다.");
+        }
+    }
 }

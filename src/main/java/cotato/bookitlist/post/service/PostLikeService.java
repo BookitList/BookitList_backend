@@ -29,6 +29,8 @@ public class PostLikeService {
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         Member member = memberRepository.getReferenceById(memberId);
 
+        post.validatePostLike(member);
+
         PostLike postLike = PostLike.of(member, post);
         postLike.increasePostLikeCount();
 

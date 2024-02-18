@@ -52,7 +52,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostDetailDto getPost(Long postId, Long memberId) {
-        return postRepository.findPublicPostDetailByPostId(postId, memberId)
+        return postRepository.findPostDetailByPostId(postId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 

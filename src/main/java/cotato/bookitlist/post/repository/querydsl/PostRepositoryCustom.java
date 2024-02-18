@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PostRepositoryCustom {
     Page<PostDto> findPublicPostWithLikedByIsbn13(String isbn13, Long memberId, Long loginMemberId, Pageable pageable);
 
-    Optional<PostDetailDto> findPublicPostDetailByPostId(Long postId, Long memberId);
+    Optional<PostDetailDto> findPostDetailByPostId(Long postId, Long memberId);
 
     Page<PostDto> findLikePostByMemberId(Long memberId, Pageable pageable);
 }

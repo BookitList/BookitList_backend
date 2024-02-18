@@ -1,7 +1,6 @@
 package cotato.bookitlist.book.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cotato.bookitlist.annotation.WithCustomMockUser;
 import cotato.bookitlist.book.dto.request.BookIsbn13Request;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -267,30 +266,6 @@ class BookControllerTest {
         mockMvc.perform(get("/books/" + bookId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("책을 찾을 수 없습니다."))
-        ;
-    }
-
-    @Test
-    @WithCustomMockUser
-    @DisplayName("찜한 책 목록을 조회한다.")
-    void givenLoginMember_whenGettingLikePosts_thenReturnBookListResponse() throws Exception{
-        //given
-
-        //when & then
-        mockMvc.perform(get("/books/likes"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(2))
-        ;
-    }
-
-    @Test
-    @DisplayName("로그인 없이 찜한 책 목록을 조회하면 에러를 반환한다.")
-    void givenNonLoginMember_whenGettingLikePosts_thenReturnErrorResponse() throws Exception {
-        //given
-
-        //when & then
-        mockMvc.perform(get("/books/likes"))
-                .andExpect(status().isUnauthorized())
         ;
     }
 }

@@ -11,25 +11,25 @@ public record ReviewListResponse(
         int totalPages,
         int startIndex,
         int itemsPerPage,
-        List<ReviewDto> reviewList
+        List<ReviewResponse> reviewList
 ) {
-    public static ReviewListResponse from(Page<Review> page) {
+    public static ReviewListResponse from(Page<Review> page, Long memberId) {
         return new ReviewListResponse(
                 (int) page.getTotalElements(),
                 page.getTotalPages(),
                 page.getNumber(),
                 page.getSize(),
-                page.stream().map(ReviewDto::from).toList()
+                page.stream().map(r -> ReviewResponse.from(r, memberId)).toList()
         );
     }
 
-    public static ReviewListResponse fromDto(Page<ReviewDto> page) {
+    public static ReviewListResponse fromDto(Page<ReviewDto> page, Long memberId) {
         return new ReviewListResponse(
                 (int) page.getTotalElements(),
                 page.getTotalPages(),
                 page.getNumber(),
                 page.getSize(),
-                page.toList()
+                page.stream().map(r -> ReviewResponse.from(r, memberId)).toList()
         );
     }
 }

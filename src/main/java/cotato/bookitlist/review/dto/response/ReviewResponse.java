@@ -1,8 +1,8 @@
 package cotato.bookitlist.review.dto.response;
 
-import cotato.bookitlist.review.dto.ReviewDetailDto;
-
-import java.time.LocalDateTime;
+import cotato.bookitlist.review.domain.ReviewStatus;
+import cotato.bookitlist.review.domain.entity.Review;
+import cotato.bookitlist.review.dto.ReviewDto;
 
 public record ReviewResponse(
         Long reviewId,
@@ -11,12 +11,25 @@ public record ReviewResponse(
         String content,
         int likeCount,
         int viewCount,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt,
         boolean liked,
-        boolean isMine
+        boolean isMine,
+        ReviewStatus status
 ) {
-    public static ReviewResponse from(ReviewDetailDto dto, Long memberId) {
+    public static ReviewResponse from(Review entity, Long memberId) {
+        return new ReviewResponse(
+                entity.getId(),
+                entity.getMember().getId(),
+                entity.getBook().getId(),
+                entity.getContent(),
+                entity.getLikeCount(),
+                entity.getViewCount(),
+                false,
+                entity.getMember().getId().equals(memberId),
+                entity.getStatus()
+        );
+    }
+
+    public static ReviewResponse from(ReviewDto dto, Long memberId) {
         return new ReviewResponse(
                 dto.reviewId(),
                 dto.memberId(),
@@ -24,10 +37,9 @@ public record ReviewResponse(
                 dto.content(),
                 dto.likeCount(),
                 dto.viewCount(),
-                dto.createdAt(),
-                dto.modifiedAt(),
                 dto.liked(),
-                dto.memberId().equals(memberId)
+                dto.memberId().equals(memberId),
+                dto.reviewStatus()
         );
     }
 }

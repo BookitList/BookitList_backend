@@ -44,7 +44,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                                         .when(isLikedByMember(memberId, review.id))
                                         .then(true)
                                         .otherwise(false)
-                                        .as("liked")
+                                        .as("liked"),
+                                review.status
                         )
                 )
                 .from(review)
@@ -81,7 +82,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                                         .when(isLikedByMember(memberId, review.id))
                                         .then(true)
                                         .otherwise(false)
-                                        .as("liked")
+                                        .as("liked"),
+                                review.status
                         )
                 )
                 .from(review)

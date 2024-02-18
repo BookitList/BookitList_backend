@@ -1,5 +1,6 @@
 package cotato.bookitlist.review.dto;
 
+import cotato.bookitlist.review.domain.ReviewStatus;
 import cotato.bookitlist.review.domain.entity.Review;
 
 public record ReviewDto(
@@ -9,7 +10,8 @@ public record ReviewDto(
         String content,
         int likeCount,
         int viewCount,
-        boolean liked
+        boolean liked,
+        ReviewStatus reviewStatus
 ) {
     public static ReviewDto from(Review entity) {
         return new ReviewDto(
@@ -19,7 +21,8 @@ public record ReviewDto(
                 entity.getContent(),
                 entity.getLikeCount(),
                 entity.getViewCount(),
-                false
+                false,
+                entity.getStatus()
         );
     }
 }

@@ -1,6 +1,6 @@
 package cotato.bookitlist.mark.domain;
 
-import cotato.bookitlist.book.domain.entity.Book;
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

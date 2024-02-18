@@ -1,4 +1,4 @@
-package cotato.bookitlist.book.domain.entity;
+package cotato.bookitlist.book.domain;
 
 import cotato.bookitlist.common.domain.BaseEntity;
 import jakarta.persistence.*;

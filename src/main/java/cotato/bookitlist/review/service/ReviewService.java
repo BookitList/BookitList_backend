@@ -1,6 +1,6 @@
 package cotato.bookitlist.review.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.book.service.BookService;
 import cotato.bookitlist.member.domain.Member;

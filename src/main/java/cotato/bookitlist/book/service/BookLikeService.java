@@ -1,6 +1,6 @@
 package cotato.bookitlist.book.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.book.domain.BookLike;
 import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.repository.BookLikeRepository;

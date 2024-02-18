@@ -7,6 +7,7 @@ import cotato.bookitlist.book.dto.response.BookApiResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.dto.response.BookResponse;
 import cotato.bookitlist.book.service.BookService;
+import cotato.bookitlist.config.security.jwt.AuthDetails;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -78,6 +80,14 @@ public class BookController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/likes")
+    public ResponseEntity<BookListResponse> getLikeBooks(
+            @AuthenticationPrincipal AuthDetails details,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(bookService.getLikeBooks(details.getId(), pageable));
     }
 }
 

@@ -1,6 +1,6 @@
 package cotato.bookitlist.book.service;
 
-import cotato.bookitlist.book.domain.redis.BookApiCache;
+import cotato.bookitlist.book.redis.BookApiCache;
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.repository.BookApiCacheRepository;
 import lombok.RequiredArgsConstructor;

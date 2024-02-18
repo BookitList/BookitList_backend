@@ -1,6 +1,7 @@
 package cotato.bookitlist.book.dto;
 
-import cotato.bookitlist.book.domain.entity.Book;
+
+import cotato.bookitlist.book.domain.Book;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

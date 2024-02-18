@@ -1,4 +1,4 @@
-package cotato.bookitlist.book.domain.redis;
+package cotato.bookitlist.book.redis;
 
 import cotato.bookitlist.book.dto.BookApiDto;
 import jakarta.persistence.Id;

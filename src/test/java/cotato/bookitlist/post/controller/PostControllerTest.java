@@ -282,6 +282,47 @@ class PostControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 본인의 private 게시글을 조회한다.")
+    void givenPostIdWithLogin_whenGettingMyPrivatePost_thenReturnPostResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/11")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postStatus").value("PRIVATE"))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 다른사람 private 게시글을 조회하면 에러를 반환한다.")
+    void givenPostIdWithLogin_whenGettingPrivatePost_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/13")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("게시글을 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 안된 유저가 다른사람 private 게시글을 조회하면 에러를 반환한다.")
+    void givenPostId_whenGettingPrivatePost_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/posts/13")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("게시글을 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
     @DisplayName("없는 게시글 id로 조회하면 에러를 반환한다.")
     void givenNonExistedPostId_whenGettingPost_thenErrorResponse() throws Exception {
         //given

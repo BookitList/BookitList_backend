@@ -67,7 +67,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Optional<PostDetailDto> findPublicPostDetailByPostId(Long postId, Long memberId) {
+    public Optional<PostDetailDto> findPostDetailByPostId(Long postId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .select(
                         Projections.constructor(
@@ -92,7 +92,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 )
                 .from(post)
                 .join(post.member, member)
-                .where(post.id.eq(postId), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
+                .where(post.id.eq(postId), buildPostAccessCondition(post.member.id, memberId))
                 .fetchOne());
     }
 
@@ -152,5 +152,13 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
             return null;
         }
         return post.member.id.eq(memberId);
+    }
+
+    private BooleanExpression buildPostAccessCondition(NumberPath<Long> postMemberId, Long memberId) {
+        return Expressions.cases()
+                .when(postMemberId.eq(memberId))
+                .then(true)
+                .otherwise(post.status.eq(PostStatus.PUBLIC)
+                        .and(post.member.profileStatus.eq(ProfileStatus.PUBLIC)));
     }
 }

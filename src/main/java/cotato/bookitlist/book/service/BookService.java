@@ -1,12 +1,12 @@
 package cotato.bookitlist.book.service;
 
-import cotato.bookitlist.book.domain.entity.Book;
-import cotato.bookitlist.book.domain.redis.BookApiCache;
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.BookDto;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.dto.response.BookRecommendResponse;
+import cotato.bookitlist.book.redis.BookApiCache;
 import cotato.bookitlist.book.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

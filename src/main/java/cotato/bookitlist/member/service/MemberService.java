@@ -42,4 +42,10 @@ public class MemberService {
         Member member = memberRepository.getReferenceById(memberId);
         member.changeProfileStatus();
     }
+
+    public void changeName(String name, Long memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        member.changeName(name);
+    }
+
 }

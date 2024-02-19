@@ -1,9 +1,11 @@
 package cotato.bookitlist.member.controller;
 
 import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.member.dto.request.NameChangeRequest;
 import cotato.bookitlist.member.dto.response.MemberResponse;
 import cotato.bookitlist.member.dto.response.ProfileResponse;
 import cotato.bookitlist.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,6 +45,15 @@ public class MemberController {
             @AuthenticationPrincipal AuthDetails details
     ) {
         memberService.changeProfileStatus(details.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/name")
+    public ResponseEntity<Void> changeName(
+            @Valid @RequestBody NameChangeRequest nameChangeRequest,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        memberService.changeName(nameChangeRequest.name(), details.getId());
         return ResponseEntity.ok().build();
     }
 

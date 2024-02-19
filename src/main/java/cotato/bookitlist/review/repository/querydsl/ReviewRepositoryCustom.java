@@ -9,5 +9,8 @@ import java.util.Optional;
 
 public interface ReviewRepositoryCustom {
     Page<ReviewDto> findPublicReviewWithLikedByIsbn13(String isbn13, Long memberId, Long loginMemberId, Pageable pageable);
+
     Optional<ReviewDetailDto> findPublicReviewDetailByReviewId(Long reviewId, Long memberId);
+
+    Page<ReviewDto> findLikeReviewByMemberId(Long memberId, Pageable pageable);
 }

@@ -41,7 +41,7 @@ class ReviewLikeServiceTest {
     void givenReviewId_whenRegisteringReviewLike_thenRegisterReviewLike() {
         //given
         Long reviewId = 1L;
-        Long memberId = 1L;
+        Long memberId = 2L;
         Review review = createReview(reviewId);
         Member member = createMember(memberId);
 

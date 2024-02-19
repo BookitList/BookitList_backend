@@ -95,6 +95,10 @@ public class ReviewService {
         review.deleteReview();
     }
 
+    public ReviewListResponse searchLikeReview(Long memberId, Pageable pageable) {
+        return ReviewListResponse.fromDto(reviewRepository.findLikeReviewByMemberId(memberId, pageable), memberId);
+    }
+
     public ReviewListResponse getRecommendReviews(RecommendType type, int start, Long memberId) {
         return switch (type) {
             case LIKE -> getMostLikeReviews(start, memberId);

@@ -1,5 +1,6 @@
 package cotato.bookitlist.review.dto.response;
 
+import cotato.bookitlist.review.domain.ReviewStatus;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,8 @@ public record ReviewDetailResponse(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         boolean liked,
-        boolean isMine
+        boolean isMine,
+        ReviewStatus reviewStatus
 ) {
     public static ReviewDetailResponse from(ReviewDetailDto dto, Long memberId) {
         return new ReviewDetailResponse(
@@ -27,7 +29,8 @@ public record ReviewDetailResponse(
                 dto.createdAt(),
                 dto.modifiedAt(),
                 dto.liked(),
-                dto.memberId().equals(memberId)
+                dto.memberId().equals(memberId),
+                dto.reviewStatus()
         );
     }
 }

@@ -14,6 +14,6 @@ public record ReviewDetailDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         boolean liked,
-        ReviewStatus status
+        ReviewStatus reviewStatus
 ) {
 }

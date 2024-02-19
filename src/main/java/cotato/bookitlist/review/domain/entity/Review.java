@@ -81,4 +81,10 @@ public class Review extends BaseEntity {
         deleted = true;
         likeCount = 0;
     }
+
+    public void validateReviewLike(Member member) {
+        if (member.getId().equals(this.member.getId())) {
+            throw new AccessDeniedException("본인의 한줄요약은 좋아요할 수 없습니다.");
+        }
+    }
 }

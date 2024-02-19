@@ -29,6 +29,8 @@ public class ReviewLikeService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
         Member member = memberRepository.getReferenceById(memberId);
 
+        review.validateReviewLike(member);
+
         ReviewLike reviewLike = ReviewLike.of(member, review);
         reviewLike.increaseReviewLikeCount();
 

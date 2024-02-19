@@ -233,6 +233,47 @@ class ReviewControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 본인의 private 게시글을 조회한다.")
+    void givenReviewIdWithLogin_whenGettingMyPrivateReview_thenReturnReviewResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/8")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewStatus").value("PRIVATE"))
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("로그인 된 유저가 다른 사람 private 한줄요약을 조회하면 에러를 반환한다.")
+    void givenReviewIdWithLogin_whenGettingPrivateReview_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/6")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("한줄요약을 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 안된 유저가 private 한줄요약을 조회하면 에러를 반환한다.")
+    void givenReviewId_whenGettingPrivateReview_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/8")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("한줄요약을 찾을 수 없습니다."))
+        ;
+    }
+
+    @Test
     @DisplayName("없는 한줄요약 id로 조회하면 에러를 반환한다.")
     void givenNonExistedReviewId_whenGettingReview_thenErrorResponse() throws Exception {
         //given
@@ -286,7 +327,7 @@ class ReviewControllerTest {
         mockMvc.perform(get("/reviews/all")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(7))
+                .andExpect(jsonPath("$.totalResults").value(6))
         ;
     }
 
@@ -356,7 +397,7 @@ class ReviewControllerTest {
                         .param("member-id", String.valueOf(memberId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalResults").value(5))
+                .andExpect(jsonPath("$.totalResults").value(4))
                 .andExpect(jsonPath("$.reviewList[0].liked").value(true))
         ;
     }
@@ -371,7 +412,7 @@ class ReviewControllerTest {
         mockMvc.perform(get("/reviews")
                         .param("member-id", String.valueOf(memberId))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.totalResults").value(5))
+                .andExpect(jsonPath("$.totalResults").value(4))
                 .andExpect(jsonPath("$.reviewList[0].liked").value(false))
         ;
     }

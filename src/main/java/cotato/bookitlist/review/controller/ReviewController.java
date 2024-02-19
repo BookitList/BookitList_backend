@@ -129,6 +129,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.searchLikeReview(details.getId(), pageable));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<ReviewListResponse> getMyReviews(
+            @AuthenticationPrincipal AuthDetails details,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(reviewService.getMyReviews(details.getId(), pageable));
+    }
+
     @GetMapping("/recommend")
     public ResponseEntity<ReviewListResponse> getRecommendReviews(
             @RequestParam RecommendType type,

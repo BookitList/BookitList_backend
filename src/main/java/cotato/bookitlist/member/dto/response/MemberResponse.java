@@ -10,7 +10,7 @@ public record MemberResponse(
         String email,
         String name,
         String profileLink,
-        ProfileStatus profileStatus,
+        ProfileStatus status,
         boolean isMe
 ) {
 
@@ -21,7 +21,7 @@ public record MemberResponse(
                     dto.email(),
                     dto.name(),
                     dto.profileLink(),
-                    dto.profileStatus(),
+                    dto.status(),
                     true
             );
         }
@@ -31,7 +31,7 @@ public record MemberResponse(
                 null,
                 dto.name(),
                 dto.profileLink(),
-                dto.profileStatus(),
+                dto.status(),
                 false
         );
     }

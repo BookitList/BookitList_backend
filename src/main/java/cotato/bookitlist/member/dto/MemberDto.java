@@ -8,7 +8,7 @@ public record MemberDto(
         String email,
         String name,
         String profileLink,
-        ProfileStatus profileStatus,
+        ProfileStatus status,
         boolean isMe
 ) {
 

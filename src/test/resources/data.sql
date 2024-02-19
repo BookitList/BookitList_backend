@@ -20,15 +20,15 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
 
 INSERT INTO member (email, name, oauth2Id, auth_provider, status, profile_link, deleted, created_at,
                     modified_at)
-VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-15 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-14 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-13 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, TIMESTAMP '2024-02-12 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, TIMESTAMP '2024-02-11 00:00:00',
         CURRENT_TIMESTAMP);
 
 INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted, created_at, modified_at)

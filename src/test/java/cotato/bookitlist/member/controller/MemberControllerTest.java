@@ -2,7 +2,6 @@ package cotato.bookitlist.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
-import cotato.bookitlist.member.dto.request.NameChangeRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +127,20 @@ class MemberControllerTest {
                         .content(objectMapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    @DisplayName("최신 순으로 멤버를 3명 반환한다.")
+    void givenMembers_whenGettingNewMembers_thenReturnNewMembers() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/members/recommend/new")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.memberList[0].memberId").value(1))
+                .andExpect(jsonPath("$.memberList[1].memberId").value(2))
         ;
     }
 

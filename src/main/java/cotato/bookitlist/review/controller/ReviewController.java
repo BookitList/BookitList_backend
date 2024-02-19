@@ -146,7 +146,7 @@ public class ReviewController {
         if (details == null) {
             return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
         }
-        return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
+        return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, details.getId()));
     }
 
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {

@@ -92,7 +92,7 @@ class MemberControllerTest {
     @Test
     @WithCustomMockUser
     @DisplayName("profileStatus를 변경하는 요청을 한다.")
-    void givenLoginMember_whenChangingProfileStatus_thenChangeProfileStatus() throws Exception{
+    void givenLoginMember_whenChangingProfileStatus_thenChangeProfileStatus() throws Exception {
         //given
 
         //when & then

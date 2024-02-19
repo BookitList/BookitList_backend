@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     private String profileLink;
 
     @Enumerated(EnumType.STRING)
-    private ProfileStatus profileStatus = ProfileStatus.PUBLIC;
+    private ProfileStatus status = ProfileStatus.PUBLIC;
 
     private boolean deleted = false;
 
@@ -66,16 +66,16 @@ public class Member extends BaseEntity {
     }
 
     public void validatePublicProfile(Long memberId) {
-        if (profileStatus.equals(ProfileStatus.PRIVATE) && !id.equals(memberId)) {
+        if (status.equals(ProfileStatus.PRIVATE) && !id.equals(memberId)) {
             throw new AccessDeniedException("권한이 존재하지 않는 멤버입니다.");
         }
     }
 
     public void changeProfileStatus() {
-        if (profileStatus.equals(ProfileStatus.PRIVATE)) {
-            profileStatus = ProfileStatus.PUBLIC;
+        if (status.equals(ProfileStatus.PRIVATE)) {
+            status = ProfileStatus.PUBLIC;
         } else {
-            profileStatus = ProfileStatus.PRIVATE;
+            status = ProfileStatus.PRIVATE;
         }
     }
 

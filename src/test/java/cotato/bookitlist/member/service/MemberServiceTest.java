@@ -38,7 +38,7 @@ class MemberServiceTest {
 
         //then
         then(memberRepository).should().getReferenceById(memberId);
-        assertThat(member.getProfileStatus()).isEqualTo(ProfileStatus.PRIVATE);
+        assertThat(member.getStatus()).isEqualTo(ProfileStatus.PRIVATE);
     }
 
     @Test

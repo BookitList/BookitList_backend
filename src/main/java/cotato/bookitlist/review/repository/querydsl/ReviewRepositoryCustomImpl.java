@@ -50,7 +50,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 )
                 .from(review)
                 .join(review.member, member)
-                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC), review.member.profileStatus.eq(ProfileStatus.PUBLIC))
+                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -88,7 +88,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 )
                 .from(review)
                 .join(review.member, member)
-                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC), review.member.profileStatus.eq(ProfileStatus.PUBLIC))
+                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
                 .fetchOne());
     }
 

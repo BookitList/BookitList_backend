@@ -18,7 +18,7 @@ public record MemberDto(
                 entity.getEmail(),
                 entity.getName(),
                 entity.getProfileLink(),
-                entity.getProfileStatus(),
+                entity.getStatus(),
                 entity.getId().equals(memberId)
         );
     }

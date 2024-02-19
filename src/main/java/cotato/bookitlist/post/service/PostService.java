@@ -3,6 +3,7 @@ package cotato.bookitlist.post.service;
 import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.book.service.BookService;
+import cotato.bookitlist.common.domain.RecommendType;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.post.domain.entity.Post;
@@ -101,6 +102,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public PostListResponse getRecommendPosts(RecommendType recommendType, int start, Long memberId) {
+        return switch (recommendType) {
+            case LIKE -> getMostLikePosts(start, memberId);
+            case NEW -> getNewPosts(start, memberId);
+        };
+    }
+
     public PostListResponse getMostLikePosts(int start, Long memberId) {
         Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("likeCount").descending());
         Page<Post> postPage = postRepository.findPublicPostAll(pageable);
@@ -108,7 +116,6 @@ public class PostService {
         return PostListResponse.from(postPage, memberId);
     }
 
-    @Transactional(readOnly = true)
     public PostListResponse getNewPosts(int start, Long memberId) {
         Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("createdAt").descending());
         Page<Post> postPage = postRepository.findPublicPostAll(pageable);

@@ -3,6 +3,7 @@ package cotato.bookitlist.review.service;
 import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.book.repository.BookRepository;
 import cotato.bookitlist.book.service.BookService;
+import cotato.bookitlist.common.domain.RecommendType;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;
 import cotato.bookitlist.review.domain.entity.Review;
@@ -89,6 +90,13 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
 
         review.deleteReview();
+    }
+
+    public ReviewListResponse getRecommendReviews(RecommendType type, int start, Long memberId) {
+        return switch (type) {
+            case LIKE -> getMostLikeReviews(start, memberId);
+            case NEW -> getNewReviews(start, memberId);
+        };
     }
 
     public ReviewListResponse getMostLikeReviews(int start, Long memberId) {

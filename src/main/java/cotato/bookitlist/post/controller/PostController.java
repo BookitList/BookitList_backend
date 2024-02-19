@@ -1,6 +1,7 @@
 package cotato.bookitlist.post.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
+import cotato.bookitlist.common.domain.RecommendType;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.post.dto.request.PostRegisterRequest;
 import cotato.bookitlist.post.dto.request.PostUpdateRequest;
@@ -139,26 +140,16 @@ public class PostController {
         return ResponseEntity.ok(postService.getMyPosts(details.getId(), pageable));
     }
 
-    @GetMapping("/recommend/like")
-    public ResponseEntity<PostListResponse> getMostLikePosts(
+    @GetMapping("/recommend")
+    public ResponseEntity<PostListResponse> getRecommendPosts(
+            @RequestParam RecommendType type,
             @RequestParam int start,
             @AuthenticationPrincipal AuthDetails details
     ) {
         if (details == null) {
-            return ResponseEntity.ok(postService.getMostLikePosts(start, DEFAULT_USER_ID));
+            return ResponseEntity.ok(postService.getRecommendPosts(type, start, DEFAULT_USER_ID));
         }
-        return ResponseEntity.ok(postService.getMostLikePosts(start, details.getId()));
-    }
-
-    @GetMapping("/recommend/new")
-    public ResponseEntity<PostListResponse> getNewPosts(
-            @RequestParam int start,
-            @AuthenticationPrincipal AuthDetails details
-    ) {
-        if (details == null) {
-            return ResponseEntity.ok(postService.getNewPosts(start, DEFAULT_USER_ID));
-        }
-        return ResponseEntity.ok(postService.getNewPosts(start, details.getId()));
+        return ResponseEntity.ok(postService.getRecommendPosts(type, start, details.getId()));
     }
 
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {

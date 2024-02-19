@@ -1,6 +1,7 @@
 package cotato.bookitlist.review.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
+import cotato.bookitlist.common.domain.RecommendType;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
@@ -119,26 +120,16 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/recommend/like")
-    public ResponseEntity<ReviewListResponse> getMostLikeReviews(
+    @GetMapping("/recommend")
+    public ResponseEntity<ReviewListResponse> getRecommendReviews(
+            @RequestParam RecommendType type,
             @RequestParam int start,
             @AuthenticationPrincipal AuthDetails details
     ) {
         if (details == null) {
-            return ResponseEntity.ok(reviewService.getMostLikeReviews(start, DEFAULT_USER_ID));
+            return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
         }
-        return ResponseEntity.ok(reviewService.getMostLikeReviews(start, DEFAULT_USER_ID));
-    }
-
-    @GetMapping("/recommend/new")
-    public ResponseEntity<ReviewListResponse> getNewReviews(
-            @RequestParam int start,
-            @AuthenticationPrincipal AuthDetails details
-    ) {
-        if (details == null) {
-            return ResponseEntity.ok(reviewService.getNewReviews(start, DEFAULT_USER_ID));
-        }
-        return ResponseEntity.ok(reviewService.getNewReviews(start, details.getId()));
+        return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
     }
 
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {

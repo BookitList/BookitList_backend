@@ -21,6 +21,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from BookLike l join l.book b join l.member m where m.id = :memberId")
     Page<Book> findLikeBookByMemberId(Long memberId, Pageable pageable);
 
-    @Query(value = "select * from Book b order by RAND() LIMIT :count", nativeQuery = true)
+    @Query(value = "select * from book b order by RAND() LIMIT :count", nativeQuery = true)
     List<Book> findBooksByRandom(int count);
 }

@@ -60,7 +60,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewDetailDto getReview(Long reviewId, Long memberId) {
-        return reviewRepository.findPublicReviewDetailByReviewId(reviewId, memberId)
+        return reviewRepository.findReviewDetailByReviewId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 

@@ -14,7 +14,11 @@ import cotato.bookitlist.review.dto.response.ReviewListResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
+
+    @Value("${recommend.count.review}")
+    private int recommendCount;
 
     private final BookService bookService;
     private final MemberRepository memberRepository;
@@ -82,5 +89,12 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
 
         review.deleteReview();
+    }
+
+    public ReviewListResponse getMostLikeReviews(int start, Long memberId) {
+        Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("likeCount").descending());
+        Page<Review> reviewPage = reviewRepository.findPublicReviewAll(pageable);
+
+        return ReviewListResponse.from(reviewPage, memberId);
     }
 }

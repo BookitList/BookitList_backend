@@ -41,5 +41,22 @@ class MemberServiceTest {
         assertThat(member.getProfileStatus()).isEqualTo(ProfileStatus.PRIVATE);
     }
 
+    @Test
+    @DisplayName("유저의 이름을 변경한다.")
+    void givenName_whenChangingName_thenChangeName() throws Exception{
+        //given
+        Long memberId = 1L;
+        Member member = createMember(memberId);
+        String name = "newName";
+        given(memberRepository.getReferenceById(memberId)).willReturn(member);
+
+        //when
+        sut.changeName(name, memberId);
+
+        //then
+        then(memberRepository).should().getReferenceById(memberId);
+        assertThat(member.getName()).isEqualTo(name);
+    }
+
 
 }

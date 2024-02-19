@@ -507,4 +507,34 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.reviewList[1].reviewId").value(2))
         ;
     }
+
+    @Test
+    @DisplayName("isbn을 이용해 책의 가장 좋아요가 많은 한줄요약을 간략하게 반환한다.")
+    void givenIsbn13_whenGettingBestReviewOfBook_thenReturnBestReviewOfBook() throws Exception {
+        //given
+        String isbn13 = "9788931514810";
+
+        //when & then
+        mockMvc.perform(get("/reviews/best")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewId").value(2))
+        ;
+    }
+
+    @Test
+    @DisplayName("한줄요약이 없는 책에 isbn을 이용해 가장 좋아요가 많은 한줄요약을 조회하면 에러를 반환한다.")
+    void givenIsbn13NonReview_whenGettingBestReviewOfBook_thenReturnError() throws Exception {
+        //given
+        String isbn13 = "9791127278199";
+
+        //when & then
+        mockMvc.perform(get("/reviews/best")
+                        .param("isbn13", isbn13)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("한줄요약을 찾을 수 없습니다."))
+        ;
+    }
 }

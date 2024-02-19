@@ -19,7 +19,6 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static cotato.bookitlist.member.domain.QMember.member;
 import static cotato.bookitlist.post.domain.entity.QPost.post;
 import static cotato.bookitlist.post.domain.entity.QPostLike.postLike;
 
@@ -51,16 +50,15 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .join(post.member, member)
                 .where(isbnEq(isbn13), memberIdEq(memberId), post.status.eq(PostStatus.PUBLIC), post.member.status.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(post.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .join(post.member, member)
                 .where(isbnEq(isbn13), memberIdEq(memberId));
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
@@ -91,7 +89,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         )
                 )
                 .from(post)
-                .join(post.member, member)
                 .where(post.id.eq(postId), buildPostAccessCondition(post.member.id, memberId))
                 .fetchOne());
     }
@@ -116,17 +113,15 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 )
                 .from(postLike)
                 .join(postLike.post, post)
-                .join(postLike.member, member)
                 .where(postLike.member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(postLike.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(postLike)
-                .join(postLike.post, post)
-                .join(postLike.member, member)
                 .where(postLike.member.id.eq(memberId));
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);

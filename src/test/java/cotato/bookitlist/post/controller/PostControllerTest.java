@@ -528,6 +528,7 @@ class PostControllerTest {
                         .param("start", String.valueOf(start))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList.length()").value(3))
                 .andExpect(jsonPath("$.postList[0].likeCount").value(3))
                 .andExpect(jsonPath("$.postList[1].likeCount").value(2))
         ;
@@ -541,12 +542,13 @@ class PostControllerTest {
 
         //when & then
         mockMvc.perform(get("/posts/recommend/new")
-                .param("start", String.valueOf(start))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .param("start", String.valueOf(start))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList.length()").value(3))
                 .andExpect(jsonPath("$.postList[0].postId").value(1))
                 .andExpect(jsonPath("$.postList[1].postId").value(2))
-                ;
+        ;
     }
 }
 

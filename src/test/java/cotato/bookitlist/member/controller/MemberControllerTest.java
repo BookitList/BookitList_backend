@@ -139,6 +139,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/recommend/new")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.memberList.length()").value(3))
                 .andExpect(jsonPath("$.memberList[0].memberId").value(1))
                 .andExpect(jsonPath("$.memberList[1].memberId").value(2))
         ;

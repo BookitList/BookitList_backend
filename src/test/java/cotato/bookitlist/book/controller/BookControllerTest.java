@@ -276,8 +276,8 @@ class BookControllerTest {
 
         //when & then
         mockMvc.perform(get("/books/recommend").
-                contentType(MediaType.APPLICATION_JSON))
+                        contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$.bookList.length()").value(3));
     }
 }

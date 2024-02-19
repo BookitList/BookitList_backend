@@ -100,8 +100,17 @@ public class PostService {
         return PostListResponse.from(postRepository.findByMemberId(memberId, pageable), memberId);
     }
 
+    @Transactional(readOnly = true)
     public PostListResponse getMostLikePosts(int start, Long memberId) {
         Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("likeCount").descending());
+        Page<Post> postPage = postRepository.findPublicPostAll(pageable);
+
+        return PostListResponse.from(postPage, memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse getNewPosts(int start, Long memberId) {
+        Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("createdAt").descending());
         Page<Post> postPage = postRepository.findPublicPostAll(pageable);
 
         return PostListResponse.from(postPage, memberId);

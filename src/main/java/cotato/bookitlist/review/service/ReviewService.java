@@ -82,7 +82,6 @@ public class ReviewService {
         return ReviewCountResponse.of(reviewRepository.countPublicReviewByBook_Isbn13(isbn13));
     }
 
-    @Transactional
     public void increaseViewCount(Long reviewId) {
         Review review = reviewRepository.getReferenceById(reviewId);
         review.increaseViewCount();
@@ -95,10 +94,17 @@ public class ReviewService {
         review.deleteReview();
     }
 
+    @Transactional(readOnly = true)
     public ReviewListResponse searchLikeReview(Long memberId, Pageable pageable) {
         return ReviewListResponse.fromDto(reviewRepository.findLikeReviewByMemberId(memberId, pageable), memberId);
     }
 
+    @Transactional(readOnly = true)
+    public ReviewListResponse getMyReviews(Long memberId, Pageable pageable) {
+        return ReviewListResponse.from(reviewRepository.findByMemberId(memberId, pageable), memberId);
+    }
+
+    @Transactional(readOnly = true)
     public ReviewListResponse getRecommendReviews(RecommendType type, int start, Long memberId) {
         return switch (type) {
             case LIKE -> getMostLikeReviews(start, memberId);

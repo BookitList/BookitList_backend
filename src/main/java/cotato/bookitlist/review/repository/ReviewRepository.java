@@ -18,4 +18,6 @@ public interface ReviewRepository extends ReviewRepositoryCustom, JpaRepository<
     int countPublicReviewByBook_Isbn13(String isbn13);
 
     Optional<Review> findByIdAndMemberId(Long reviewId, Long memberId);
+
+    Page<Review> findByMemberId(Long memberId, Pageable pageable);
 }

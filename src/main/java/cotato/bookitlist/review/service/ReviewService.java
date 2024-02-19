@@ -57,13 +57,13 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewListResponse getAllReview(Pageable pageable) {
-        return ReviewListResponse.from(reviewRepository.findPublicReviewAll(pageable));
+    public ReviewListResponse getAllReview(Pageable pageable, Long memberId) {
+        return ReviewListResponse.from(reviewRepository.findPublicReviewAll(pageable), memberId);
     }
 
     @Transactional(readOnly = true)
     public ReviewListResponse searchReview(String isbn13, Long memberId, Pageable pageable) {
-        return ReviewListResponse.fromDto(reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, pageable));
+        return ReviewListResponse.fromDto(reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, pageable), memberId);
     }
 
     @Transactional(readOnly = true)

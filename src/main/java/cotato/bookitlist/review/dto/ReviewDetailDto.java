@@ -1,5 +1,7 @@
 package cotato.bookitlist.review.dto;
 
+import cotato.bookitlist.review.domain.ReviewStatus;
+
 import java.time.LocalDateTime;
 
 public record ReviewDetailDto(
@@ -11,6 +13,7 @@ public record ReviewDetailDto(
         int viewCount,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
-        boolean liked
+        boolean liked,
+        ReviewStatus reviewStatus
 ) {
 }

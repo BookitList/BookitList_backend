@@ -5,8 +5,8 @@ import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
+import cotato.bookitlist.review.dto.response.ReviewDetailResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
-import cotato.bookitlist.review.dto.response.ReviewResponse;
 import cotato.bookitlist.review.service.ReviewFacade;
 import cotato.bookitlist.review.service.ReviewService;
 import jakarta.servlet.http.Cookie;
@@ -63,17 +63,17 @@ public class ReviewController {
     }
 
     @GetMapping("/{review-id}")
-    public ResponseEntity<ReviewResponse> getReview(
+    public ResponseEntity<ReviewDetailResponse> getReview(
             HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("review-id") Long reviewId,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        ResponseEntity<ReviewResponse> responseEntity;
+        ResponseEntity<ReviewDetailResponse> responseEntity;
         if (details == null) {
-            responseEntity = ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
+            responseEntity = ResponseEntity.ok(ReviewDetailResponse.from(reviewService.getReview(reviewId, DEFAULT_USER_ID), DEFAULT_USER_ID));
         } else {
-            responseEntity = ResponseEntity.ok(ReviewResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
+            responseEntity = ResponseEntity.ok(ReviewDetailResponse.from(reviewService.getReview(reviewId, details.getId()), details.getId()));
         }
 
         handleReviewViewCount(request, response, reviewId);
@@ -82,9 +82,13 @@ public class ReviewController {
 
     @GetMapping("/all")
     public ResponseEntity<ReviewListResponse> getAllReview(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal AuthDetails details
     ) {
-        return ResponseEntity.ok(reviewService.getAllReview(pageable));
+        if (details == null) {
+            return ResponseEntity.ok(reviewService.getAllReview(pageable, DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(reviewService.getAllReview(pageable, details.getId()));
     }
 
     @GetMapping

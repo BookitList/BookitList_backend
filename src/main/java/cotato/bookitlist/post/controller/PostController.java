@@ -83,8 +83,8 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<PostListResponse> getAllPost(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            @AuthenticationPrincipal AuthDetails details
+            @AuthenticationPrincipal AuthDetails details,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         if (details == null) {
             return ResponseEntity.ok(postService.getAllPost(pageable, DEFAULT_USER_ID));
@@ -97,8 +97,8 @@ public class PostController {
     public ResponseEntity<PostListResponse> searchPost(
             @IsValidIsbn @RequestParam(required = false) String isbn13,
             @RequestParam(name = "member-id", required = false) Long memberId,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            @AuthenticationPrincipal AuthDetails details
+            @AuthenticationPrincipal AuthDetails details,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         if (details == null) {
             return ResponseEntity.ok(postService.searchPost(isbn13, memberId, DEFAULT_USER_ID, pageable));

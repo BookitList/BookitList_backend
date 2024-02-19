@@ -25,6 +25,7 @@ public class Member extends BaseEntity {
 
     private String email;
 
+    //TODO: name에 대한 제한을 만들어야한다.
     private String name;
 
     private String oauth2Id;
@@ -76,5 +77,9 @@ public class Member extends BaseEntity {
         } else {
             profileStatus = ProfileStatus.PRIVATE;
         }
+    }
+
+    public void changeName(String name) {
+        this.name = name;
     }
 }

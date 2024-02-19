@@ -1,4 +1,4 @@
-package cotato.bookitlist.post.dto.requeset;
+package cotato.bookitlist.post.dto.request;
 
 import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;

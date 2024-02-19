@@ -2,6 +2,7 @@ package cotato.bookitlist.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
+import cotato.bookitlist.member.dto.request.NameChangeRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,35 @@ class MemberControllerTest {
         mockMvc.perform(patch("/members/profile-status")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("유저 이름을 변경한다.")
+    void givenName_whenChangingName_thenChangeName() throws Exception{
+        //given
+        NameChangeRequest request = new NameChangeRequest("newName");
+
+        //when & then
+        mockMvc.perform(patch("/members/name")
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 유저 이름을 변경하면 에러를 반환한다.")
+    void givenNonLogin_whenChangingName_thenReturnErrorResponse() throws Exception {
+        //given
+        NameChangeRequest request = new NameChangeRequest("newName");
+
+        //when & then
+        mockMvc.perform(patch("/members/name")
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
         ;
     }
 

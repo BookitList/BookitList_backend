@@ -31,22 +31,23 @@ VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, C
        ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP);
 
-INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
-values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 2, 0, false),
-       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 3, 0, false),
-       (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
-       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 1, 0, false),
-       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 1, 0, false),
-       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
+INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted, created_at, modified_at)
+VALUES (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 2, 0, false, TIMESTAMP '2024-02-15 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 3, 0, false, TIMESTAMP '2024-02-14 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-13 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 1, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 1, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
        (2, 2, 'privateTitle',
         'first<============================>second<============================>third<============================>fourth',
-        'PUBLIC', 'TEMPLATE', 0, 0, false),
-       (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false),
-       (4, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
+        'PUBLIC', 'TEMPLATE', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (4, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP);
+
 
 INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
 VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false),

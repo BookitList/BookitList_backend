@@ -532,5 +532,21 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.postList[1].likeCount").value(2))
         ;
     }
+
+    @Test
+    @DisplayName("최신 순으로 게시글을 3개 반환한다")
+    void givenPageStart_whenGettingNewPosts_thenReturnNewPosts() throws Exception {
+        //given
+        int start = 0;
+
+        //when & then
+        mockMvc.perform(get("/posts/recommend/new")
+                .param("start", String.valueOf(start))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList[0].postId").value(1))
+                .andExpect(jsonPath("$.postList[1].postId").value(2))
+                ;
+    }
 }
 

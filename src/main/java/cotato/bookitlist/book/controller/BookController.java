@@ -1,12 +1,8 @@
 package cotato.bookitlist.book.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
-import cotato.bookitlist.book.dto.response.BookRecommendResponse;
 import cotato.bookitlist.book.dto.request.BookIsbn13Request;
-import cotato.bookitlist.book.dto.response.BookApiListResponse;
-import cotato.bookitlist.book.dto.response.BookApiResponse;
-import cotato.bookitlist.book.dto.response.BookListResponse;
-import cotato.bookitlist.book.dto.response.BookResponse;
+import cotato.bookitlist.book.dto.response.*;
 import cotato.bookitlist.book.service.BookService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -83,7 +78,7 @@ public class BookController {
     }
 
     @GetMapping("/recommend")
-    public ResponseEntity<List<BookRecommendResponse>> recommendBook() {
+    public ResponseEntity<BookRecommendListResponse> recommendBook() {
         return ResponseEntity.ok(bookService.recommendBook());
     }
 

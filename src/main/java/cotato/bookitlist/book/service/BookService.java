@@ -5,6 +5,7 @@ import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.BookDto;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
+import cotato.bookitlist.book.dto.response.BookRecommendListResponse;
 import cotato.bookitlist.book.dto.response.BookRecommendResponse;
 import cotato.bookitlist.book.redis.BookApiCache;
 import cotato.bookitlist.book.repository.BookRepository;
@@ -74,10 +75,12 @@ public class BookService {
         return BookListResponse.from(bookRepository.findLikeBookByMemberId(memberId, pageable));
     }
 
-    public List<BookRecommendResponse> recommendBook() {
-        return bookRepository.findBooksByRandom(recommendCount).stream()
+    public BookRecommendListResponse recommendBook() {
+        List<BookRecommendResponse> bookRecommendList = bookRepository.findBooksByRandom(recommendCount).stream()
                 .map(BookDto::from)
                 .map(BookRecommendResponse::from)
                 .toList();
+
+        return new BookRecommendListResponse(bookRecommendList);
     }
 }

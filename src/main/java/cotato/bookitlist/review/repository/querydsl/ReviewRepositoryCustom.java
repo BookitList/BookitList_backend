@@ -1,7 +1,9 @@
 package cotato.bookitlist.review.repository.querydsl;
 
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.ReviewDto;
+import cotato.bookitlist.review.dto.response.ReviewSimpleResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +15,6 @@ public interface ReviewRepositoryCustom {
     Optional<ReviewDetailDto> findReviewDetailByReviewId(Long reviewId, Long memberId);
 
     Page<ReviewDto> findLikeReviewByMemberId(Long memberId, Pageable pageable);
+
+    Optional<ReviewSimpleResponse> findBestReview(Book book);
 }

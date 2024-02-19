@@ -8,6 +8,7 @@ import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewDetailResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
+import cotato.bookitlist.review.dto.response.ReviewSimpleResponse;
 import cotato.bookitlist.review.service.ReviewFacade;
 import cotato.bookitlist.review.service.ReviewService;
 import jakarta.servlet.http.Cookie;
@@ -147,6 +148,13 @@ public class ReviewController {
             return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
         }
         return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, details.getId()));
+    }
+
+    @GetMapping("/best")
+    public ResponseEntity<ReviewSimpleResponse> getBestReviewOfBook(
+            @RequestParam String isbn13
+    ) {
+        return ResponseEntity.ok(reviewService.getBestReviewOfBook(isbn13));
     }
 
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {

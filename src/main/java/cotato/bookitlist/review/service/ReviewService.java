@@ -12,6 +12,7 @@ import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
+import cotato.bookitlist.review.dto.response.ReviewSimpleResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -124,5 +125,13 @@ public class ReviewService {
         Page<Review> reviewPage = reviewRepository.findPublicReviewAll(pageable);
 
         return ReviewListResponse.from(reviewPage, memberId);
+    }
+
+    public ReviewSimpleResponse getBestReviewOfBook(String isbn13) {
+        Book book = bookRepository.findByIsbn13(isbn13)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
+
+        return reviewRepository.findBestReview(book)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 }

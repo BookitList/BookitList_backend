@@ -7,10 +7,13 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import cotato.bookitlist.book.domain.Book;
 import cotato.bookitlist.member.domain.ProfileStatus;
 import cotato.bookitlist.review.domain.ReviewStatus;
+import cotato.bookitlist.review.domain.entity.Review;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 import cotato.bookitlist.review.dto.ReviewDto;
+import cotato.bookitlist.review.dto.response.ReviewSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -123,6 +126,26 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .where(reviewLike.member.id.eq(memberId));
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<ReviewSimpleResponse> findBestReview(Book book) {
+        return Optional.ofNullable(queryFactory
+                .select(
+                        Projections.constructor(
+                                ReviewSimpleResponse.class,
+                                review.id,
+                                review.content,
+                                review.member.name
+                        )
+                )
+                .from(review)
+                .where(review.book.eq(book))
+                .join(review.member, member)
+                .orderBy(review.likeCount.desc())
+                .limit(1)
+                .fetchOne()
+        );
     }
 
     private BooleanExpression isLikedByMember(Long memberId, NumberPath<Long> reviewId) {

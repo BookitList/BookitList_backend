@@ -29,7 +29,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ReviewDto> findPublicReviewWithLikedByIsbn13(String isbn13, Long memberId, Pageable pageable) {
+    public Page<ReviewDto> findPublicReviewWithLikedByIsbn13(String isbn13, Long memberId, Long loginMemberId, Pageable pageable) {
         List<ReviewDto> result = queryFactory
                 .select(
                         Projections.constructor(
@@ -41,7 +41,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                                 review.likeCount,
                                 review.viewCount,
                                 Expressions.cases()
-                                        .when(isLikedByMember(memberId, review.id))
+                                        .when(isLikedByMember(loginMemberId, review.id))
                                         .then(true)
                                         .otherwise(false)
                                         .as("liked"),
@@ -50,7 +50,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 )
                 .from(review)
                 .join(review.member, member)
-                .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
+                .where(isbnEq(isbn13), memberIdEq(memberId), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(review.createdAt.desc())
@@ -59,7 +59,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         JPAQuery<Long> countQuery = queryFactory
                 .select(review.count())
                 .from(review)
-                .where(review.book.isbn13.eq(isbn13))
+                .where(isbnEq(isbn13), memberIdEq(memberId))
                 .from(review);
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
@@ -89,7 +89,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 )
                 .from(review)
                 .join(review.member, member)
-                .where(review.id.eq(reviewId), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
+                .where(review.id.eq(reviewId), memberIdEq(memberId), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
                 .fetchOne());
     }
 
@@ -99,5 +99,19 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .where(reviewLike.member.id.eq(memberId)
                         .and(reviewLike.review.id.eq(reviewId)))
                 .exists();
+    }
+
+    private BooleanExpression isbnEq(String isbn13) {
+        if (isbn13 == null) {
+            return null;
+        }
+        return review.book.isbn13.eq(isbn13);
+    }
+
+    private BooleanExpression memberIdEq(Long memberId) {
+        if (memberId == null) {
+            return null;
+        }
+        return review.member.id.eq(memberId);
     }
 }

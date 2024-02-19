@@ -70,8 +70,11 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewListResponse searchReview(String isbn13, Long memberId, Pageable pageable) {
-        return ReviewListResponse.fromDto(reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, pageable), memberId);
+    public ReviewListResponse searchReview(String isbn13, Long memberId, Long loginMemberId, Pageable pageable) {
+        return ReviewListResponse.fromDto(
+                reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, loginMemberId, pageable),
+                loginMemberId
+        );
     }
 
     @Transactional(readOnly = true)

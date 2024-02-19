@@ -89,7 +89,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 )
                 .from(review)
                 .join(review.member, member)
-                .where(review.id.eq(reviewId), memberIdEq(memberId), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
+                .where(review.id.eq(reviewId), buildReviewAccessCondition(review.member.id, memberId))
                 .fetchOne());
     }
 
@@ -113,5 +113,13 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             return null;
         }
         return review.member.id.eq(memberId);
+    }
+
+    private BooleanExpression buildReviewAccessCondition(NumberPath<Long> reviewMemberId, Long memberId) {
+        return Expressions.cases()
+                .when(reviewMemberId.eq(memberId))
+                .then(true)
+                .otherwise(review.status.eq(ReviewStatus.PUBLIC)
+                        .and(review.member.status.eq(ProfileStatus.PUBLIC)));
     }
 }

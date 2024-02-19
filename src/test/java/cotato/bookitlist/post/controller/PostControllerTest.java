@@ -483,7 +483,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 없이 좋아요 요청시 에러를 반환한다.")
+    @DisplayName("로그인 없이 좋아요한 게시글 요청시 에러를 반환한다.")
     void givenNonLogin_whenSearchingLikePost_thenReturnErrorResponse() throws Exception {
         //given
 

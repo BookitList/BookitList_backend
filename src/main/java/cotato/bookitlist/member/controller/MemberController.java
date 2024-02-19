@@ -63,4 +63,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getNewMembers());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponse> getMyInfo(
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        return ResponseEntity.ok(MemberResponse.from(memberService.getMemberInfo(details.getId(), details.getId())));
+    }
 }

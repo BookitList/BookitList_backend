@@ -36,7 +36,8 @@ public class SecurityConfig {
             "/posts/me",
             "/reviews/likes",
             "/reviews/me",
-            "/books/likes/**"
+            "/books/likes/**",
+            "/members/me"
     };
 
     @Bean

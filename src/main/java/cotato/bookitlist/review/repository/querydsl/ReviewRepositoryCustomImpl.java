@@ -53,6 +53,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .where(review.book.isbn13.eq(isbn13), review.status.eq(ReviewStatus.PUBLIC), review.member.status.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(review.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory

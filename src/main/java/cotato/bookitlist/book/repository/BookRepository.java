@@ -18,7 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b where LOWER(b.title) like LOWER(CONCAT('%', :keyword, '%')) or LOWER(b.author) like LOWER(CONCAT('%', :keyword, '%')) or LOWER(b.description) like LOWER(CONCAT('%', :keyword, '%'))")
     Page<Book> findAllByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query("select b from BookLike l join l.book b join l.member m where m.id = :memberId")
+    @Query("select b from BookLike bl join bl.book b where bl.member.id = :memberId order by bl.createdAt desc")
     Page<Book> findLikeBookByMemberId(Long memberId, Pageable pageable);
 
     @Query(value = "select * from book b order by RAND() LIMIT :count", nativeQuery = true)

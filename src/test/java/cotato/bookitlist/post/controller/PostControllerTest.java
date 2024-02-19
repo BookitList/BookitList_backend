@@ -476,6 +476,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(3))
+                .andExpect(jsonPath("$.postList[0].postId").value(7))
         ;
     }
 

@@ -93,6 +93,38 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .fetchOne());
     }
 
+    @Override
+    public Page<ReviewDto> findLikeReviewByMemberId(Long memberId, Pageable pageable) {
+        List<ReviewDto> result = queryFactory
+                .select(
+                        Projections.constructor(
+                                ReviewDto.class,
+                                review.id,
+                                review.member.id,
+                                review.book.id,
+                                review.content,
+                                review.likeCount,
+                                review.viewCount,
+                                Expressions.constant(true),
+                                review.status
+                        )
+                )
+                .from(reviewLike)
+                .join(reviewLike.review, review)
+                .where(reviewLike.member.id.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(reviewLike.createdAt.desc())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(review.count())
+                .from(reviewLike)
+                .where(reviewLike.member.id.eq(memberId));
+
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
+
     private BooleanExpression isLikedByMember(Long memberId, NumberPath<Long> reviewId) {
         return JPAExpressions.selectOne()
                 .from(reviewLike)

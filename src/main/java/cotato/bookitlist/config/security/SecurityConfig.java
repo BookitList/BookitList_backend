@@ -31,6 +31,14 @@ public class SecurityConfig {
             "/auth/**"
     };
 
+    private final String[] REQUIRED_AUTHENTICATE = {
+            "/posts/likes",
+            "/posts/me",
+            "/reviews/likes",
+            "/reviews/me",
+            "/books/likes/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -38,7 +46,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/posts/likes", "/posts/me", "/books/likes/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, REQUIRED_AUTHENTICATE).authenticated()
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .anyRequest().authenticated()

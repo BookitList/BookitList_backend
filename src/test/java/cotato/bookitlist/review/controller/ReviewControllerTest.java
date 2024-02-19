@@ -346,13 +346,15 @@ class ReviewControllerTest {
 
     @Test
     @DisplayName("좋아요가 많은 순으로 한줄요약을 4개 반환한다.")
-    void givenPageStart_whenGettingMostLikeReviews_thenReturnMostLikeReviews() throws Exception {
+    void givenPageStartAndRecommendType_whenGettingMostLikeReviews_thenReturnMostLikeReviews() throws Exception {
         //given
         int start = 0;
+        String type = "LIKE";
 
         //when & then
-        mockMvc.perform(get("/reviews/recommend/like")
+        mockMvc.perform(get("/reviews/recommend")
                         .param("start", String.valueOf(start))
+                        .param("type", type)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.reviewList.length()").value(4))
@@ -363,13 +365,15 @@ class ReviewControllerTest {
 
     @Test
     @DisplayName("최신 순으로 한줄요약을 4개 반환한다.")
-    void givenPageStart_whenGettingNewReviews_thenReturnNewReviews() throws Exception {
+    void givenPageStartAndRecommendType_whenGettingNewReviews_thenReturnNewReviews() throws Exception {
         //given
         int start = 0;
+        String type = "NEW";
 
         //when & then
-        mockMvc.perform(get("/reviews/recommend/new")
+        mockMvc.perform(get("/reviews/recommend")
                         .param("start", String.valueOf(start))
+                        .param("type", type)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.reviewList.length()").value(4))

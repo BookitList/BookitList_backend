@@ -519,13 +519,15 @@ class PostControllerTest {
 
     @Test
     @DisplayName("좋아요가 많은 순으로 게시글을 3개 반환한다.")
-    void givenPageStart_whenGettingMostLikePosts_thenReturnMostLikePosts() throws Exception {
+    void givenPageStartAndRecommendType_whenGettingMostLikePosts_thenReturnMostLikePosts() throws Exception {
         //given
         int start = 0;
+        String type = "LIKE";
 
         //when & then
-        mockMvc.perform(get("/posts/recommend/like")
+        mockMvc.perform(get("/posts/recommend")
                         .param("start", String.valueOf(start))
+                        .param("type", type)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.postList.length()").value(3))
@@ -536,13 +538,15 @@ class PostControllerTest {
 
     @Test
     @DisplayName("최신 순으로 게시글을 3개 반환한다")
-    void givenPageStart_whenGettingNewPosts_thenReturnNewPosts() throws Exception {
+    void givenPageStartAndRecommendType_whenGettingNewPosts_thenReturnNewPosts() throws Exception {
         //given
         int start = 0;
+        String type = "NEW";
 
         //when & then
-        mockMvc.perform(get("/posts/recommend/new")
+        mockMvc.perform(get("/posts/recommend")
                         .param("start", String.valueOf(start))
+                        .param("type", type)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.postList.length()").value(3))

@@ -438,10 +438,11 @@ class PostControllerTest {
     @DisplayName("로그인한 유저가 memberId를 이용해 게시글을 조회한다.")
     void givenMemberIdWithLogin_whenSearchingPost_thenReturnPostListResponse() throws Exception {
         //given
+        Long memberId = 2L;
 
         //when & then
         mockMvc.perform(get("/posts")
-                        .param("member-id", "2")
+                        .param("member-id", String.valueOf(memberId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(6))
@@ -451,13 +452,14 @@ class PostControllerTest {
 
 
     @Test
-    @DisplayName("유저가 memberId를 이용해 게시글을 조회한다.")
+    @DisplayName("로그인 하지 않은 유저가 memberId를 이용해 게시글을 조회한다.")
     void givenMemberId_whenSearchingPost_thenReturnPostListResponse() throws Exception {
         //given
+        Long memberId = 2L;
 
         //when & then
         mockMvc.perform(get("/posts")
-                        .param("member-id", "2")
+                        .param("member-id", String.valueOf(memberId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(6))

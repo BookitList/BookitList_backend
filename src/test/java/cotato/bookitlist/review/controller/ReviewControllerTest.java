@@ -345,6 +345,38 @@ class ReviewControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("로그인한 유저가 memberId를 이용해 한줄요약을 조회한다.")
+    void givenMemberIdWithLogin_whenSearchingReview_thenReturnReviewListResponse() throws Exception {
+        //given
+        Long memberId = 2L;
+
+        //when & then
+        mockMvc.perform(get("/reviews")
+                        .param("member-id", String.valueOf(memberId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(5))
+                .andExpect(jsonPath("$.reviewList[0].liked").value(true))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인하지 않은 유저가 memberId를 이용해 한줄요약을 조회한다.")
+    void givenMemberId_whenSearchingReview_thenReturnReviewListResponse() throws Exception {
+        //given
+        Long memberId = 2L;
+
+        //when & then
+        mockMvc.perform(get("/reviews")
+                        .param("member-id", String.valueOf(memberId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.totalResults").value(5))
+                .andExpect(jsonPath("$.reviewList[0].liked").value(false))
+        ;
+    }
+
+    @Test
     @DisplayName("좋아요가 많은 순으로 한줄요약을 4개 반환한다.")
     void givenPageStartAndRecommendType_whenGettingMostLikeReviews_thenReturnMostLikeReviews() throws Exception {
         //given

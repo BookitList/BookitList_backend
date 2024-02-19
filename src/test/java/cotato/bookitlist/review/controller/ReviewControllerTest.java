@@ -359,4 +359,20 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.reviewList[1].likeCount").value(2))
         ;
     }
+
+    @Test
+    @DisplayName("최신 순으로 한줄요약을 3개 반환한다.")
+    void givenPageStart_whenGettingNewReviews_thenReturnNewReviews() throws Exception {
+        //given
+        int start = 0;
+
+        //when & then
+        mockMvc.perform(get("/reviews/recommend/new")
+                        .param("start", String.valueOf(start))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewList[0].reviewId").value(1))
+                .andExpect(jsonPath("$.reviewList[1].reviewId").value(2))
+        ;
+    }
 }

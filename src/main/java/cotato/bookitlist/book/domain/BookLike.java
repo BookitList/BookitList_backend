@@ -1,5 +1,6 @@
 package cotato.bookitlist.book.domain;
 
+import cotato.bookitlist.common.domain.BaseEntity;
 import cotato.bookitlist.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookLike {
+public class BookLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

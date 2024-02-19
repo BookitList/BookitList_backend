@@ -146,4 +146,29 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @WithCustomMockUser
+    @DisplayName("본인의 정보를 조회한다.")
+    void givenLogin_whenGettingMyInfo_thenGetMyInfo() throws Exception{
+        //given
+
+        //when & then
+        mockMvc.perform(get("/members/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 본인의 정보를 조회하면 에러를 반환한다.")
+    void givenNonLogin_whenGettingMyInfo_thenGetMyInfo() throws Exception{
+        //given
+
+        //when & then
+        mockMvc.perform(get("/members/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
 }

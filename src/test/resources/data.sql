@@ -18,43 +18,47 @@ VALUES ('Aladdin and His Lamp (반양장) - and the Other Stories', 'Harriette T
         'http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=209468603&amp;partner=openAPI&amp;start=api',
         '9791187824824', 14400, 'https://image.aladin.co.kr/product/20946/86/cover500sum/k822636271_1.jpg', 0, false);
 
-INSERT INTO member (email, name, oauth2Id, auth_provider, profile_status, profile_link, deleted, created_at,
+INSERT INTO member (email, name, oauth2Id, auth_provider, status, profile_link, deleted, created_at,
                     modified_at)
-VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+VALUES ('test@gmail.com', 'test', 'test', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-15 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test2', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-14 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test3', 'KAKAO', 'PUBLIC', 'profile', false, TIMESTAMP '2024-02-13 00:00:00',
         CURRENT_TIMESTAMP),
-       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, CURRENT_TIMESTAMP,
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, TIMESTAMP '2024-02-12 00:00:00',
+        CURRENT_TIMESTAMP),
+       ('test2@gmail.com', 'test2', 'test4', 'KAKAO', 'PRIVATE', 'profile', false, TIMESTAMP '2024-02-11 00:00:00',
         CURRENT_TIMESTAMP);
 
-INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted)
-values (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 2, 0, false),
-       (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false),
-       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
-       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 1, 0, false),
-       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 1, 0, false),
-       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false),
+INSERT INTO post (member_id, book_id, title, content, status, template, like_count, view_count, deleted, created_at, modified_at)
+VALUES (1, 1, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 2, 0, false, TIMESTAMP '2024-02-15 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle1', 'Content', 'PUBLIC', 'NON', 3, 0, false, TIMESTAMP '2024-02-14 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle2', '제목', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-13 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'postTitle3', 'post', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'posTitle', 'ptent', 'PUBLIC', 'NON', 1, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'positle', 'postent', 'PUBLIC', 'NON', 1, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'privateTitle', 'privateContent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
        (2, 2, 'privateTitle',
         'first<============================>second<============================>third<============================>fourth',
-        'PUBLIC', 'TEMPLATE', 0, 0, false),
-       (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false),
-       (4, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false),
-       (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false);
+        'PUBLIC', 'TEMPLATE', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (4, 2, 'posttitle', 'postcontent', 'PUBLIC', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (4, 2, 'posttitle', 'postcontent', 'PRIVATE', 'NON', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP);
 
-INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted)
-VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false),
-       (2, 1, 'reviewContent1', 'PUBLIC', 2, 0, false),
-       (2, 1, 'rContent', 'PUBLIC', 0, 0, false),
-       (2, 1, 'rContent2', 'PUBLIC', 0, 0, false),
-       (2, 2, 'rContent3', 'PUBLIC', 0, 0, false),
-       (2, 2, 'reContent2', 'PUBLIC', 0, 0, false),
-       (1, 2, 'rContent', 'PUBLIC', 0, 0, false),
-       (1, 2, 'rContent', 'PRIVATE', 0, 0, false);
+
+INSERT INTO review (member_id, book_id, content, status, like_count, view_count, deleted, created_at, modified_at)
+VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false, TIMESTAMP '2024-02-15 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'reviewContent1', 'PUBLIC', 3, 0, false, TIMESTAMP '2024-02-14 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'rContent', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-13 00:00:00', CURRENT_TIMESTAMP),
+       (2, 1, 'rContent2', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'rContent3', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'reContent2', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'rContent', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (1, 2, 'rContent', 'PRIVATE', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP);
+
 
 INSERT INTO post_like (member_id, post_id)
 VALUES (2, 1),
@@ -62,13 +66,15 @@ VALUES (2, 1),
        (1, 2),
        (2, 2),
        (1, 6),
-       (1, 7);
+       (1, 7),
+       (5, 2);
 
 INSERT INTO review_like (member_id, review_id)
 VALUES (2, 1),
        (3, 1),
        (1, 2),
-       (2, 2);
+       (2, 2),
+       (5, 2);
 
 INSERT INTO book_like (book_id, member_id)
 VALUES (1, 1),

@@ -343,4 +343,42 @@ class ReviewControllerTest {
                 .andExpect(status().isNoContent())
         ;
     }
+
+    @Test
+    @DisplayName("좋아요가 많은 순으로 한줄요약을 4개 반환한다.")
+    void givenPageStartAndRecommendType_whenGettingMostLikeReviews_thenReturnMostLikeReviews() throws Exception {
+        //given
+        int start = 0;
+        String type = "LIKE";
+
+        //when & then
+        mockMvc.perform(get("/reviews/recommend")
+                        .param("start", String.valueOf(start))
+                        .param("type", type)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewList.length()").value(4))
+                .andExpect(jsonPath("$.reviewList[0].likeCount").value(3))
+                .andExpect(jsonPath("$.reviewList[1].likeCount").value(2))
+        ;
+    }
+
+    @Test
+    @DisplayName("최신 순으로 한줄요약을 4개 반환한다.")
+    void givenPageStartAndRecommendType_whenGettingNewReviews_thenReturnNewReviews() throws Exception {
+        //given
+        int start = 0;
+        String type = "NEW";
+
+        //when & then
+        mockMvc.perform(get("/reviews/recommend")
+                        .param("start", String.valueOf(start))
+                        .param("type", type)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewList.length()").value(4))
+                .andExpect(jsonPath("$.reviewList[0].reviewId").value(1))
+                .andExpect(jsonPath("$.reviewList[1].reviewId").value(2))
+        ;
+    }
 }

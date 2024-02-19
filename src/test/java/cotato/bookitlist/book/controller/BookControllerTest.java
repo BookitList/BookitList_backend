@@ -268,4 +268,16 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.message").value("책을 찾을 수 없습니다."))
         ;
     }
+
+    @Test
+    @DisplayName("[DB] 추천할 책을 랜덤으로 3개 고른다.")
+    void givenRecommendCount_whenGettingRecommendBook_thenReturnRecommendBook() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/books/recommend").
+                        contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookList.length()").value(3));
+    }
 }

@@ -1,6 +1,7 @@
 package cotato.bookitlist.review.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
+import cotato.bookitlist.common.domain.RecommendType;
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
@@ -117,6 +118,18 @@ public class ReviewController {
     ) {
         reviewFacade.deleteReview(reviewId, details.getId());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<ReviewListResponse> getRecommendReviews(
+            @RequestParam RecommendType type,
+            @RequestParam int start,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        if (details == null) {
+            return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(reviewService.getRecommendReviews(type, start, DEFAULT_USER_ID));
     }
 
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {

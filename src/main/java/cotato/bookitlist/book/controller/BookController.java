@@ -2,10 +2,7 @@ package cotato.bookitlist.book.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
 import cotato.bookitlist.book.dto.request.BookIsbn13Request;
-import cotato.bookitlist.book.dto.response.BookApiListResponse;
-import cotato.bookitlist.book.dto.response.BookApiResponse;
-import cotato.bookitlist.book.dto.response.BookListResponse;
-import cotato.bookitlist.book.dto.response.BookResponse;
+import cotato.bookitlist.book.dto.response.*;
 import cotato.bookitlist.book.service.BookService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -78,6 +75,11 @@ public class BookController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<BookRecommendListResponse> recommendBook() {
+        return ResponseEntity.ok(bookService.recommendBook());
     }
 
 }

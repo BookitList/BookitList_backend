@@ -517,5 +517,42 @@ class PostControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("좋아요가 많은 순으로 게시글을 3개 반환한다.")
+    void givenPageStartAndRecommendType_whenGettingMostLikePosts_thenReturnMostLikePosts() throws Exception {
+        //given
+        int start = 0;
+        String type = "LIKE";
+
+        //when & then
+        mockMvc.perform(get("/posts/recommend")
+                        .param("start", String.valueOf(start))
+                        .param("type", type)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList.length()").value(3))
+                .andExpect(jsonPath("$.postList[0].likeCount").value(3))
+                .andExpect(jsonPath("$.postList[1].likeCount").value(2))
+        ;
+    }
+
+    @Test
+    @DisplayName("최신 순으로 게시글을 3개 반환한다")
+    void givenPageStartAndRecommendType_whenGettingNewPosts_thenReturnNewPosts() throws Exception {
+        //given
+        int start = 0;
+        String type = "NEW";
+
+        //when & then
+        mockMvc.perform(get("/posts/recommend")
+                        .param("start", String.valueOf(start))
+                        .param("type", type)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.postList.length()").value(3))
+                .andExpect(jsonPath("$.postList[0].postId").value(1))
+                .andExpect(jsonPath("$.postList[1].postId").value(2))
+        ;
+    }
 }
 

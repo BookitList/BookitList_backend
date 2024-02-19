@@ -3,9 +3,14 @@ package cotato.bookitlist.member.service;
 import cotato.bookitlist.file.service.FileService;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.dto.MemberDto;
+import cotato.bookitlist.member.dto.response.MemberRecommendListResponse;
 import cotato.bookitlist.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
+
+    @Value("${recommend.count.member}")
+    private int recommendCount;
 
     private static final String PROFILE_FILE_NAME = "profile";
 
@@ -48,4 +56,10 @@ public class MemberService {
         member.changeName(name);
     }
 
+
+    public MemberRecommendListResponse getNewMembers() {
+        Pageable pageable = PageRequest.of(0, recommendCount, Sort.by("createdAt").descending());
+
+        return MemberRecommendListResponse.of(memberRepository.findPublicMember(pageable));
+    }
 }

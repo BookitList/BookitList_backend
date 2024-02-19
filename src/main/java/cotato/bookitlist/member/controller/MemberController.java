@@ -2,6 +2,7 @@ package cotato.bookitlist.member.controller;
 
 import cotato.bookitlist.config.security.jwt.AuthDetails;
 import cotato.bookitlist.member.dto.request.NameChangeRequest;
+import cotato.bookitlist.member.dto.response.MemberRecommendListResponse;
 import cotato.bookitlist.member.dto.response.MemberResponse;
 import cotato.bookitlist.member.dto.response.ProfileResponse;
 import cotato.bookitlist.member.service.MemberService;
@@ -55,6 +56,11 @@ public class MemberController {
     ) {
         memberService.changeName(nameChangeRequest.name(), details.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/recommend/new")
+    public ResponseEntity<MemberRecommendListResponse> getNewMembers() {
+        return ResponseEntity.ok(memberService.getNewMembers());
     }
 
 }

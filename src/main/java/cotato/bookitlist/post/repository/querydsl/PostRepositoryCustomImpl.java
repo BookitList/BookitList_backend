@@ -52,7 +52,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 )
                 .from(post)
                 .join(post.member, member)
-                .where(isbnEq(isbn13), memberIdEq(memberId), post.status.eq(PostStatus.PUBLIC), post.member.profileStatus.eq(ProfileStatus.PUBLIC))
+                .where(isbnEq(isbn13), memberIdEq(memberId), post.status.eq(PostStatus.PUBLIC), post.member.status.eq(ProfileStatus.PUBLIC))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -159,6 +159,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .when(postMemberId.eq(memberId))
                 .then(true)
                 .otherwise(post.status.eq(PostStatus.PUBLIC)
-                        .and(post.member.profileStatus.eq(ProfileStatus.PUBLIC)));
+                        .and(post.member.status.eq(ProfileStatus.PUBLIC)));
     }
 }

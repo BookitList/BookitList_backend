@@ -92,7 +92,7 @@ class MemberControllerTest {
     @Test
     @WithCustomMockUser
     @DisplayName("profileStatus를 변경하는 요청을 한다.")
-    void givenLoginMember_whenChangingProfileStatus_thenChangeProfileStatus() throws Exception{
+    void givenLoginMember_whenChangingProfileStatus_thenChangeProfileStatus() throws Exception {
         //given
 
         //when & then
@@ -128,6 +128,21 @@ class MemberControllerTest {
                         .content(objectMapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    @DisplayName("최신 순으로 멤버를 3명 반환한다.")
+    void givenMembers_whenGettingNewMembers_thenReturnNewMembers() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/members/recommend/new")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.memberList.length()").value(3))
+                .andExpect(jsonPath("$.memberList[0].memberId").value(1))
+                .andExpect(jsonPath("$.memberList[1].memberId").value(2))
         ;
     }
 

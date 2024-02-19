@@ -97,4 +97,11 @@ public class ReviewService {
 
         return ReviewListResponse.from(reviewPage, memberId);
     }
+
+    public ReviewListResponse getNewReviews(int start, Long memberId) {
+        Pageable pageable = PageRequest.of(start, recommendCount, Sort.by("createdAt").descending());
+        Page<Review> reviewPage = reviewRepository.findPublicReviewAll(pageable);
+
+        return ReviewListResponse.from(reviewPage, memberId);
+    }
 }

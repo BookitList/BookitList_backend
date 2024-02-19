@@ -130,6 +130,17 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getMostLikeReviews(start, DEFAULT_USER_ID));
     }
 
+    @GetMapping("/recommend/new")
+    public ResponseEntity<ReviewListResponse> getNewReviews(
+            @RequestParam int start,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        if (details == null) {
+            return ResponseEntity.ok(reviewService.getNewReviews(start, DEFAULT_USER_ID));
+        }
+        return ResponseEntity.ok(reviewService.getNewReviews(start, details.getId()));
+    }
+
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {
         Cookie[] cookies = request.getCookies();
         Cookie reviewViewCookie = findCookie(cookies);

@@ -2,6 +2,7 @@ package cotato.bookitlist.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.bookitlist.annotation.WithCustomMockUser;
+import cotato.bookitlist.member.dto.request.NameChangeRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

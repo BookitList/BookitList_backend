@@ -404,6 +404,32 @@ class ReviewControllerTest {
     }
 
     @Test
+    @WithCustomMockUser
+    @DisplayName("유저가 본인이 작성한 한줄요약을 조회한다.")
+    void givenLogin_whenGettingMyReview_thenReturnReviewListResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResults").value(3))
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 본인이 작성한 한줄요약을 조회하면 에러를 반환한다.")
+    void givenNonLogin_whenGettingMyReview_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(get("/reviews/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @Test
     @DisplayName("좋아요가 많은 순으로 한줄요약을 4개 반환한다.")
     void givenPageStartAndRecommendType_whenGettingMostLikeReviews_thenReturnMostLikeReviews() throws Exception {
         //given

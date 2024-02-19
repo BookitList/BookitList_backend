@@ -127,6 +127,7 @@ class BookLikeControllerTest {
         mockMvc.perform(get("/books/likes/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalResults").value(2))
+                .andExpect(jsonPath("$.bookList[0].isbn13").value("9788931514810"))
         ;
     }
 

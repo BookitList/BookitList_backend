@@ -58,7 +58,7 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/recommend/new")
+    @GetMapping("/recommend")
     public ResponseEntity<MemberRecommendListResponse> getNewMembers() {
         return ResponseEntity.ok(memberService.getNewMembers());
     }

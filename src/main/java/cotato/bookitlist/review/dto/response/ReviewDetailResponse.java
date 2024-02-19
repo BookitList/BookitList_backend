@@ -1,5 +1,6 @@
 package cotato.bookitlist.review.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import cotato.bookitlist.review.domain.ReviewStatus;
 import cotato.bookitlist.review.dto.ReviewDetailDto;
 
@@ -12,7 +13,9 @@ public record ReviewDetailResponse(
         String content,
         int likeCount,
         int viewCount,
+        @JsonFormat(pattern = "yyyy.MM.dd")
         LocalDateTime createdAt,
+        @JsonFormat(pattern = "yyyy.MM.dd")
         LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,

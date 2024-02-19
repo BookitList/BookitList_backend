@@ -1,5 +1,6 @@
 package cotato.bookitlist.post.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.PostTemplate;
 import cotato.bookitlist.post.dto.PostDetailDto;
@@ -15,7 +16,9 @@ public record PostDetailResponse(
         List<String> content,
         int likeCount,
         int viewCount,
+        @JsonFormat(pattern = "yyyy.MM.dd")
         LocalDateTime createdAt,
+        @JsonFormat(pattern = "yyyy.MM.dd")
         LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,

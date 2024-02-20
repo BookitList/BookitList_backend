@@ -39,6 +39,9 @@ public class PostService {
     public Long registerPost(PostRegisterRequest request, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
+        //게시글 등록 시 해당 책이 데이터베이스에 있으면 해당 책에 게시글을 작성한다.
+        //데이터베이스에 책이 없다면 알라딘 API 통신을 통해 책 정보를 가져와 저장 후 그 책에 게시글을 작성한다.
+        //단, 알라딘 API 통신을 하기 전 Redis 에 책 정보가 저장되어 있을 수 있으므로 있다면 그 정보로 책을 저장한다.
         Book book = bookRepository.findByIsbn13(request.isbn13())
                 .orElseGet(() -> bookRepository.getReferenceById(
                         bookService.registerBook(request.isbn13())

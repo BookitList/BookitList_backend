@@ -310,7 +310,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 안된 유저가 다른사람 private 게시글을 조회하면 에러를 반환한다.")
+    @DisplayName("로그인 안된 유저가 private 게시글을 조회하면 에러를 반환한다.")
     void givenPostId_whenGettingPrivatePost_thenReturnErrorResponse() throws Exception {
         //given
 

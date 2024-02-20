@@ -66,7 +66,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Optional<ReviewDetailDto> findPublicReviewDetailByReviewId(Long reviewId, Long memberId) {
+    public Optional<ReviewDetailDto> findReviewDetailByReviewId(Long reviewId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .select(
                         Projections.constructor(

@@ -71,7 +71,7 @@ VALUES (1, 1, 'reviewContent', 'PUBLIC', 2, 0, false, TIMESTAMP '2024-02-15 00:0
        (2, 1, 'rContent', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-13 00:00:00', CURRENT_TIMESTAMP),
        (2, 1, 'rContent2', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
        (2, 2, 'rContent3', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
-       (2, 2, 'reContent2', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
+       (2, 2, 'reContent2', 'PRIVATE', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
        (1, 2, 'rContent', 'PUBLIC', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP),
        (1, 2, 'rContent', 'PRIVATE', 0, 0, false, TIMESTAMP '2024-02-12 00:00:00', CURRENT_TIMESTAMP);
 

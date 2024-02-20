@@ -12,6 +12,7 @@ import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;
 import cotato.bookitlist.review.dto.response.ReviewListResponse;
+import cotato.bookitlist.review.dto.response.ReviewSimpleResponse;
 import cotato.bookitlist.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,9 @@ public class ReviewService {
     public Long registerReview(ReviewRegisterRequest request, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
+        //한줄요약 등록 시 해당 책이 데이터베이스에 있으면 해당 책에 한줄요약을 작성한다.
+        //데이터베이스에 책이 없다면 알라딘 API 통신을 통해 책 정보를 가져와 저장 후 그 책에 한줄요약을 작성한다.
+        //단, 알라딘 API 통신을 하기 전 Redis 에 책 정보가 저장되어 있을 수 있으므로 있다면 그 정보로 책을 저장한다.
         Book book = bookRepository.findByIsbn13(request.isbn13())
                 .orElseGet(() -> bookRepository.getReferenceById(
                         bookService.registerBook(request.isbn13())
@@ -124,5 +128,15 @@ public class ReviewService {
         Page<Review> reviewPage = reviewRepository.findPublicReviewAll(pageable);
 
         return ReviewListResponse.from(reviewPage, memberId);
+    }
+
+    public ReviewSimpleResponse getBestReviewOfBook(String isbn13) {
+        //책을 데이터베이스에서 찾지 못한 경우와 책이 데이터베이스에 있지만 한줄요약이 없는 경우가 서버 외부에선 같은 상황이므로
+        //두 경우 모두 한줄요약을 찾을 수 없다는 메시지를 보낸다.
+        Book book = bookRepository.findByIsbn13(isbn13)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
+
+        return reviewRepository.findBestReview(book)
+                .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 }

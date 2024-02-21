@@ -157,7 +157,7 @@ public class PostController {
             @PathVariable("post-id") Long postId,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        postService.togglePostStats(postId, details.getId());
+        postService.togglePostStatus(postId, details.getId());
         return ResponseEntity.ok().build();
     }
 

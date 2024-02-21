@@ -52,7 +52,7 @@ class ReviewServiceTest {
         given(reviewRepository.findByIdAndMemberId(reviewId, memberId)).willReturn(Optional.of(review));
 
         //when
-        sut.toggleReviewStats(reviewId, memberId);
+        sut.toggleReviewStatus(reviewId, memberId);
 
         //then
         then(reviewRepository).should().findByIdAndMemberId(reviewId, memberId);

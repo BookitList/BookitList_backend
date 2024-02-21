@@ -129,7 +129,7 @@ public class PostService {
         return PostListResponse.from(postPage, memberId);
     }
 
-    public void togglePostStats(Long postId, Long memberId) {
+    public void togglePostStatus(Long postId, Long memberId) {
         Post post = postRepository.findByIdAndMemberId(postId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 

@@ -70,7 +70,7 @@ class PostServiceTest {
         given(postRepository.findByIdAndMemberId(postId, memberId)).willReturn(Optional.of(post));
 
         //when
-        sut.togglePostStats(postId, memberId);
+        sut.togglePostStatus(postId, memberId);
 
         //then
         then(postRepository).should().findByIdAndMemberId(postId, memberId);

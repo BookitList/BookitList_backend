@@ -140,7 +140,7 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 
-    public void toggleReviewStats(Long reviewId, Long memberId) {
+    public void toggleReviewStatus(Long reviewId, Long memberId) {
         Review review = reviewRepository.findByIdAndMemberId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
 

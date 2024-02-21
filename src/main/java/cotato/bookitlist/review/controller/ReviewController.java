@@ -158,11 +158,11 @@ public class ReviewController {
     }
 
     @PatchMapping("/{review-id}/status")
-    public ResponseEntity<Void> togglePostStatus(
+    public ResponseEntity<Void> toggleReviewStatus(
             @PathVariable("review-id") Long reviewId,
             @AuthenticationPrincipal AuthDetails details
     ) {
-        reviewService.toggleReviewStats(reviewId, details.getId());
+        reviewService.toggleReviewStatus(reviewId, details.getId());
         return ResponseEntity.ok().build();
     }
 

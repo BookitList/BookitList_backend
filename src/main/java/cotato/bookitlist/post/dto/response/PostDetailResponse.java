@@ -22,7 +22,7 @@ public record PostDetailResponse(
         LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,
-        PostStatus postStatus,
+        PostStatus status,
         PostTemplate template
 ) {
 

@@ -17,7 +17,7 @@ public record PostResponse(
         int viewCount,
         boolean liked,
         boolean isMine,
-        PostStatus postStatus,
+        PostStatus status,
         PostTemplate template
 ) {
 

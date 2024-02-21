@@ -19,7 +19,7 @@ public record ReviewDetailResponse(
         LocalDateTime modifiedAt,
         boolean liked,
         boolean isMine,
-        ReviewStatus reviewStatus
+        ReviewStatus status
 ) {
     public static ReviewDetailResponse from(ReviewDetailDto dto, Long memberId) {
         return new ReviewDetailResponse(

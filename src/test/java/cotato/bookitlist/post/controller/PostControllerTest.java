@@ -291,7 +291,7 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/11")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.postStatus").value("PRIVATE"))
+                .andExpect(jsonPath("$.status").value("PRIVATE"))
         ;
     }
 

@@ -157,6 +157,15 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getBestReviewOfBook(isbn13));
     }
 
+    @PatchMapping("/{review-id}/status")
+    public ResponseEntity<Void> toggleReviewStatus(
+            @PathVariable("review-id") Long reviewId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        reviewService.toggleReviewStatus(reviewId, details.getId());
+        return ResponseEntity.ok().build();
+    }
+
     private void handleReviewViewCount(HttpServletRequest request, HttpServletResponse response, Long reviewId) {
         Cookie[] cookies = request.getCookies();
         Cookie reviewViewCookie = findCookie(cookies);

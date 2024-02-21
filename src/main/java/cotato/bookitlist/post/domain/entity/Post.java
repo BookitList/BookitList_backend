@@ -95,4 +95,8 @@ public class Post extends BaseEntity {
             throw new AccessDeniedException("본인의 게시글은 좋아요할 수 없습니다.");
         }
     }
+
+    public void toggleStatus() {
+        status = (status == PostStatus.PRIVATE) ? PostStatus.PUBLIC : PostStatus.PRIVATE;
+    }
 }

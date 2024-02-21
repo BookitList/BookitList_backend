@@ -537,4 +537,42 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.message").value("한줄요약을 찾을 수 없습니다."))
         ;
     }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("본인의 한줄요약 상태를 바꾼다")
+    void givenWithLogin_whenTogglingReviewStatus_thenToggleReviewStatus() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/reviews/1/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("다른 사람 한줄요약 상태를 바꾼다")
+    void givenNonMyReview_whenTogglingReviewStatus_thenErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/reviews/2/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 한줄요약 상태를 바꾼면 에러를 반환한다.")
+    void givenWithNonLogin_whenTogglingReviewStatus_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/reviews/1/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
 }

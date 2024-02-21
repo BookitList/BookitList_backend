@@ -242,7 +242,7 @@ class ReviewControllerTest {
         mockMvc.perform(get("/reviews/8")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.reviewStatus").value("PRIVATE"))
+                .andExpect(jsonPath("$.status").value("PRIVATE"))
         ;
     }
 

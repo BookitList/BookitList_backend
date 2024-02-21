@@ -1,5 +1,6 @@
 package cotato.bookitlist.post.service;
 
+import cotato.bookitlist.post.domain.PostStatus;
 import cotato.bookitlist.post.domain.entity.Post;
 import cotato.bookitlist.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -59,4 +60,20 @@ class PostServiceTest {
         assertThat(post.getLikeCount()).isZero();
     }
 
+    @Test
+    @DisplayName("본인의 게시글 상태를 바꾼다")
+    void givenWithLogin_whenTogglingPostStatus_thenTogglePostStatus() throws Exception {
+        //given
+        Long postId = 1L;
+        Long memberId = 1L;
+        Post post = createPost(postId, memberId);
+        given(postRepository.findByIdAndMemberId(postId, memberId)).willReturn(Optional.of(post));
+
+        //when
+        sut.togglePostStats(postId, memberId);
+
+        //then
+        then(postRepository).should().findByIdAndMemberId(postId, memberId);
+        assertThat(post.getStatus()).isEqualTo(PostStatus.PRIVATE);
+    }
 }

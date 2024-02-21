@@ -557,5 +557,45 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.postList[1].postId").value(2))
         ;
     }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("본인의 게시글 상태를 바꾼다")
+    void givenWithLogin_whenTogglingPostStatus_thenTogglePostStatus() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/posts/1/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("다른 사람 게시글 상태를 바꾼다")
+    void givenNonMyPost_whenTogglingPostStatus_thenErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/posts/2/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    @DisplayName("로그인 없이 게시글 상태를 바꾼면 에러를 반환한다.")
+    void givenWithNonLogin_whenTogglingPostStatus_thenReturnErrorResponse() throws Exception {
+        //given
+
+        //when & then
+        mockMvc.perform(patch("/posts/1/status")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+
 }
 

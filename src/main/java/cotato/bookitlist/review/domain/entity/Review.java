@@ -87,4 +87,8 @@ public class Review extends BaseEntity {
             throw new AccessDeniedException("본인의 한줄요약은 좋아요할 수 없습니다.");
         }
     }
+
+    public void toggleStatus() {
+        status = (status == ReviewStatus.PRIVATE) ? ReviewStatus.PUBLIC : ReviewStatus.PRIVATE;
+    }
 }

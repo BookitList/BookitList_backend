@@ -152,6 +152,15 @@ public class PostController {
         return ResponseEntity.ok(postService.getRecommendPosts(type, start, details.getId()));
     }
 
+    @PatchMapping("/{post-id}/status")
+    public ResponseEntity<Void> togglePostStatus(
+            @PathVariable("post-id") Long postId,
+            @AuthenticationPrincipal AuthDetails details
+    ) {
+        postService.togglePostStats(postId, details.getId());
+        return ResponseEntity.ok().build();
+    }
+
     private void handlePostViewCount(HttpServletRequest request, HttpServletResponse response, Long postId) {
         Cookie[] cookies = request.getCookies();
         Cookie postViewCookie = findCookie(cookies);

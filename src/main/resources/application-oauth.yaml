@@ -30,4 +30,4 @@ spring:
             token-uri: https://nid.naver.com/oauth2.0/token
 
 oauth:
-  authorizedRedirectUri: http://localhost:3000/login/redirected
+  authorizedRedirectUri: ${AUTHORIZED_REDIRECT_URI}

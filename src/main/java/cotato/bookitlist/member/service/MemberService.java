@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -37,7 +37,7 @@ public class MemberService {
         return MemberDto.from(member, loginMemberId);
     }
 
-
+    @Transactional
     public String uploadProfile(MultipartFile profile, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -46,16 +46,17 @@ public class MemberService {
         return member.updateProfileLink(url);
     }
 
+    @Transactional
     public void changeProfileStatus(Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
         member.changeProfileStatus();
     }
 
+    @Transactional
     public void changeName(String name, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
         member.changeName(name);
     }
-
 
     public MemberRecommendListResponse getNewMembers() {
         Pageable pageable = PageRequest.of(0, recommendCount, Sort.by("createdAt").descending());

@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewService {
 
@@ -37,6 +37,7 @@ public class ReviewService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
 
+    @Transactional
     public Long registerReview(ReviewRegisterRequest request, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -53,6 +54,7 @@ public class ReviewService {
         return reviewRepository.save(review).getId();
     }
 
+    @Transactional
     public void updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest, Long memberId) {
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -62,18 +64,15 @@ public class ReviewService {
         review.updateReview(member, reviewUpdateRequest.content(), reviewUpdateRequest.status());
     }
 
-    @Transactional(readOnly = true)
     public ReviewDetailDto getReview(Long reviewId, Long memberId) {
         return reviewRepository.findReviewDetailByReviewId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 
-    @Transactional(readOnly = true)
     public ReviewListResponse getAllReview(Pageable pageable, Long memberId) {
         return ReviewListResponse.from(reviewRepository.findPublicReviewAll(pageable), memberId);
     }
 
-    @Transactional(readOnly = true)
     public ReviewListResponse searchReview(String isbn13, Long memberId, Long loginMemberId, Pageable pageable) {
         return ReviewListResponse.fromDto(
                 reviewRepository.findPublicReviewWithLikedByIsbn13(isbn13, memberId, loginMemberId, pageable),
@@ -81,16 +80,17 @@ public class ReviewService {
         );
     }
 
-    @Transactional(readOnly = true)
     public ReviewCountResponse getReviewCount(String isbn13) {
         return ReviewCountResponse.of(reviewRepository.countPublicReviewByBook_Isbn13(isbn13));
     }
 
+    @Transactional
     public void increaseViewCount(Long reviewId) {
         Review review = reviewRepository.getReferenceById(reviewId);
         review.increaseViewCount();
     }
 
+    @Transactional
     public void deleteReview(Long reviewId, Long memberId) {
         Review review = reviewRepository.findByIdAndMemberId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
@@ -98,17 +98,14 @@ public class ReviewService {
         review.deleteReview();
     }
 
-    @Transactional(readOnly = true)
     public ReviewListResponse searchLikeReview(Long memberId, Pageable pageable) {
         return ReviewListResponse.fromDto(reviewRepository.findLikeReviewByMemberId(memberId, pageable), memberId);
     }
 
-    @Transactional(readOnly = true)
     public ReviewListResponse getMyReviews(Long memberId, Pageable pageable) {
         return ReviewListResponse.from(reviewRepository.findByMemberId(memberId, pageable), memberId);
     }
 
-    @Transactional(readOnly = true)
     public ReviewListResponse getRecommendReviews(RecommendType type, int start, Long memberId) {
         return switch (type) {
             case LIKE -> getMostLikeReviews(start, memberId);
@@ -140,6 +137,7 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));
     }
 
+    @Transactional
     public void toggleReviewStatus(Long reviewId, Long memberId) {
         Review review = reviewRepository.findByIdAndMemberId(reviewId, memberId)
                 .orElseThrow(() -> new EntityNotFoundException("한줄요약을 찾을 수 없습니다."));

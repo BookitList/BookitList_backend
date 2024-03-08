@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -38,7 +37,7 @@ public class AuthService {
             throw new IllegalArgumentException("잘못된 Refresh Token 입니다.");
         }
 
-        String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER"); // TODO: Role 추가해야 함!!
+        String newAccessToken = jwtTokenProvider.generateAccessToken(refreshMemberId, "USER");
         String newRefreshToken = jwtTokenProvider.generateRefreshToken(refreshMemberId);
 
         RefreshTokenEntity newRefreshTokenEntity = RefreshTokenEntity.builder()
@@ -49,6 +48,10 @@ public class AuthService {
 
         saveRefreshToken(newRefreshTokenEntity);
         return ReissueResponse.from(newAccessToken, newRefreshTokenEntity.getRefreshToken());
+    }
+
+    private void deleteRefreshTokenOfMember(Long memberId) {
+        refreshTokenRepository.findById(memberId).ifPresent(refreshTokenRepository::delete);
     }
 
     public RefreshTokenEntity saveRefreshToken(Long id, String refreshToken) {
@@ -83,14 +86,11 @@ public class AuthService {
         refreshTokenRepository.delete(refreshTokenEntity);
     }
 
-    private void deleteRefreshTokenOfMember(Long memberId) {
-        refreshTokenRepository.findById(memberId).ifPresent(refreshTokenRepository::delete);
-    }
-
     public boolean isBlocked(String accessToken) {
         return blackListRepository.findById(accessToken).isPresent();
     }
 
+    @Transactional(readOnly = true)
     public void validateRegisteredMember(Long memberId) {
         if (!memberRepository.existsById(memberId)) {
             throw new EntityNotFoundException("유저 정보를 찾을 수 없습니다.");

@@ -1,4 +1,4 @@
-package cotato.bookitlist.config.security.oauth;
+package cotato.bookitlist.security.oauth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

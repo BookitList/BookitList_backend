@@ -1,4 +1,4 @@
-package cotato.bookitlist.config.security;
+package cotato.bookitlist.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,7 +1,7 @@
-package cotato.bookitlist.config.security.jwt;
+package cotato.bookitlist.security.jwt;
 
 import cotato.bookitlist.auth.service.AuthService;
-import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
+import cotato.bookitlist.security.jwt.dto.AccessTokenInfo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

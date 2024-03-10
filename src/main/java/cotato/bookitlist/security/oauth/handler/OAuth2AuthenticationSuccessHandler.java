@@ -1,8 +1,8 @@
-package cotato.bookitlist.config.security.oauth.handler;
+package cotato.bookitlist.security.oauth.handler;
 
 import cotato.bookitlist.auth.service.AuthService;
-import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
-import cotato.bookitlist.config.security.oauth.UserPrincipal;
+import cotato.bookitlist.security.jwt.JwtTokenProvider;
+import cotato.bookitlist.security.oauth.UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

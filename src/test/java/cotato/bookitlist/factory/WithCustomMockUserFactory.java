@@ -1,7 +1,7 @@
 package cotato.bookitlist.factory;
 
 import cotato.bookitlist.annotation.WithCustomMockUser;
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

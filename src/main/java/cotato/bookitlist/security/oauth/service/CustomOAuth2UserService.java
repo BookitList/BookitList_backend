@@ -1,9 +1,9 @@
-package cotato.bookitlist.config.security.oauth.service;
+package cotato.bookitlist.security.oauth.service;
 
-import cotato.bookitlist.config.security.oauth.AuthProvider;
-import cotato.bookitlist.config.security.oauth.OAuth2UserInfo;
-import cotato.bookitlist.config.security.oauth.OAuth2UserInfoFactory;
-import cotato.bookitlist.config.security.oauth.UserPrincipal;
+import cotato.bookitlist.security.oauth.AuthProvider;
+import cotato.bookitlist.security.oauth.OAuth2UserInfo;
+import cotato.bookitlist.security.oauth.OAuth2UserInfoFactory;
+import cotato.bookitlist.security.oauth.UserPrincipal;
 import cotato.bookitlist.member.component.MemberComponent;
 import cotato.bookitlist.member.domain.Member;
 import cotato.bookitlist.member.repository.MemberRepository;

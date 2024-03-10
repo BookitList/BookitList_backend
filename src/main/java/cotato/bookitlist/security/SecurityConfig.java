@@ -1,8 +1,8 @@
-package cotato.bookitlist.config.security;
+package cotato.bookitlist.security;
 
-import cotato.bookitlist.config.security.jwt.JwtAuthenticationFilter;
-import cotato.bookitlist.config.security.oauth.handler.OAuth2AuthenticationSuccessHandler;
-import cotato.bookitlist.config.security.oauth.service.CustomOAuth2UserService;
+import cotato.bookitlist.security.jwt.JwtAuthenticationFilter;
+import cotato.bookitlist.security.oauth.handler.OAuth2AuthenticationSuccessHandler;
+import cotato.bookitlist.security.oauth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

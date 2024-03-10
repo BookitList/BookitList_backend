@@ -7,7 +7,7 @@ import cotato.bookitlist.auth.dto.request.ReissueRequest;
 import cotato.bookitlist.auth.dto.response.ReissueResponse;
 import cotato.bookitlist.auth.repository.BlackListRepository;
 import cotato.bookitlist.auth.repository.RefreshTokenRepository;
-import cotato.bookitlist.config.security.jwt.JwtTokenProvider;
+import cotato.bookitlist.security.jwt.JwtTokenProvider;
 import cotato.bookitlist.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

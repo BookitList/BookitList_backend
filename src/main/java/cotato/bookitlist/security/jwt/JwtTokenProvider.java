@@ -1,7 +1,7 @@
-package cotato.bookitlist.config.security.jwt;
+package cotato.bookitlist.security.jwt;
 
-import cotato.bookitlist.config.security.jwt.dto.AccessTokenInfo;
-import cotato.bookitlist.config.security.jwt.properties.JwtProperties;
+import cotato.bookitlist.security.jwt.dto.AccessTokenInfo;
+import cotato.bookitlist.security.jwt.properties.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;

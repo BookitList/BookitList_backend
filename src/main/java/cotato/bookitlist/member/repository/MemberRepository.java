@@ -1,6 +1,6 @@
 package cotato.bookitlist.member.repository;
 
-import cotato.bookitlist.config.security.oauth.AuthProvider;
+import cotato.bookitlist.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

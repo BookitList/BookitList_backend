@@ -1,4 +1,4 @@
-package cotato.bookitlist.config.security.jwt.properties;
+package cotato.bookitlist.security.jwt.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

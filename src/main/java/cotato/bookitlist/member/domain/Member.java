@@ -1,8 +1,8 @@
 package cotato.bookitlist.member.domain;
 
 import cotato.bookitlist.common.domain.BaseEntity;
-import cotato.bookitlist.config.security.oauth.AuthProvider;
-import cotato.bookitlist.config.security.oauth.OAuth2UserInfo;
+import cotato.bookitlist.security.oauth.AuthProvider;
+import cotato.bookitlist.security.oauth.OAuth2UserInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

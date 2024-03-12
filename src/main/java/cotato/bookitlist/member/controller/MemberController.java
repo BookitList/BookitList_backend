@@ -1,6 +1,6 @@
 package cotato.bookitlist.member.controller;
 
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import cotato.bookitlist.member.dto.request.NameChangeRequest;
 import cotato.bookitlist.member.dto.response.MemberRecommendListResponse;
 import cotato.bookitlist.member.dto.response.MemberResponse;

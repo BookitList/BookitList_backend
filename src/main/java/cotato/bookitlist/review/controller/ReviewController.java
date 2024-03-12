@@ -2,7 +2,7 @@ package cotato.bookitlist.review.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
 import cotato.bookitlist.common.domain.RecommendType;
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import cotato.bookitlist.review.dto.request.ReviewRegisterRequest;
 import cotato.bookitlist.review.dto.request.ReviewUpdateRequest;
 import cotato.bookitlist.review.dto.response.ReviewCountResponse;

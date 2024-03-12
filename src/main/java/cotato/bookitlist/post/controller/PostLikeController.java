@@ -1,6 +1,6 @@
 package cotato.bookitlist.post.controller;
 
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import cotato.bookitlist.post.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package cotato.bookitlist.config.security.jwt.dto;
+package cotato.bookitlist.security.jwt.dto;
 
 public record AccessTokenInfo(
         Long userId,

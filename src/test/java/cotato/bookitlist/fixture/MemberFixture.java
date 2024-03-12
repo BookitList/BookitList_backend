@@ -1,6 +1,6 @@
 package cotato.bookitlist.fixture;
 
-import cotato.bookitlist.config.security.oauth.AuthProvider;
+import cotato.bookitlist.security.oauth.AuthProvider;
 import cotato.bookitlist.member.domain.Member;
 import org.springframework.test.util.ReflectionTestUtils;
 

@@ -1,4 +1,4 @@
-package cotato.bookitlist.config.security.oauth;
+package cotato.bookitlist.security.oauth;
 
 public enum AuthProvider {
     KAKAO,

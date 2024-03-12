@@ -5,7 +5,7 @@ import cotato.bookitlist.book.dto.request.BookIsbn13Request;
 import cotato.bookitlist.book.dto.response.BookLikeResponse;
 import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.service.BookLikeService;
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

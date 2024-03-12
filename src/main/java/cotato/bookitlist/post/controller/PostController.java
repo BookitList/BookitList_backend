@@ -2,7 +2,7 @@ package cotato.bookitlist.post.controller;
 
 import cotato.bookitlist.book.annotation.IsValidIsbn;
 import cotato.bookitlist.common.domain.RecommendType;
-import cotato.bookitlist.config.security.jwt.AuthDetails;
+import cotato.bookitlist.security.jwt.AuthDetails;
 import cotato.bookitlist.post.dto.request.PostRegisterRequest;
 import cotato.bookitlist.post.dto.request.PostUpdateRequest;
 import cotato.bookitlist.post.dto.response.PostCountResponse;

@@ -65,7 +65,8 @@ public class BookService {
             throw new DuplicateKeyException("이미 등록된 isbn13입니다.");
         });
 
-        return bookRepository.save(bookApiCacheService.findBookApiCacheByIsbn13(isbn13).map(BookApiCache::getBookApiDto)
+        return bookRepository.save(
+                bookApiCacheService.findBookApiCacheByIsbn13(isbn13).map(BookApiCache::getBookApiDto)
                 .orElseGet(() -> bookApiComponent.findByIsbn13(isbn13)).toEntity()
         ).getId();
     }

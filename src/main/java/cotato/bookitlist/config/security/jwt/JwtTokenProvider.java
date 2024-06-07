@@ -48,14 +48,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private String buildRefreshToken(Long id, Date issuedAt, Date accessTokenExpiresIn) {
+    private String buildRefreshToken(Long id, Date issuedAt, Date refreshTokenExpiresIn) {
         Key encodedKey = getSecretKey();
         return Jwts.builder()
                 .setIssuer("bookitlist")
                 .setIssuedAt(issuedAt)
                 .setSubject(id.toString())
                 .claim("type", "REFRESH_TOKEN")
-                .setExpiration(accessTokenExpiresIn)
+                .setExpiration(refreshTokenExpiresIn)
                 .signWith(encodedKey)
                 .compact();
     }

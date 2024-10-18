@@ -44,5 +44,9 @@ public record BookApiDto(
         return new BookApiDto(title, author, publisher, pubDate, description, link, isbn13, price, cover);
     }
 
+    public static BookApiDto of(BookDto dto) {
+        return new BookApiDto(dto.title(), dto.author(), dto.publisher(), dto.pubDate(), dto.description(), dto.link(), dto.isbn13(), dto.price(), dto.cover());
+    }
+
 
 }

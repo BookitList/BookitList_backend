@@ -66,8 +66,8 @@ public class BookService {
                     redissonLockService.unlock("book", isbn13);
                 }
             } else {
-                log.debug("Lock not acquired, skipping cache update for isbn13={}", isbn13);
-                return null;
+                log.info("Lock not acquired, skipping cache update for isbn13={}", isbn13);
+                throw new RuntimeException("Please try again later.");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

@@ -63,7 +63,7 @@ public class BookApiComponent {
         JSONObject json = new JSONObject(aladinComponent.findByIsbn13(aladinKey, isbn13, "ISBN13", "JS", 20131101));
 
         if (json.has("errorMessage")) {
-            log.error("존재하지 않는 isbn13 입니다. isbn13: {}", isbn13);
+            log.info("존재하지 않는 isbn13 입니다. isbn13: {}", isbn13);
             throw new IllegalArgumentException("존재하지 않는 isbn13 입니다.");
         }
 

@@ -4,6 +4,7 @@ import cotato.bookitlist.book.dto.BookApiDto;
 import cotato.bookitlist.book.dto.response.BookApiListResponse;
 import cotato.bookitlist.book.dto.response.BookApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BookApiComponent {
@@ -61,12 +63,13 @@ public class BookApiComponent {
         JSONObject json = new JSONObject(aladinComponent.findByIsbn13(aladinKey, isbn13, "ISBN13", "JS", 20131101));
 
         if (json.has("errorMessage")) {
+            log.info("존재하지 않는 isbn13 입니다. isbn13: {}", isbn13);
             throw new IllegalArgumentException("존재하지 않는 isbn13 입니다.");
         }
 
         JSONObject item = json.getJSONArray("item").getJSONObject(0);
 
-        BookApiDto bookApiDto = BookApiDto.of(
+        return BookApiDto.of(
                 item.optString("title", ""),
                 item.optString("author", ""),
                 item.optString("publisher", ""),
@@ -77,9 +80,5 @@ public class BookApiComponent {
                 item.optIntegerObject("priceSales", null),
                 item.optString("cover", "")
         );
-
-        bookApiCacheService.saveBookApiCache(bookApiDto);
-
-        return bookApiDto;
     }
 }

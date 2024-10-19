@@ -8,9 +8,11 @@ import cotato.bookitlist.book.dto.response.BookListResponse;
 import cotato.bookitlist.book.dto.response.BookRecommendListResponse;
 import cotato.bookitlist.book.dto.response.BookRecommendResponse;
 import cotato.bookitlist.book.redis.BookApiCache;
+import cotato.bookitlist.book.redis.RedissonLockService;
 import cotato.bookitlist.book.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookService {
 
@@ -31,6 +34,7 @@ public class BookService {
     private final BookApiComponent bookApiComponent;
     private final BookApiCacheService bookApiCacheService;
     private final BookRepository bookRepository;
+    private final RedissonLockService redissonLockService;
 
     public BookApiListResponse searchExternal(String keyword, int start, int maxResults) {
         return bookApiComponent.findListByKeyWordAndApi(keyword, start, maxResults);
@@ -41,12 +45,34 @@ public class BookService {
     }
 
     public BookDto getBookByIsbn13(String isbn13) {
-        return bookRepository.findByIsbn13(isbn13).map(BookDto::from)
-                .orElseGet(() -> bookApiCacheService.findBookApiCacheByIsbn13(isbn13)
-                        .map(BookApiCache::getBookApiDto)
-                        .map(BookDto::from)
-                        .orElseGet(() -> BookDto.from(getExternal(isbn13)))
-                );
+        Optional<BookDto> book = getFromCache(isbn13);
+
+        if (book.isPresent()) {
+            return book.get();
+        }
+
+        try {
+            if (redissonLockService.tryLock("book", isbn13)) {
+                try {
+                    book = getFromCache(isbn13);
+                    if (book.isPresent()) {
+                        return book.get();
+                    }
+
+                    BookDto bookDto = getFromDbOrExternal(isbn13);
+                    bookApiCacheService.saveBookApiCache(BookApiDto.of(bookDto)); // 캐시에 저장
+                    return bookDto;
+                } finally {
+                    redissonLockService.unlock("book", isbn13);
+                }
+            } else {
+                log.info("Lock not acquired, skipping cache update for isbn13={}", isbn13);
+                throw new RuntimeException("Please try again later.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread was interrupted while trying to lock", e);
+        }
     }
 
     @Deprecated
@@ -83,4 +109,17 @@ public class BookService {
 
         return new BookRecommendListResponse(bookRecommendList);
     }
+
+    private Optional<BookDto> getFromCache(String isbn13) {
+        return bookApiCacheService.findBookApiCacheByIsbn13(isbn13)
+                .map(BookApiCache::getBookApiDto)
+                .map(BookDto::from);
+    }
+
+    private BookDto getFromDbOrExternal(String isbn13) {
+        return bookRepository.findByIsbn13(isbn13)
+                .map(BookDto::from)
+                .orElseGet(() -> BookDto.from(getExternal(isbn13)));
+    }
+
 }
